@@ -10,8 +10,8 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Cabinet Resonance (Stage I)
 
 - [ ] **CAB-01**: User can add low-mid body and cabinet "boxiness" to signal via Body knob (0-100%)
-- [ ] **CAB-02**: User can select cabinet type: Open-back (~200-800Hz emphasis), Closed-back (~100-400Hz emphasis), or Combo (hybrid)
-- [ ] **CAB-03**: User can bypass Cabinet Resonance stage independently
+- [x] **CAB-02**: User can select cabinet type: Open-back (~200-800Hz emphasis), Closed-back (~100-400Hz emphasis), or Combo (hybrid)
+- [x] **CAB-03**: User can bypass Cabinet Resonance stage independently
 - [ ] **CAB-04**: Cabinet uses short feedback delay network (1-5ms) with resonant bandpass filtering
 - [ ] **CAB-05**: Cabinet processing is mono (single source, consistent with real cab behavior)
 
@@ -158,8 +158,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | CAB-01 | Phase 2 | Pending |
-| CAB-02 | Phase 2 | Pending |
-| CAB-03 | Phase 2 | Pending |
+| CAB-02 | Phase 2 | Complete |
+| CAB-03 | Phase 2 | Complete |
 | CAB-04 | Phase 2 | Pending |
 | CAB-05 | Phase 2 | Pending |
 | REFL-01 | Phase 3 | Pending |
