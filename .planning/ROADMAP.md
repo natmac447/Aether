@@ -62,7 +62,7 @@ Plans:
   1. User can hear room size change from small booth to large hall by sweeping the Room Size knob (delay times scale audibly)
   2. User can hear reflection pattern change from regular to irregular by sweeping the Shape knob
   3. User can hear mic proximity change from near-field to far-field by sweeping the Proximity knob (direct/reflected ratio shifts)
-  4. Diffuse Tail adds smooth reverb decay (50-500ms) without metallic ringing, with Diffusion knob controlling texture density
+  4. Diffuse Tail adds smooth reverb decay (50-2000ms) without metallic ringing, with Diffusion knob controlling texture density
   5. Pre-delay of Diffuse Tail automatically tracks Room Size setting (larger room = audibly longer gap before tail)
 **Plans**: 3 plans
 

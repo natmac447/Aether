@@ -52,7 +52,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Diffuse Tail (Stage VI)
 
-- [x] **TAIL-01**: User can control reverb decay time via Decay knob (50ms-500ms RT60)
+- [x] **TAIL-01**: User can control reverb decay time via Decay knob (50ms-2000ms RT60)
 - [x] **TAIL-02**: User can control reverb texture density via Diffusion knob (0-100%)
 - [x] **TAIL-03**: Pre-delay is automatically linked to Room Size from Stage II (larger room = longer pre-delay)
 - [x] **TAIL-04**: HF damping is automatically linked to Air setting from Stage III (more air = more HF damping)
@@ -144,7 +144,7 @@ Explicitly excluded. Documented to prevent scope creep.
 | Convolution / IR loading | Undermines core value of interactive, parameter-driven room modeling. IRs are static snapshots. |
 | Microphone modeling | Aether simulates room environment, not recording chain. Use dedicated mic sim plugins. |
 | Surround / Atmos support | Target audience works in stereo. Massive DSP complexity for non-primary market. |
-| Long reverb (>500ms decay) | Aether is environment simulator, not creative reverb. 500ms cap is deliberate constraint. |
+| Long reverb (>2000ms decay) | Aether is environment simulator, not creative reverb. 2000ms cap covers large halls. |
 | Real-time spectrum analyzer | Adds CPU overhead and visual clutter. Acoustic ray visualization provides more relevant feedback. |
 | Room browser with 50+ spaces | Continuous parameters give infinite rooms. Fixed library implies convolution accuracy. |
 | MIDI learn UI | DAW-level MIDI mapping already works with APVTS parameters. |
