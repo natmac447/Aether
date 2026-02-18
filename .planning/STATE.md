@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Make digital amp sims and DI recordings sound like they were recorded in a real room with a real microphone -- through physically-modeled environmental layers, not reverb effects.
-**Current focus:** Phase 4 in progress. Plan 01 (AirSection DSP) complete. Next: Plan 02 (cross-stage wiring)
+**Current focus:** Phase 4 complete. All Air & Distance plans done. Next: Phase 5 (Excitation & Room Tone)
 
 ## Current Position
 
-Phase: 4 of 8 (Air & Distance)
-Plan: 1 of 2 in current phase
-Status: In Progress
-Last activity: 2026-02-18 -- Completed 04-01-PLAN.md (AirSection DSP with 3 character presets)
+Phase: 4 of 8 (Air & Distance) -- COMPLETE
+Plan: 2 of 2 in current phase (all done)
+Status: Phase Complete
+Last activity: 2026-02-18 -- Completed 04-02-PLAN.md (cross-stage Air coupling + DAW verification)
 
-Progress: [█████░░░░░] 50%
+Progress: [██████░░░░] 56%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
+- Total plans completed: 9
 - Average duration: 6min
-- Total execution time: 0.9 hours
+- Total execution time: 1.0 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [█████░░░░░] 50%
 | 1 - Project Scaffold | 2 | 11min | 6min |
 | 2 - Cabinet Resonance | 2 | 17min | 9min |
 | 3 - Early Reflections & Diffuse Tail | 3 | 20min | 7min |
-| 4 - Air & Distance | 1 | 4min | 4min |
+| 4 - Air & Distance | 2 | 10min | 5min |
 
 **Recent Trend:**
-- Last 5 plans: 03-02 (5min), 03-01 (7min), 03-03 (8min), 04-01 (4min)
-- Trend: Fast (04-01 single-task DSP implementation)
+- Last 5 plans: 03-01 (7min), 03-03 (8min), 04-01 (4min), 04-02 (6min)
+- Trend: Consistent (averaging 6min across Phase 4)
 
 *Updated after each plan completion*
 
@@ -81,6 +81,10 @@ Recent decisions affecting current work:
 - 04-01: BiquadStatic full object assignment for crossfade completion -- preserves filter state continuity
 - 04-01: cheapEnergyCrossfade x = (1 - charCrossfade) convention for current->pending transition
 - 04-01: Coefficient recalculation every 16 samples during smoothing -- balances CPU vs smoothness at 2756Hz update rate
+- 04-02: 2kHz floor on Reflections baseCutoff prevents Air darkening from making reflections inaudible
+- 04-02: +/-10% clamp on character decay bias keeps tail modification subtle and musical
+- 04-02: All cross-stage coupling multiplied by airAmount ensures zero propagation at Air 0%
+- 04-02: kCharacterPresets accessed directly from processor via file-scope static const array in AirSection.h
 
 ### Pending Todos
 
@@ -94,5 +98,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-18
-Stopped at: Completed 04-01-PLAN.md (AirSection DSP with 3 character presets)
+Stopped at: Completed 04-02-PLAN.md (cross-stage Air coupling + DAW verification) -- Phase 4 complete
 Resume file: None
