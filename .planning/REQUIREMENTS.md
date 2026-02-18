@@ -1,0 +1,169 @@
+# Requirements: Aether
+
+**Defined:** 2026-02-18
+**Core Value:** Make digital amp sims and DI recordings sound like they were recorded in a real room with a real microphone — through physically-modeled environmental layers, not reverb effects.
+
+## v1 Requirements
+
+Requirements for initial release. Each maps to roadmap phases.
+
+### Cabinet Resonance (Stage I)
+
+- [ ] **CAB-01**: User can add low-mid body and cabinet "boxiness" to signal via Body knob (0-100%)
+- [ ] **CAB-02**: User can select cabinet type: Open-back (~200-800Hz emphasis), Closed-back (~100-400Hz emphasis), or Combo (hybrid)
+- [ ] **CAB-03**: User can bypass Cabinet Resonance stage independently
+- [ ] **CAB-04**: Cabinet uses short feedback delay network (1-5ms) with resonant bandpass filtering
+- [ ] **CAB-05**: Cabinet processing is mono (single source, consistent with real cab behavior)
+
+### Early Reflections (Stage II)
+
+- [ ] **REFL-01**: User can control room size via Room Size knob (Small → Large), scaling delay times from 1ms-30ms
+- [ ] **REFL-02**: User can control reflection distribution via Shape knob (Regular → Irregular), adjusting tap spacing from even to randomized
+- [ ] **REFL-03**: User can control mic distance via Proximity knob (Near → Far), adjusting direct/reflected ratio and HF rolloff
+- [ ] **REFL-04**: Early Reflections use 8-16 individually filtered delay taps
+- [ ] **REFL-05**: Left and right channels have different delay tap times and pan positions for stereo decorrelation
+- [ ] **REFL-06**: User can bypass Early Reflections stage independently
+
+### Air & Distance (Stage III)
+
+- [ ] **AIR-01**: User can control high-frequency absorption via Air knob (0-100%), from no filtering to significant HF rolloff
+- [ ] **AIR-02**: User can select air character: Warm (gentle slope from ~6kHz, carpeted room feel) or Neutral (steeper slope from ~10kHz, hard-surfaced room feel)
+- [ ] **AIR-03**: Air stage includes subtle allpass filtering for phase smearing (air diffusion simulation)
+- [ ] **AIR-04**: Higher Air values produce subtle transient softening
+- [ ] **AIR-05**: User can bypass Air & Distance stage independently
+
+### Excitation (Stage IV)
+
+- [ ] **EXCIT-01**: User can add nonlinear room excitation via Drive knob (0-100%), producing density and liveliness without audible distortion
+- [ ] **EXCIT-02**: Excitation uses frequency-dependent multiband soft saturation (3 bands: low, mid, high with different curves)
+- [ ] **EXCIT-03**: Excitation uses 2x-4x oversampling to prevent aliasing artifacts
+- [ ] **EXCIT-04**: User can bypass Excitation stage independently
+- [ ] **EXCIT-05**: At 50% drive, the effect sounds like "louder/more alive" not "distorted"
+
+### Room Tone (Stage V)
+
+- [ ] **TONE-01**: User can add shaped ambient noise floor via Ambience knob (0-100%)
+- [ ] **TONE-02**: Noise is shaped to sound like actual room tone: rolled off below ~80Hz, presence bump 200-500Hz, rolled off above ~8kHz
+- [ ] **TONE-03**: Noise character subtly changes based on Room Size setting (larger rooms = lower resonant character)
+- [ ] **TONE-04**: Left and right channels use decorrelated noise generators
+- [ ] **TONE-05**: At 100%, noise is very quiet relative to signal (-40dB to -30dB below signal)
+- [ ] **TONE-06**: Room Tone stage defaults to bypassed (Out)
+- [ ] **TONE-07**: User can bypass Room Tone stage independently
+
+### Diffuse Tail (Stage VI)
+
+- [ ] **TAIL-01**: User can control reverb decay time via Decay knob (50ms-500ms RT60)
+- [ ] **TAIL-02**: User can control reverb texture density via Diffusion knob (0-100%)
+- [ ] **TAIL-03**: Pre-delay is automatically linked to Room Size from Stage II (larger room = longer pre-delay)
+- [ ] **TAIL-04**: HF damping is automatically linked to Air setting from Stage III (more air = more HF damping)
+- [ ] **TAIL-05**: Diffuse Tail uses FDN (Feedback Delay Network) architecture with stereo implementation
+- [ ] **TAIL-06**: User can bypass Diffuse Tail stage independently
+
+### Output
+
+- [ ] **OUT-01**: User can blend dry/wet signal via Mix knob (0-100%, default 70%)
+- [ ] **OUT-02**: User can trim output level via Output knob (-24dB to +6dB, default 0.0dB)
+- [ ] **OUT-03**: Mix knob applies auto-gain compensation (slightly reduces output as Mix increases to maintain perceived loudness)
+- [ ] **OUT-04**: Dry signal for Mix is tapped at input (pre all processing)
+
+### Audio Engine
+
+- [ ] **ENG-01**: All knob parameters are smoothed (10-50ms ramp time) to prevent zipper noise
+- [ ] **ENG-02**: All delay times and filter frequencies are sample-rate aware (correct at 44.1, 48, 88.2, 96, 176.4, 192 kHz)
+- [ ] **ENG-03**: Plugin reports latency via setLatencySamples() for DAW PDC
+- [ ] **ENG-04**: Processing works with any buffer size (no buffer size assumptions)
+- [ ] **ENG-05**: Audio thread is allocation-free (no malloc/new in processBlock)
+- [ ] **ENG-06**: Signal flow follows specified order: Input → I → II → III → IV → V → VI → Mix → Output
+
+### User Interface
+
+- [ ] **UI-01**: Plugin window is 900x530px with three-column layout (220px | flex | 220px)
+- [ ] **UI-02**: Parchment background (#f0e6d3) with subtle paper texture and edge vignette
+- [ ] **UI-03**: Custom knob components: 56px standard, 64px for center room controls, parchment gradient body with ink indicator
+- [ ] **UI-04**: Custom toggle switches with ink-inverted active state (Open/Closed/Combo, Warm/Neutral)
+- [ ] **UI-05**: Custom bypass buttons per section (In/Out states with opacity changes)
+- [ ] **UI-06**: Section labels with Roman numerals (I. through VI.) in Spectral font
+- [ ] **UI-07**: Diamond ornament dividers between sections in side panels
+- [ ] **UI-08**: Corner L-shaped ornaments at plugin frame corners
+- [ ] **UI-09**: Header zone with "AETHER" title, "Environment Simulator" subtitle, preset selector, and "Cosmos Series" mark
+- [ ] **UI-10**: Footer zone with version, tagline, and brand mark
+- [ ] **UI-11**: Double-rule header/footer borders (Victorian publication style)
+- [ ] **UI-12**: Custom typography embedded: Cormorant Garamond, EB Garamond, Spectral (fallback to Georgia)
+
+### Visualization
+
+- [ ] **VIZ-01**: Center acoustic ray diagram (340x340px) showing top-down room propagation
+- [ ] **VIZ-02**: Diagram includes: room boundary, source point, listener indicator, concentric wavefronts, direct rays, reflection paths, wall reflection wavefronts (copper-tinted)
+- [ ] **VIZ-03**: Diagram reacts to Room Size (boundary scale, wavefront spacing), Shape (reflection angles), and Proximity (listener position)
+- [ ] **VIZ-04**: Subtle breathing animation on wavefront rings (4-second cycle, 1.0→1.02 scale)
+- [ ] **VIZ-05**: Bypassed stages fade their corresponding visual elements to ghost opacity
+
+### Presets
+
+- [ ] **PRST-01**: 6 factory presets: Tight Booth, Live Room, Garage, Warehouse, Bedroom, Church Hall
+- [ ] **PRST-02**: Each preset configures all six stages to a cohesive starting point
+- [ ] **PRST-03**: Preset selector dropdown with Roman numeral naming (I. — Tight Booth, etc.)
+- [ ] **PRST-04**: User can save and recall plugin state via DAW's built-in preset/state management
+
+### Build & Platform
+
+- [ ] **BUILD-01**: Plugin builds as VST3 format on macOS
+- [ ] **BUILD-02**: Plugin builds as AU format on macOS
+- [ ] **BUILD-03**: Plugin builds as Standalone application on macOS
+- [ ] **BUILD-04**: CMake build system (not Projucer) with JUCE 8
+- [ ] **BUILD-05**: Plugin passes pluginval validation
+
+## v2 Requirements
+
+Deferred to future release. Tracked but not in current roadmap.
+
+### Presets
+
+- **PRST-05**: Expanded factory preset library (10-12 presets covering more room varieties)
+- **PRST-06**: User preset management UI (save/load/rename/delete with file browser)
+
+### Platform
+
+- **BUILD-06**: Windows build (VST3, Standalone)
+- **BUILD-07**: macOS installer (.pkg)
+- **BUILD-08**: Windows installer (.exe)
+- **BUILD-09**: AAX format for Pro Tools
+
+### Features
+
+- **FEAT-01**: Mono-Safe mode that reduces L/R decorrelation for mono compatibility
+- **FEAT-02**: A/B comparison mode (toggle between two parameter states)
+- **FEAT-03**: Undo/redo for parameter changes
+
+## Out of Scope
+
+Explicitly excluded. Documented to prevent scope creep.
+
+| Feature | Reason |
+|---------|--------|
+| Convolution / IR loading | Undermines core value of interactive, parameter-driven room modeling. IRs are static snapshots. |
+| Microphone modeling | Aether simulates room environment, not recording chain. Use dedicated mic sim plugins. |
+| Surround / Atmos support | Target audience works in stereo. Massive DSP complexity for non-primary market. |
+| Long reverb (>500ms decay) | Aether is environment simulator, not creative reverb. 500ms cap is deliberate constraint. |
+| Real-time spectrum analyzer | Adds CPU overhead and visual clutter. Acoustic ray visualization provides more relevant feedback. |
+| Room browser with 50+ spaces | Continuous parameters give infinite rooms. Fixed library implies convolution accuracy. |
+| MIDI learn UI | DAW-level MIDI mapping already works with APVTS parameters. |
+| Built-in tuner/noise gate | Feature creep. Users already have these in their signal chain. |
+| Video posts / mobile app | N/A |
+
+## Traceability
+
+Which phases cover which requirements. Updated during roadmap creation.
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| — | — | — |
+
+**Coverage:**
+- v1 requirements: 55 total
+- Mapped to phases: 0
+- Unmapped: 55
+
+---
+*Requirements defined: 2026-02-18*
+*Last updated: 2026-02-18 after initial definition*
