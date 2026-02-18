@@ -54,8 +54,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **TAIL-01**: User can control reverb decay time via Decay knob (50ms-500ms RT60)
 - [x] **TAIL-02**: User can control reverb texture density via Diffusion knob (0-100%)
-- [ ] **TAIL-03**: Pre-delay is automatically linked to Room Size from Stage II (larger room = longer pre-delay)
-- [ ] **TAIL-04**: HF damping is automatically linked to Air setting from Stage III (more air = more HF damping)
+- [x] **TAIL-03**: Pre-delay is automatically linked to Room Size from Stage II (larger room = longer pre-delay)
+- [x] **TAIL-04**: HF damping is automatically linked to Air setting from Stage III (more air = more HF damping)
 - [x] **TAIL-05**: Diffuse Tail uses FDN (Feedback Delay Network) architecture with stereo implementation
 - [x] **TAIL-06**: User can bypass Diffuse Tail stage independently
 
@@ -187,8 +187,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TONE-07 | Phase 5 | Pending |
 | TAIL-01 | Phase 3 | Complete |
 | TAIL-02 | Phase 3 | Complete |
-| TAIL-03 | Phase 3 | Pending |
-| TAIL-04 | Phase 3 | Pending |
+| TAIL-03 | Phase 3 | Complete |
+| TAIL-04 | Phase 3 | Complete |
 | TAIL-05 | Phase 3 | Complete |
 | TAIL-06 | Phase 3 | Complete |
 | OUT-01 | Phase 1 | Complete |

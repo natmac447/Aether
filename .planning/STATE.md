@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Make digital amp sims and DI recordings sound like they were recorded in a real room with a real microphone -- through physically-modeled environmental layers, not reverb effects.
-**Current focus:** Phase 3 in progress. Early Reflections (03-01) and Diffuse Tail (03-02) complete. Next: Plan 03-03 (cross-stage linking and integration)
+**Current focus:** Phase 3 complete. All 3 plans (Early Reflections, Diffuse Tail, Cross-Stage Linking) done. Next: Phase 4 (Air & Distance)
 
 ## Current Position
 
 Phase: 3 of 8 (Early Reflections & Diffuse Tail)
 Plan: 3 of 3 in current phase
-Status: In Progress
-Last activity: 2026-02-18 -- Completed 03-01-PLAN.md
+Status: Phase Complete
+Last activity: 2026-02-18 -- Completed 03-03-PLAN.md (cross-stage linking + DAW verification)
 
-Progress: [████░░░░░░] 38%
+Progress: [████░░░░░░] 44%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
+- Total plans completed: 7
 - Average duration: 6min
-- Total execution time: 0.7 hours
+- Total execution time: 0.8 hours
 
 **By Phase:**
 
@@ -29,11 +29,11 @@ Progress: [████░░░░░░] 38%
 |-------|-------|-------|----------|
 | 1 - Project Scaffold | 2 | 11min | 6min |
 | 2 - Cabinet Resonance | 2 | 17min | 9min |
-| 3 - Early Reflections & Diffuse Tail | 2 | 12min | 6min |
+| 3 - Early Reflections & Diffuse Tail | 3 | 20min | 7min |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (5min), 02-02 (12min), 03-02 (5min), 03-01 (7min)
-- Trend: Stable (03-01 two-task parameter migration + full TDL implementation)
+- Last 5 plans: 02-02 (12min), 03-02 (5min), 03-01 (7min), 03-03 (8min)
+- Trend: Stable (03-03 cross-stage wiring + DAW verification checkpoint)
 
 *Updated after each plan completion*
 
@@ -73,6 +73,8 @@ Recent decisions affecting current work:
 - 03-02: Even/odd stereo distribution (L=even, R=odd) instead of StereoMultiMixer -- simpler, Hadamard provides cross-coupling
 - 03-02: Shape-to-tail influence via lookup table -- keeps stages orthogonal per ARCHITECTURE.md
 - 03-02: Explicit delay+feedback allpass for input diffusion (not biquad) -- 1.5-8ms delays too long for biquad allpass
+- 03-03: Cross-stage links always automatic (not user-toggleable) -- larger room always means longer pre-delay
+- 03-03: getTailLengthSeconds returns 2.0s (maximum decay) for conservative DAW PDC reporting
 
 ### Pending Todos
 
@@ -81,9 +83,10 @@ None yet.
 ### Blockers/Concerns
 
 - Volume drops slightly when Resonance Weight is turned up (user-reported). Expected: auto-gain compensation formula was designed for full 6-stage chain. Should self-correct as stages are added. Revisit in Phase 5 if compensation curve needs tuning.
+- Room Size sweep produces comb-filter artifacts at intermediate positions (user-reported during 03-03 DAW verification). Tapped delay line delay time combinations create constructive/destructive interference at certain ratios. Not a blocker -- classified as tuning refinement. Potential mitigations: delay time jitter during sweeps, non-linear room size curves to skip problematic ratios, per-tap detuning at intermediate sizes.
 
 ## Session Continuity
 
 Last session: 2026-02-18
-Stopped at: Completed 03-01-PLAN.md (Early Reflections parameters + stereo TDL)
+Stopped at: Completed 03-03-PLAN.md (Phase 3 complete -- cross-stage linking + DAW verification)
 Resume file: None
