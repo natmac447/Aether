@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Make digital amp sims and DI recordings sound like they were recorded in a real room with a real microphone -- through physically-modeled environmental layers, not reverb effects.
-**Current focus:** Phase 3 complete. All 3 plans (Early Reflections, Diffuse Tail, Cross-Stage Linking) done. Next: Phase 4 (Air & Distance)
+**Current focus:** Phase 4 in progress. Plan 01 (AirSection DSP) complete. Next: Plan 02 (cross-stage wiring)
 
 ## Current Position
 
-Phase: 3 of 8 (Early Reflections & Diffuse Tail)
-Plan: 3 of 3 in current phase
-Status: Phase Complete
-Last activity: 2026-02-18 -- Completed 03-03-PLAN.md (cross-stage linking + DAW verification)
+Phase: 4 of 8 (Air & Distance)
+Plan: 1 of 2 in current phase
+Status: In Progress
+Last activity: 2026-02-18 -- Completed 04-01-PLAN.md (AirSection DSP with 3 character presets)
 
-Progress: [████░░░░░░] 44%
+Progress: [█████░░░░░] 50%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
+- Total plans completed: 8
 - Average duration: 6min
-- Total execution time: 0.8 hours
+- Total execution time: 0.9 hours
 
 **By Phase:**
 
@@ -30,10 +30,11 @@ Progress: [████░░░░░░] 44%
 | 1 - Project Scaffold | 2 | 11min | 6min |
 | 2 - Cabinet Resonance | 2 | 17min | 9min |
 | 3 - Early Reflections & Diffuse Tail | 3 | 20min | 7min |
+| 4 - Air & Distance | 1 | 4min | 4min |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (12min), 03-02 (5min), 03-01 (7min), 03-03 (8min)
-- Trend: Stable (03-03 cross-stage wiring + DAW verification checkpoint)
+- Last 5 plans: 03-02 (5min), 03-01 (7min), 03-03 (8min), 04-01 (4min)
+- Trend: Fast (04-01 single-task DSP implementation)
 
 *Updated after each plan completion*
 
@@ -75,6 +76,11 @@ Recent decisions affecting current work:
 - 03-02: Explicit delay+feedback allpass for input diffusion (not biquad) -- 1.5-8ms delays too long for biquad allpass
 - 03-03: Cross-stage links always automatic (not user-toggleable) -- larger room always means longer pre-delay
 - 03-03: getTailLengthSeconds returns 2.0s (maximum decay) for conservative DAW PDC reporting
+- 04-01: air_char upgraded from 2-choice to 3-choice (Warm/Neutral/Cold) with version 2 bump, default changed to Neutral
+- 04-01: AirCharacterPreset struct with physics-derived values per character (shelf freq, allpass stages, coupling factors)
+- 04-01: BiquadStatic full object assignment for crossfade completion -- preserves filter state continuity
+- 04-01: cheapEnergyCrossfade x = (1 - charCrossfade) convention for current->pending transition
+- 04-01: Coefficient recalculation every 16 samples during smoothing -- balances CPU vs smoothness at 2756Hz update rate
 
 ### Pending Todos
 
@@ -88,5 +94,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-18
-Stopped at: Completed 03-03-PLAN.md (Phase 3 complete -- cross-stage linking + DAW verification)
+Stopped at: Completed 04-01-PLAN.md (AirSection DSP with 3 character presets)
 Resume file: None

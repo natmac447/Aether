@@ -26,11 +26,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Air & Distance (Stage III)
 
-- [ ] **AIR-01**: User can control high-frequency absorption via Air knob (0-100%), from no filtering to significant HF rolloff
-- [ ] **AIR-02**: User can select air character: Warm (gentle slope from ~6kHz, carpeted room feel) or Neutral (steeper slope from ~10kHz, hard-surfaced room feel)
-- [ ] **AIR-03**: Air stage includes subtle allpass filtering for phase smearing (air diffusion simulation)
-- [ ] **AIR-04**: Higher Air values produce subtle transient softening
-- [ ] **AIR-05**: User can bypass Air & Distance stage independently
+- [x] **AIR-01**: User can control high-frequency absorption via Air knob (0-100%), from no filtering to significant HF rolloff
+- [x] **AIR-02**: User can select air character: Warm (gentle slope from ~6kHz, carpeted room feel) or Neutral (steeper slope from ~10kHz, hard-surfaced room feel)
+- [x] **AIR-03**: Air stage includes subtle allpass filtering for phase smearing (air diffusion simulation)
+- [x] **AIR-04**: Higher Air values produce subtle transient softening
+- [x] **AIR-05**: User can bypass Air & Distance stage independently
 
 ### Excitation (Stage IV)
 
@@ -168,11 +168,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | REFL-04 | Phase 3 | Complete |
 | REFL-05 | Phase 3 | Complete |
 | REFL-06 | Phase 3 | Complete |
-| AIR-01 | Phase 4 | Pending |
-| AIR-02 | Phase 4 | Pending |
-| AIR-03 | Phase 4 | Pending |
-| AIR-04 | Phase 4 | Pending |
-| AIR-05 | Phase 4 | Pending |
+| AIR-01 | Phase 4 | Complete |
+| AIR-02 | Phase 4 | Complete |
+| AIR-03 | Phase 4 | Complete |
+| AIR-04 | Phase 4 | Complete |
+| AIR-05 | Phase 4 | Complete |
 | EXCIT-01 | Phase 5 | Pending |
 | EXCIT-02 | Phase 5 | Pending |
 | EXCIT-03 | Phase 5 | Pending |
