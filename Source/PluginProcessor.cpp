@@ -49,7 +49,7 @@ const juce::String AetherProcessor::getName() const { return "Aether"; }
 bool AetherProcessor::acceptsMidi() const  { return false; }
 bool AetherProcessor::producesMidi() const { return false; }
 bool AetherProcessor::isMidiEffect() const { return false; }
-double AetherProcessor::getTailLengthSeconds() const { return 0.0; }
+double AetherProcessor::getTailLengthSeconds() const { return 2.0; }
 int AetherProcessor::getNumPrograms()    { return 1; }
 int AetherProcessor::getCurrentProgram() { return 0; }
 void AetherProcessor::setCurrentProgram (int index) { juce::ignoreUnused (index); }
@@ -140,7 +140,25 @@ void AetherProcessor::updateStageParams()
     airSection.setBypass (airBypassParam->load() >= 0.5f);
     excitationSection.setBypass (excitBypassParam->load() >= 0.5f);
     roomToneSection.setBypass (toneBypassParam->load() >= 0.5f);
+
+    // Stage VI: Diffuse Tail -- forward direct params
+    float currentDecay = tailDecayParam->load();
+    float currentDiffusion = tailDiffParam->load();
+    diffuseTailSection.setDecay (currentDecay);
+    diffuseTailSection.setDiffusion (currentDiffusion);
     diffuseTailSection.setBypass (tailBypassParam->load() >= 0.5f);
+
+    // Cross-stage: Room Size -> Tail pre-delay (automatic, always locked)
+    float roomSizeNorm = reflSizeParam->load();
+    diffuseTailSection.setPreDelay (roomSizeNorm);
+
+    // Cross-stage: Air -> Tail HF damping (automatic, always locked)
+    float airAmount = airAmountParam->load();
+    diffuseTailSection.setHFDamping (airAmount);
+
+    // Cross-stage: Shape -> Tail character (diffusion density + modal character)
+    int shapeIndex = static_cast<int> (reflShapeParam->load());
+    diffuseTailSection.setShapeInfluence (shapeIndex);
 
     // Mix level
     mixSection.setMixLevel (outMixParam->load());
