@@ -3,10 +3,10 @@
 
 namespace ParamIDs
 {
-    // Stage I: Cabinet Resonance
-    inline constexpr auto cabBody     { "cab_body" };
-    inline constexpr auto cabType     { "cab_type" };
-    inline constexpr auto cabBypass   { "cab_bypass" };
+    // Stage I: Resonance
+    inline constexpr auto resWeight   { "res_weight" };
+    inline constexpr auto resMaterial { "res_material" };
+    inline constexpr auto resBypass   { "res_bypass" };
 
     // Stage II: Early Reflections
     inline constexpr auto reflSize    { "refl_size" };
@@ -42,11 +42,11 @@ inline juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
     // =========================================================================
-    // Stage I: Cabinet Resonance
+    // Stage I: Resonance
     // =========================================================================
     layout.add (std::make_unique<juce::AudioParameterFloat> (
-        juce::ParameterID { ParamIDs::cabBody, 1 },
-        "I Cabinet - Body",
+        juce::ParameterID { ParamIDs::resWeight, 2 },
+        "I Resonance - Weight",
         juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f),
         0.5f,
         juce::AudioParameterFloatAttributes()
@@ -56,15 +56,15 @@ inline juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout
     ));
 
     layout.add (std::make_unique<juce::AudioParameterChoice> (
-        juce::ParameterID { ParamIDs::cabType, 1 },
-        "I Cabinet - Type",
-        juce::StringArray { "Open", "Closed", "Combo" },
-        1  // default: Closed
+        juce::ParameterID { ParamIDs::resMaterial, 2 },
+        "I Resonance - Material",
+        juce::StringArray { "Pine", "Oak", "Walnut", "Mahogany", "Iron", "Steel", "Copper", "Limestone", "Marble", "Granite" },
+        3  // default: Mahogany
     ));
 
     layout.add (std::make_unique<juce::AudioParameterBool> (
-        juce::ParameterID { ParamIDs::cabBypass, 1 },
-        "I Cabinet - Bypass",
+        juce::ParameterID { ParamIDs::resBypass, 2 },
+        "I Resonance - Bypass",
         false
     ));
 

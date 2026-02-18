@@ -8,10 +8,10 @@ AetherProcessor::AetherProcessor()
       apvts (*this, nullptr, "Parameters", createParameterLayout())
 {
     // Cache all parameter pointers (done once, used every processBlock)
-    // Stage I: Cabinet
-    cabBodyParam   = apvts.getRawParameterValue (ParamIDs::cabBody);
-    cabTypeParam   = apvts.getRawParameterValue (ParamIDs::cabType);
-    cabBypassParam = apvts.getRawParameterValue (ParamIDs::cabBypass);
+    // Stage I: Resonance
+    resWeightParam   = apvts.getRawParameterValue (ParamIDs::resWeight);
+    resMaterialParam = apvts.getRawParameterValue (ParamIDs::resMaterial);
+    resBypassParam   = apvts.getRawParameterValue (ParamIDs::resBypass);
 
     // Stage II: Reflections
     reflSizeParam   = apvts.getRawParameterValue (ParamIDs::reflSize);
@@ -61,7 +61,7 @@ void AetherProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     currentBlockSize  = samplesPerBlock;
 
     // Prepare all DSP sections (ENG-02: sample-rate aware)
-    cabinetSection.prepare (sampleRate, samplesPerBlock);
+    resonanceSection.prepare (sampleRate, samplesPerBlock);
     reflectionsSection.prepare (sampleRate, samplesPerBlock);
     airSection.prepare (sampleRate, samplesPerBlock);
     excitationSection.prepare (sampleRate, samplesPerBlock);
@@ -76,7 +76,7 @@ void AetherProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 
 void AetherProcessor::releaseResources()
 {
-    cabinetSection.reset();
+    resonanceSection.reset();
     reflectionsSection.reset();
     airSection.reset();
     excitationSection.reset();
@@ -102,7 +102,7 @@ void AetherProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Midi
     mixSection.pushDrySamples (juce::dsp::AudioBlock<float> (buffer));
 
     // ENG-06: Fixed serial chain I -> II -> III -> IV -> V -> VI
-    cabinetSection.process (buffer);
+    resonanceSection.process (buffer);
     reflectionsSection.process (buffer);
     airSection.process (buffer);
     excitationSection.process (buffer);
@@ -126,7 +126,7 @@ void AetherProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Midi
 void AetherProcessor::updateStageParams()
 {
     // Stage bypasses (all stages)
-    cabinetSection.setBypass (cabBypassParam->load() >= 0.5f);
+    resonanceSection.setBypass (resBypassParam->load() >= 0.5f);
     reflectionsSection.setBypass (reflBypassParam->load() >= 0.5f);
     airSection.setBypass (airBypassParam->load() >= 0.5f);
     excitationSection.setBypass (excitBypassParam->load() >= 0.5f);

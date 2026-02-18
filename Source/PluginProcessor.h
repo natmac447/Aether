@@ -1,7 +1,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "Parameters.h"
-#include "dsp/CabinetSection.h"
+#include "dsp/ResonanceSection.h"
 #include "dsp/ReflectionsSection.h"
 #include "dsp/AirSection.h"
 #include "dsp/ExcitationSection.h"
@@ -46,10 +46,10 @@ private:
     void updateStageParams();
 
     // Cached atomic parameter pointers (zero-overhead audio-thread access)
-    // Stage I: Cabinet
-    std::atomic<float>* cabBodyParam   = nullptr;
-    std::atomic<float>* cabTypeParam   = nullptr;
-    std::atomic<float>* cabBypassParam = nullptr;
+    // Stage I: Resonance
+    std::atomic<float>* resWeightParam   = nullptr;
+    std::atomic<float>* resMaterialParam = nullptr;
+    std::atomic<float>* resBypassParam   = nullptr;
 
     // Stage II: Reflections
     std::atomic<float>* reflSizeParam    = nullptr;
@@ -80,7 +80,7 @@ private:
     std::atomic<float>* outLevelParam = nullptr;
 
     // DSP stage instances
-    CabinetSection     cabinetSection;
+    ResonanceSection   resonanceSection;
     ReflectionsSection reflectionsSection;
     AirSection         airSection;
     ExcitationSection  excitationSection;

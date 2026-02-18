@@ -72,8 +72,8 @@ target_sources(Aether
         Source/PluginEditor.h
         Source/Parameters.h
         Source/dsp/StageSection.h
-        Source/dsp/CabinetSection.cpp
-        Source/dsp/CabinetSection.h
+        Source/dsp/ResonanceSection.cpp
+        Source/dsp/ResonanceSection.h
         Source/dsp/ReflectionsSection.cpp
         Source/dsp/ReflectionsSection.h
         Source/dsp/AirSection.cpp
