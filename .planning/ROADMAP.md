@@ -33,11 +33,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Mix knob blends dry/wet signal with auto-gain compensation, Output knob trims level
   4. All parameters appear in the DAW's automation list and can be recorded/played back without zipper noise
   5. Plugin reports correct latency to DAW and operates correctly at 44.1, 48, 96, and 192 kHz sample rates
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md -- CMake build system, complete parameter definitions (20 params), plugin shell with APVTS and state save/restore
+- [ ] 01-02-PLAN.md -- DSP stage placeholders (6 stages), Mix/Output sections, processBlock pipeline with serial chain and real-time safety
 
 ### Phase 2: Cabinet Resonance
 **Goal**: Users can add cabinet body and resonance character to their signal through the first working DSP stage
