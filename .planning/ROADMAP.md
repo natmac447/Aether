@@ -96,11 +96,11 @@ Plans:
   3. User hears subtle ambient room tone when Ambience knob is turned up, and it sounds like a real room (not white noise)
   4. Room Tone character changes with Room Size setting (larger rooms produce lower-frequency ambient character)
   5. All six DSP stages can be individually bypassed and the full chain processes audio without artifacts at all supported sample rates
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 05-01: TBD
-- [ ] 05-02: TBD
+- [ ] 05-01-PLAN.md -- Excitation stage (Stage IV): 3-band multiband saturation with oversampling, material/room-size coupling, latency reporting
+- [ ] 05-02-PLAN.md -- Room Tone stage (Stage V): shaped noise generator with gating modes, auto-gain tuning, DAW verification
 
 ### Phase 6: User Interface
 **Goal**: Users interact with a polished Victorian parchment UI that matches the design handoff -- all controls functional, typography correct, ornamental elements in place
