@@ -125,7 +125,9 @@ void AetherProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Midi
 
 void AetherProcessor::updateStageParams()
 {
-    // Stage bypasses (all stages)
+    // Stage I: Resonance -- forward weight, material, and bypass
+    resonanceSection.setWeight (resWeightParam->load());
+    resonanceSection.setMaterial (static_cast<int> (resMaterialParam->load()));
     resonanceSection.setBypass (resBypassParam->load() >= 0.5f);
     reflectionsSection.setBypass (reflBypassParam->load() >= 0.5f);
     airSection.setBypass (airBypassParam->load() >= 0.5f);
