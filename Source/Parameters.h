@@ -26,6 +26,7 @@ namespace ParamIDs
 
     // Stage V: Room Tone
     inline constexpr auto toneAmb     { "tone_amb" };
+    inline constexpr auto toneGate    { "tone_gate" };
     inline constexpr auto toneBypass  { "tone_bypass" };
 
     // Stage VI: Diffuse Tail
@@ -202,6 +203,13 @@ inline juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout
             .withStringFromValueFunction ([] (float value, int) {
                 return juce::String (juce::roundToInt (value * 100.0f)) + "%";
             })
+    ));
+
+    layout.add (std::make_unique<juce::AudioParameterChoice> (
+        juce::ParameterID { ParamIDs::toneGate, 1 },
+        "V Room Tone - Gate",
+        juce::StringArray { "Always On", "Signal-Gated", "Transport-Only" },
+        0  // default: Always On
     ));
 
     layout.add (std::make_unique<juce::AudioParameterBool> (
