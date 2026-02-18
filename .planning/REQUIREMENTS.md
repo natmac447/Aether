@@ -72,7 +72,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **ENG-02**: All delay times and filter frequencies are sample-rate aware (correct at 44.1, 48, 88.2, 96, 176.4, 192 kHz)
 - [ ] **ENG-03**: Plugin reports latency via setLatencySamples() for DAW PDC
 - [ ] **ENG-04**: Processing works with any buffer size (no buffer size assumptions)
-- [ ] **ENG-05**: Audio thread is allocation-free (no malloc/new in processBlock)
+- [x] **ENG-05**: Audio thread is allocation-free (no malloc/new in processBlock)
 - [ ] **ENG-06**: Signal flow follows specified order: Input -> I -> II -> III -> IV -> V -> VI -> Mix -> Output
 
 ### User Interface
@@ -110,7 +110,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **BUILD-01**: Plugin builds as VST3 format on macOS
 - [ ] **BUILD-02**: Plugin builds as AU format on macOS
 - [ ] **BUILD-03**: Plugin builds as Standalone application on macOS
-- [ ] **BUILD-04**: CMake build system (not Projucer) with JUCE 8
+- [x] **BUILD-04**: CMake build system (not Projucer) with JUCE 8
 - [ ] **BUILD-05**: Plugin passes pluginval validation
 
 ## v2 Requirements
@@ -199,7 +199,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ENG-02 | Phase 1 | Pending |
 | ENG-03 | Phase 1 | Pending |
 | ENG-04 | Phase 1 | Pending |
-| ENG-05 | Phase 1 | Pending |
+| ENG-05 | Phase 1 | Complete |
 | ENG-06 | Phase 1 | Pending |
 | UI-01 | Phase 6 | Pending |
 | UI-02 | Phase 6 | Pending |
@@ -225,7 +225,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BUILD-01 | Phase 8 | Pending |
 | BUILD-02 | Phase 8 | Pending |
 | BUILD-03 | Phase 8 | Pending |
-| BUILD-04 | Phase 1 | Pending |
+| BUILD-04 | Phase 1 | Complete |
 | BUILD-05 | Phase 8 | Pending |
 
 **Coverage:**
