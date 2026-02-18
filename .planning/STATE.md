@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Make digital amp sims and DI recordings sound like they were recorded in a real room with a real microphone -- through physically-modeled environmental layers, not reverb effects.
-**Current focus:** Phase 2 complete. All DSP for Cabinet Resonance implemented and verified. Next: Phase 3 (Early Reflections & Diffuse Tail)
+**Current focus:** Phase 3 in progress. Diffuse Tail FDN implemented. Next: Plan 03 (parameter wiring and cross-stage linking)
 
 ## Current Position
 
-Phase: 2 of 8 (Cabinet Resonance)
-Plan: 2 of 2 in current phase
-Status: Phase Complete
-Last activity: 2026-02-18 -- Completed 02-02-PLAN.md
+Phase: 3 of 8 (Early Reflections & Diffuse Tail)
+Plan: 2 of 3 in current phase
+Status: In Progress
+Last activity: 2026-02-18 -- Completed 03-02-PLAN.md
 
-Progress: [███░░░░░░░] 25%
+Progress: [████░░░░░░] 31%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
+- Total plans completed: 5
 - Average duration: 6min
-- Total execution time: 0.5 hours
+- Total execution time: 0.6 hours
 
 **By Phase:**
 
@@ -29,10 +29,11 @@ Progress: [███░░░░░░░] 25%
 |-------|-------|-------|----------|
 | 1 - Project Scaffold | 2 | 11min | 6min |
 | 2 - Cabinet Resonance | 2 | 17min | 9min |
+| 3 - Early Reflections & Diffuse Tail | 1 | 5min | 5min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (7min), 01-02 (4min), 02-01 (5min), 02-02 (12min)
-- Trend: Stable (02-02 longer due to DAW verification checkpoint)
+- Last 5 plans: 01-02 (4min), 02-01 (5min), 02-02 (12min), 03-02 (5min)
+- Trend: Stable (03-02 straightforward single-task FDN implementation)
 
 *Updated after each plan completion*
 
@@ -62,6 +63,10 @@ Recent decisions affecting current work:
 - 02-02: Quadratic weight curve (weight^2) for musical response
 - 02-02: Immediate material coefficient switching (no crossfade) -- FDN settles in ~5ms
 - 02-02: Volume compensation deferred to Phase 5 -- auto-gain designed for full 6-stage chain
+- 03-02: 8-line Hadamard FDN for diffuse tail -- higher mixing density than Householder for 22-63ms delay lines
+- 03-02: Even/odd stereo distribution (L=even, R=odd) instead of StereoMultiMixer -- simpler, Hadamard provides cross-coupling
+- 03-02: Shape-to-tail influence via lookup table -- keeps stages orthogonal per ARCHITECTURE.md
+- 03-02: Explicit delay+feedback allpass for input diffusion (not biquad) -- 1.5-8ms delays too long for biquad allpass
 
 ### Pending Todos
 
@@ -74,5 +79,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-18
-Stopped at: Completed 02-02-PLAN.md (Phase 2 complete)
+Stopped at: Completed 03-02-PLAN.md
 Resume file: None
