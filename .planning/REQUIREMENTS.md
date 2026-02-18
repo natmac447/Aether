@@ -9,11 +9,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Cabinet Resonance (Stage I)
 
-- [x] **CAB-01**: User can add low-mid body and cabinet "boxiness" to signal via Body knob (0-100%)
-- [x] **CAB-02**: User can select cabinet type: Open-back (~200-800Hz emphasis), Closed-back (~100-400Hz emphasis), or Combo (hybrid)
-- [x] **CAB-03**: User can bypass Cabinet Resonance stage independently
-- [x] **CAB-04**: Cabinet uses short feedback delay network (1-5ms) with resonant bandpass filtering
-- [x] **CAB-05**: Cabinet processing is mono (single source, consistent with real cab behavior)
+- [x] **CAB-01**: User can add low-mid body and resonance character to signal via Weight knob (0-100%)
+- [x] **CAB-02**: User can select from 10 material types across 3 families: Woods (Pine, Oak, Walnut, Mahogany), Metals (Iron, Steel, Copper), Stones (Limestone, Marble, Granite)
+- [x] **CAB-03**: User can bypass Resonance stage independently
+- [x] **CAB-04**: Resonance uses short 4-line Householder FDN (1-5ms) with resonant bandpass filtering
+- [x] **CAB-05**: Resonance processing is mono (single source, consistent with real cab behavior)
 
 ### Early Reflections (Stage II)
 

@@ -44,10 +44,10 @@ Plans:
 **Depends on**: Phase 1
 **Requirements**: CAB-01, CAB-02, CAB-03, CAB-04, CAB-05
 **Success Criteria** (what must be TRUE):
-  1. User hears audible low-mid body added to a DI guitar signal when Body knob is turned up
-  2. User can switch between Open, Closed, and Combo cabinet types and hear distinct tonal character for each
-  3. User can bypass Cabinet Resonance independently and hear clean A/B comparison (bypassed = transparent)
-  4. Processing is mono-consistent (no unexpected stereo artifacts from cabinet stage)
+  1. User hears audible low-mid body added to a DI guitar signal when Weight knob is turned up
+  2. User can switch between 10 material types (4 woods, 3 metals, 3 stones) and hear distinct tonal character for each
+  3. User can bypass Resonance stage independently and hear clean A/B comparison (bypassed = transparent)
+  4. Processing is mono-consistent (no unexpected stereo artifacts from resonance stage)
 **Plans**: 2 plans
 
 Plans:
