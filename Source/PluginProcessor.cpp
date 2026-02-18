@@ -71,8 +71,11 @@ void AetherProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     mixSection.prepare (sampleRate, samplesPerBlock);
     outputSection.prepare (sampleRate, samplesPerBlock);
 
-    // ENG-03: Report latency (0 in Phase 1, updated when DSP adds latency)
-    setLatencySamples (0);
+    // Report oversampling latency for DAW PDC (only Excitation adds latency)
+    setLatencySamples (excitationSection.getLatencySamples());
+
+    // Inform DryWetMixer of wet path latency for internal compensation
+    mixSection.setWetLatency (static_cast<float> (excitationSection.getLatencySamples()));
 }
 
 void AetherProcessor::releaseResources()
@@ -144,7 +147,12 @@ void AetherProcessor::updateStageParams()
     airSection.setCharacter (airCharIndex);
     airSection.setBypass (airBypassParam->load() >= 0.5f);
 
+    // Stage IV: Excitation -- forward Drive, Material, RoomSize, bypass
+    excitationSection.setDrive (excitDriveParam->load());
+    excitationSection.setMaterial (static_cast<int> (resMaterialParam->load()));   // Cross-stage: Material from Stage I
+    excitationSection.setRoomSize (reflSizeParam->load());                          // Cross-stage: Room Size from Stage II
     excitationSection.setBypass (excitBypassParam->load() >= 0.5f);
+
     roomToneSection.setBypass (toneBypassParam->load() >= 0.5f);
 
     // Stage VI: Diffuse Tail -- forward direct params

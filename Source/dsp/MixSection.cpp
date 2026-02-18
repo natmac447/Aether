@@ -32,6 +32,11 @@ void MixSection::setMixLevel (float mixValue)
     dryWetMixer.setWetMixProportion (mixValue);
 }
 
+void MixSection::setWetLatency (float samples)
+{
+    dryWetMixer.setWetLatency (samples);
+}
+
 void MixSection::applyAutoGainCompensation (juce::AudioBuffer<float>& buffer, float mixValue)
 {
     // Auto-gain curve: compensationDb = -2.5 * pow(mix, 1.5)
