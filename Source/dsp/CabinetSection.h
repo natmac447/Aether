@@ -1,6 +1,20 @@
 #pragma once
+#include <JuceHeader.h>
 
 // Stage I: Cabinet Resonance
-// Implements short feedback delay network with resonant bandpass filtering.
+// Phase 2: Short FDN for cabinet body resonance with resonant bandpass filtering.
 // Three cabinet types: Open, Closed, Combo.
-// Full implementation in Phase 2.
+
+class CabinetSection
+{
+public:
+    void prepare (double sampleRate, int samplesPerBlock);
+    void process (juce::AudioBuffer<float>& buffer);
+    void reset();
+    void setBypass (bool bypassed);
+
+private:
+    bool bypassed = false;
+    double currentSampleRate = 44100.0;
+    int currentBlockSize = 512;
+};

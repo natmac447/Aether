@@ -1,6 +1,20 @@
 #pragma once
+#include <JuceHeader.h>
 
 // Stage II: Early Reflections
-// Multi-tap delay network with stereo decorrelation.
+// Phase 3: Multi-tap delay network with stereo decorrelation.
 // Room Size, Shape, Proximity controls.
-// Full implementation in Phase 3.
+
+class ReflectionsSection
+{
+public:
+    void prepare (double sampleRate, int samplesPerBlock);
+    void process (juce::AudioBuffer<float>& buffer);
+    void reset();
+    void setBypass (bool bypassed);
+
+private:
+    bool bypassed = false;
+    double currentSampleRate = 44100.0;
+    int currentBlockSize = 512;
+};
