@@ -235,7 +235,10 @@ void ReflectionsSection::process (juce::AudioBuffer<float>& buffer)
 
         // Subtle room size darkening: larger rooms get darker absorption filters
         // baseCutoff = 12kHz at min size, 6kHz at max size
-        float baseCutoff = 12000.0f - roomSize * 6000.0f;
+        // Cross-stage: Air darkening further reduces cutoff (up to 3600Hz at max)
+        float airCutoffReduction = airDarkeningFactor * 3000.0f;
+        float baseCutoff = 12000.0f - roomSize * 6000.0f - airCutoffReduction;
+        baseCutoff = juce::jmax (2000.0f, baseCutoff);
 
         // c. Get input samples
         float inputL = channelL[s];
@@ -437,6 +440,15 @@ void ReflectionsSection::setProximity (float proximity)
 void ReflectionsSection::setWidth (float width)
 {
     widthSmoothed.setTargetValue (juce::jlimit (0.0f, 1.0f, width));
+}
+
+// =============================================================================
+// setAirDarkening -- Cross-stage coupling from Air Amount * Character scale
+// =============================================================================
+
+void ReflectionsSection::setAirDarkening (float darkening)
+{
+    airDarkeningFactor = juce::jlimit (0.0f, 2.0f, darkening);
 }
 
 // =============================================================================

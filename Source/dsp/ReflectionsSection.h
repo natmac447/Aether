@@ -41,6 +41,7 @@ public:
     void setShape (int shapeIndex);
     void setProximity (float proximity);
     void setWidth (float width);
+    void setAirDarkening (float darkening);
 
     const ShapePreset& getShapePreset (int index) const;
 
@@ -76,4 +77,7 @@ private:
     double currentSampleRate = 44100.0;
     int currentBlockSize = 512;
     bool bypassed = false;
+
+    // Cross-stage: Air darkening factor (set from PluginProcessor)
+    float airDarkeningFactor = 0.0f;
 };

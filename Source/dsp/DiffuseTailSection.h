@@ -22,6 +22,7 @@ public:
     void setDiffusion (float diffusionNormalized);
     void setPreDelay (float roomSizeNormalized);
     void setHFDamping (float airAmount);
+    void setCharacterDecayBias (float bias);
     void setShapeInfluence (int shapeIndex);
 
     static constexpr int kNumFDNLines = 8;
@@ -86,4 +87,7 @@ private:
 
     // Track whether decay needs updating per sample during smoothing
     float lastDecayMs = 150.0f;
+
+    // Cross-stage: Character decay bias (+/- 10% max)
+    float characterDecayBias = 0.0f;
 };

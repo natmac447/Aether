@@ -170,7 +170,11 @@ void DiffuseTailSection::prepare (double sampleRate, int samplesPerBlock)
 
 void DiffuseTailSection::updateDecay (float decayMs)
 {
-    float decaySec = decayMs / 1000.0f;
+    // Apply character decay bias: +/-10% modulation on decay time
+    float biasedDecayMs = decayMs * (1.0f + characterDecayBias);
+    biasedDecayMs = juce::jlimit (50.0f, 2200.0f, biasedDecayMs);
+
+    float decaySec = biasedDecayMs / 1000.0f;
     float sr = static_cast<float> (currentSampleRate);
 
     for (int i = 0; i < kNumFDNLines; ++i)
@@ -386,6 +390,15 @@ void DiffuseTailSection::setHFDamping (float airAmount)
     dampingCutoffHz = 12000.0f * std::pow (2000.0f / 12000.0f, airAmount);
     dampingCutoffHz = juce::jlimit (1000.0f, 16000.0f, dampingCutoffHz);
     updateDampingFilters();
+}
+
+// =============================================================================
+// setCharacterDecayBias -- Cross-stage coupling from Air Character
+// =============================================================================
+
+void DiffuseTailSection::setCharacterDecayBias (float bias)
+{
+    characterDecayBias = juce::jlimit (-0.10f, 0.10f, bias);
 }
 
 // =============================================================================

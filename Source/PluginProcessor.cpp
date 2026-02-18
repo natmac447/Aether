@@ -137,7 +137,13 @@ void AetherProcessor::updateStageParams()
     reflectionsSection.setWidth (reflWidthParam->load());
     reflectionsSection.setBypass (reflBypassParam->load() >= 0.5f);
 
+    // Stage III: Air -- forward amount, character, and bypass
+    float airAmount = airAmountParam->load();
+    int airCharIndex = static_cast<int> (airCharParam->load());
+    airSection.setAmount (airAmount);
+    airSection.setCharacter (airCharIndex);
     airSection.setBypass (airBypassParam->load() >= 0.5f);
+
     excitationSection.setBypass (excitBypassParam->load() >= 0.5f);
     roomToneSection.setBypass (toneBypassParam->load() >= 0.5f);
 
@@ -153,8 +159,23 @@ void AetherProcessor::updateStageParams()
     diffuseTailSection.setPreDelay (roomSizeNorm);
 
     // Cross-stage: Air -> Tail HF damping (automatic, always locked)
-    float airAmount = airAmountParam->load();
     diffuseTailSection.setHFDamping (airAmount);
+
+    // Cross-stage: Character -> Tail decay bias
+    // Access character preset for coupling factors (kCharacterPresets from AirSection.h)
+    float tailDecayBias = 0.0f;
+    float reflDarkeningScale = 1.0f;
+    if (airCharIndex >= 0 && airCharIndex < kNumCharacters)
+    {
+        tailDecayBias = kCharacterPresets[airCharIndex].tailDecayBias;
+        reflDarkeningScale = kCharacterPresets[airCharIndex].reflDarkeningScale;
+    }
+    diffuseTailSection.setCharacterDecayBias (tailDecayBias * airAmount);
+
+    // Cross-stage: Air -> Reflections darkening
+    // At Air 0%: zero coupling (baseline does NOT propagate to reflections)
+    // At Air 100%: full coupling scaled by character
+    reflectionsSection.setAirDarkening (airAmount * reflDarkeningScale);
 
     // Cross-stage: Shape -> Tail character (diffusion density + modal character)
     int shapeIndex = static_cast<int> (reflShapeParam->load());
