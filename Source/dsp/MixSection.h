@@ -4,7 +4,7 @@
 // Mix Section
 // Dry/wet mixing with DryWetMixer (sin3dB equal-power crossfade) and auto-gain compensation.
 // Dry signal captured at input (OUT-04), mixed after 6 DSP stages.
-// Auto-gain curve: -2.5dB * pow(mix, 1.5) to compensate perceived loudness increase (OUT-03).
+// Auto-gain curve: -3.5dB * pow(mix, 1.4) to compensate perceived loudness increase (OUT-03).
 
 class MixSection
 {

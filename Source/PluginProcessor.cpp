@@ -31,6 +31,7 @@ AetherProcessor::AetherProcessor()
 
     // Stage V: Room Tone
     toneAmbParam    = apvts.getRawParameterValue (ParamIDs::toneAmb);
+    toneGateParam   = apvts.getRawParameterValue (ParamIDs::toneGate);
     toneBypassParam = apvts.getRawParameterValue (ParamIDs::toneBypass);
 
     // Stage VI: Diffuse Tail
@@ -99,6 +100,15 @@ void AetherProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Midi
     for (auto i = getTotalNumInputChannels(); i < getTotalNumOutputChannels(); ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
+    // Query transport state for Room Tone gating modes (Signal-Gated / Transport-Only)
+    bool transportPlaying = true;  // Safe default (standalone, hosts without transport)
+    if (auto* playHead = getPlayHead())
+    {
+        if (auto posInfo = playHead->getPosition())
+            transportPlaying = posInfo->getIsPlaying();
+    }
+    roomToneSection.setTransportPlaying (transportPlaying);
+
     // Read parameters and push to sections
     updateStageParams();
 
@@ -153,6 +163,11 @@ void AetherProcessor::updateStageParams()
     excitationSection.setRoomSize (reflSizeParam->load());                          // Cross-stage: Room Size from Stage II
     excitationSection.setBypass (excitBypassParam->load() >= 0.5f);
 
+    // Stage V: Room Tone -- forward Ambience, Gate mode, bypass, cross-stage coupling
+    roomToneSection.setAmbience (toneAmbParam->load());
+    roomToneSection.setGateMode (static_cast<int> (toneGateParam->load()));
+    roomToneSection.setRoomSize (reflSizeParam->load());                            // Cross-stage: Room Size from Stage II
+    roomToneSection.setShape (static_cast<int> (reflShapeParam->load()));           // Cross-stage: Shape from Stage II
     roomToneSection.setBypass (toneBypassParam->load() >= 0.5f);
 
     // Stage VI: Diffuse Tail -- forward direct params
@@ -197,7 +212,7 @@ bool AetherProcessor::hasEditor() const { return true; }
 
 juce::AudioProcessorEditor* AetherProcessor::createEditor()
 {
-    // GenericAudioProcessorEditor shows all 20 parameters for testing
+    // GenericAudioProcessorEditor shows all 21 parameters for testing
     // before the custom Victorian UI is built in Phase 6.
     return new juce::GenericAudioProcessorEditor (*this);
 }

@@ -69,6 +69,7 @@ private:
 
     // Stage V: Room Tone
     std::atomic<float>* toneAmbParam    = nullptr;
+    std::atomic<float>* toneGateParam   = nullptr;
     std::atomic<float>* toneBypassParam = nullptr;
 
     // Stage VI: Diffuse Tail

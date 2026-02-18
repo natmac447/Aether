@@ -39,11 +39,12 @@ void MixSection::setWetLatency (float samples)
 
 void MixSection::applyAutoGainCompensation (juce::AudioBuffer<float>& buffer, float mixValue)
 {
-    // Auto-gain curve: compensationDb = -2.5 * pow(mix, 1.5)
+    // Auto-gain curve: compensationDb = -3.5 * pow(mix, 1.4)
+    // Tuned for full 6-stage chain (Phase 5). Excitation adds ~1-2dB harmonic energy.
     // At Mix=0%:   0.0 dB (no compensation)
-    // At Mix=50%: -0.88 dB
-    // At Mix=100%: -2.5 dB
-    const float compensationDb = -2.5f * std::pow (mixValue, 1.5f);
+    // At Mix=50%: -1.33 dB
+    // At Mix=100%: -3.5 dB
+    const float compensationDb = -3.5f * std::pow (mixValue, 1.4f);
     const float targetGain = juce::Decibels::decibelsToGain (compensationDb, -100.0f);
     compensationSmoothed.setTargetValue (targetGain);
 
