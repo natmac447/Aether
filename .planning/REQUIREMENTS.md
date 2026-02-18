@@ -34,11 +34,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Excitation (Stage IV)
 
-- [ ] **EXCIT-01**: User can add nonlinear room excitation via Drive knob (0-100%), producing density and liveliness without audible distortion
-- [ ] **EXCIT-02**: Excitation uses frequency-dependent multiband soft saturation (3 bands: low, mid, high with different curves)
-- [ ] **EXCIT-03**: Excitation uses 2x-4x oversampling to prevent aliasing artifacts
-- [ ] **EXCIT-04**: User can bypass Excitation stage independently
-- [ ] **EXCIT-05**: At 50% drive, the effect sounds like "louder/more alive" not "distorted"
+- [x] **EXCIT-01**: User can add nonlinear room excitation via Drive knob (0-100%), producing density and liveliness without audible distortion
+- [x] **EXCIT-02**: Excitation uses frequency-dependent multiband soft saturation (3 bands: low, mid, high with different curves)
+- [x] **EXCIT-03**: Excitation uses 2x-4x oversampling to prevent aliasing artifacts
+- [x] **EXCIT-04**: User can bypass Excitation stage independently
+- [x] **EXCIT-05**: At 50% drive, the effect sounds like "louder/more alive" not "distorted"
 
 ### Room Tone (Stage V)
 
@@ -173,11 +173,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AIR-03 | Phase 4 | Complete |
 | AIR-04 | Phase 4 | Complete |
 | AIR-05 | Phase 4 | Complete |
-| EXCIT-01 | Phase 5 | Pending |
-| EXCIT-02 | Phase 5 | Pending |
-| EXCIT-03 | Phase 5 | Pending |
-| EXCIT-04 | Phase 5 | Pending |
-| EXCIT-05 | Phase 5 | Pending |
+| EXCIT-01 | Phase 5 | Complete |
+| EXCIT-02 | Phase 5 | Complete |
+| EXCIT-03 | Phase 5 | Complete |
+| EXCIT-04 | Phase 5 | Complete |
+| EXCIT-05 | Phase 5 | Complete |
 | TONE-01 | Phase 5 | Pending |
 | TONE-02 | Phase 5 | Pending |
 | TONE-03 | Phase 5 | Pending |

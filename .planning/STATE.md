@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Make digital amp sims and DI recordings sound like they were recorded in a real room with a real microphone -- through physically-modeled environmental layers, not reverb effects.
-**Current focus:** Phase 4 complete. All Air & Distance plans done. Next: Phase 5 (Excitation & Room Tone)
+**Current focus:** Phase 5 in progress. Excitation Section complete. Next: Room Tone (05-02)
 
 ## Current Position
 
-Phase: 4 of 8 (Air & Distance) -- COMPLETE
-Plan: 2 of 2 in current phase (all done)
-Status: Phase Complete
-Last activity: 2026-02-18 -- Completed 04-02-PLAN.md (cross-stage Air coupling + DAW verification)
+Phase: 5 of 8 (Excitation & Room Tone)
+Plan: 1 of 2 in current phase (05-01 complete)
+Status: In Progress
+Last activity: 2026-02-18 -- Completed 05-01-PLAN.md (ExcitationSection multiband saturation + oversampling)
 
-Progress: [██████░░░░] 56%
+Progress: [███████░░░] 63%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
+- Total plans completed: 10
 - Average duration: 6min
-- Total execution time: 1.0 hours
+- Total execution time: 1.1 hours
 
 **By Phase:**
 
@@ -31,10 +31,11 @@ Progress: [██████░░░░] 56%
 | 2 - Cabinet Resonance | 2 | 17min | 9min |
 | 3 - Early Reflections & Diffuse Tail | 3 | 20min | 7min |
 | 4 - Air & Distance | 2 | 10min | 5min |
+| 5 - Excitation & Room Tone | 1/2 | 4min | 4min |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (7min), 03-03 (8min), 04-01 (4min), 04-02 (6min)
-- Trend: Consistent (averaging 6min across Phase 4)
+- Last 5 plans: 03-03 (8min), 04-01 (4min), 04-02 (6min), 05-01 (4min)
+- Trend: Consistent (averaging 5min across recent plans)
 
 *Updated after each plan completion*
 
@@ -85,6 +86,11 @@ Recent decisions affecting current work:
 - 04-02: +/-10% clamp on character decay bias keeps tail modification subtle and musical
 - 04-02: All cross-stage coupling multiplied by airAmount ensures zero propagation at Air 0%
 - 04-02: kCharacterPresets accessed directly from processor via file-scope static const array in AirSection.h
+- 05-01: Single oversampler with crossover at oversampled rate (not 3 per-band oversamplers) for CPU efficiency
+- 05-01: LR filter allpass mode with two-output processSample for clean band splitting
+- 05-01: Drive smoothing once per block (not per oversampled sample) since knob changes are slow
+- 05-01: kMinG=0.15 at Drive 0% ensures subtle room nonlinearity when not bypassed
+- 05-01: MaterialExcitationBias lookup table: 10 entries with per-band (low/mid/high) scale modifiers per material
 
 ### Pending Todos
 
@@ -98,5 +104,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-18
-Stopped at: Phase 5 context gathered
-Resume file: .planning/phases/05-excitation-room-tone/05-CONTEXT.md
+Stopped at: Completed 05-01-PLAN.md
+Resume file: .planning/phases/05-excitation-room-tone/05-02-PLAN.md
