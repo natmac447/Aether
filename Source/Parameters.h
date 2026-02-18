@@ -3,11 +3,279 @@
 
 namespace ParamIDs
 {
-    // Stub -- full parameter definitions in Task 2
+    // Stage I: Cabinet Resonance
+    inline constexpr auto cabBody     { "cab_body" };
+    inline constexpr auto cabType     { "cab_type" };
+    inline constexpr auto cabBypass   { "cab_bypass" };
+
+    // Stage II: Early Reflections
+    inline constexpr auto reflSize    { "refl_size" };
+    inline constexpr auto reflShape   { "refl_shape" };
+    inline constexpr auto reflProx    { "refl_prox" };
+    inline constexpr auto reflBypass  { "refl_bypass" };
+
+    // Stage III: Air & Distance
+    inline constexpr auto airAmount   { "air_amount" };
+    inline constexpr auto airChar     { "air_char" };
+    inline constexpr auto airBypass   { "air_bypass" };
+
+    // Stage IV: Excitation
+    inline constexpr auto excitDrive  { "excit_drive" };
+    inline constexpr auto excitBypass { "excit_bypass" };
+
+    // Stage V: Room Tone
+    inline constexpr auto toneAmb     { "tone_amb" };
+    inline constexpr auto toneBypass  { "tone_bypass" };
+
+    // Stage VI: Diffuse Tail
+    inline constexpr auto tailDecay   { "tail_decay" };
+    inline constexpr auto tailDiff    { "tail_diff" };
+    inline constexpr auto tailBypass  { "tail_bypass" };
+
+    // Output
+    inline constexpr auto outMix      { "out_mix" };
+    inline constexpr auto outLevel    { "out_level" };
 }
 
 inline juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
+
+    // =========================================================================
+    // Stage I: Cabinet Resonance
+    // =========================================================================
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        juce::ParameterID { ParamIDs::cabBody, 1 },
+        "I Cabinet - Body",
+        juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f),
+        0.5f,
+        juce::AudioParameterFloatAttributes()
+            .withStringFromValueFunction ([] (float value, int) {
+                return juce::String (juce::roundToInt (value * 100.0f)) + "%";
+            })
+    ));
+
+    layout.add (std::make_unique<juce::AudioParameterChoice> (
+        juce::ParameterID { ParamIDs::cabType, 1 },
+        "I Cabinet - Type",
+        juce::StringArray { "Open", "Closed", "Combo" },
+        1  // default: Closed
+    ));
+
+    layout.add (std::make_unique<juce::AudioParameterBool> (
+        juce::ParameterID { ParamIDs::cabBypass, 1 },
+        "I Cabinet - Bypass",
+        false
+    ));
+
+    // =========================================================================
+    // Stage II: Early Reflections
+    // =========================================================================
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        juce::ParameterID { ParamIDs::reflSize, 1 },
+        "II Reflections - Room Size",
+        juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f),
+        0.4f,
+        juce::AudioParameterFloatAttributes()
+            .withStringFromValueFunction ([] (float value, int) -> juce::String {
+                if (value < 0.2f)  return "Small";
+                if (value < 0.4f)  return "Sm-Med";
+                if (value < 0.6f)  return "Medium";
+                if (value < 0.8f)  return "Med-Lg";
+                return "Large";
+            })
+            .withValueFromStringFunction ([] (const juce::String& text) -> float {
+                if (text == "Small")  return 0.1f;
+                if (text == "Sm-Med") return 0.3f;
+                if (text == "Medium") return 0.5f;
+                if (text == "Med-Lg") return 0.7f;
+                if (text == "Large")  return 0.9f;
+                return text.getFloatValue();
+            })
+    ));
+
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        juce::ParameterID { ParamIDs::reflShape, 1 },
+        "II Reflections - Shape",
+        juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f),
+        0.4f,
+        juce::AudioParameterFloatAttributes()
+            .withStringFromValueFunction ([] (float value, int) -> juce::String {
+                if (value < 0.2f)  return "Regular";
+                if (value < 0.4f)  return "Reg-Irr";
+                if (value < 0.6f)  return "Mixed";
+                if (value < 0.8f)  return "Irr-Reg";
+                return "Irregular";
+            })
+            .withValueFromStringFunction ([] (const juce::String& text) -> float {
+                if (text == "Regular")  return 0.1f;
+                if (text == "Reg-Irr")  return 0.3f;
+                if (text == "Mixed")    return 0.5f;
+                if (text == "Irr-Reg")  return 0.7f;
+                if (text == "Irregular") return 0.9f;
+                return text.getFloatValue();
+            })
+    ));
+
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        juce::ParameterID { ParamIDs::reflProx, 1 },
+        "II Reflections - Proximity",
+        juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f),
+        0.3f,
+        juce::AudioParameterFloatAttributes()
+            .withStringFromValueFunction ([] (float value, int) -> juce::String {
+                if (value < 0.2f)  return "Near";
+                if (value < 0.4f)  return "Nr-Mid";
+                if (value < 0.6f)  return "Middle";
+                if (value < 0.8f)  return "Mid-Far";
+                return "Far";
+            })
+            .withValueFromStringFunction ([] (const juce::String& text) -> float {
+                if (text == "Near")    return 0.1f;
+                if (text == "Nr-Mid")  return 0.3f;
+                if (text == "Middle")  return 0.5f;
+                if (text == "Mid-Far") return 0.7f;
+                if (text == "Far")     return 0.9f;
+                return text.getFloatValue();
+            })
+    ));
+
+    layout.add (std::make_unique<juce::AudioParameterBool> (
+        juce::ParameterID { ParamIDs::reflBypass, 1 },
+        "II Reflections - Bypass",
+        false
+    ));
+
+    // =========================================================================
+    // Stage III: Air & Distance
+    // =========================================================================
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        juce::ParameterID { ParamIDs::airAmount, 1 },
+        "III Air - Amount",
+        juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f),
+        0.4f,
+        juce::AudioParameterFloatAttributes()
+            .withStringFromValueFunction ([] (float value, int) {
+                return juce::String (juce::roundToInt (value * 100.0f)) + "%";
+            })
+    ));
+
+    layout.add (std::make_unique<juce::AudioParameterChoice> (
+        juce::ParameterID { ParamIDs::airChar, 1 },
+        "III Air - Character",
+        juce::StringArray { "Warm", "Neutral" },
+        0  // default: Warm
+    ));
+
+    layout.add (std::make_unique<juce::AudioParameterBool> (
+        juce::ParameterID { ParamIDs::airBypass, 1 },
+        "III Air - Bypass",
+        false
+    ));
+
+    // =========================================================================
+    // Stage IV: Excitation
+    // =========================================================================
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        juce::ParameterID { ParamIDs::excitDrive, 1 },
+        "IV Excitation - Drive",
+        juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f),
+        0.25f,
+        juce::AudioParameterFloatAttributes()
+            .withStringFromValueFunction ([] (float value, int) {
+                return juce::String (juce::roundToInt (value * 100.0f)) + "%";
+            })
+    ));
+
+    layout.add (std::make_unique<juce::AudioParameterBool> (
+        juce::ParameterID { ParamIDs::excitBypass, 1 },
+        "IV Excitation - Bypass",
+        false
+    ));
+
+    // =========================================================================
+    // Stage V: Room Tone
+    // =========================================================================
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        juce::ParameterID { ParamIDs::toneAmb, 1 },
+        "V Room Tone - Ambience",
+        juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f),
+        0.1f,
+        juce::AudioParameterFloatAttributes()
+            .withStringFromValueFunction ([] (float value, int) {
+                return juce::String (juce::roundToInt (value * 100.0f)) + "%";
+            })
+    ));
+
+    layout.add (std::make_unique<juce::AudioParameterBool> (
+        juce::ParameterID { ParamIDs::toneBypass, 1 },
+        "V Room Tone - Bypass",
+        true  // Room Tone bypassed by default per design handoff
+    ));
+
+    // =========================================================================
+    // Stage VI: Diffuse Tail
+    // =========================================================================
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        juce::ParameterID { ParamIDs::tailDecay, 1 },
+        "VI Tail - Decay",
+        juce::NormalisableRange<float> (50.0f, 500.0f, 1.0f),
+        150.0f,
+        juce::AudioParameterFloatAttributes()
+            .withStringFromValueFunction ([] (float value, int) {
+                return juce::String (juce::roundToInt (value)) + " ms";
+            })
+            .withValueFromStringFunction ([] (const juce::String& text) {
+                return text.trimCharactersAtEnd (" ms").getFloatValue();
+            })
+    ));
+
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        juce::ParameterID { ParamIDs::tailDiff, 1 },
+        "VI Tail - Diffusion",
+        juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f),
+        0.6f,
+        juce::AudioParameterFloatAttributes()
+            .withStringFromValueFunction ([] (float value, int) {
+                return juce::String (juce::roundToInt (value * 100.0f)) + "%";
+            })
+    ));
+
+    layout.add (std::make_unique<juce::AudioParameterBool> (
+        juce::ParameterID { ParamIDs::tailBypass, 1 },
+        "VI Tail - Bypass",
+        false
+    ));
+
+    // =========================================================================
+    // Output
+    // =========================================================================
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        juce::ParameterID { ParamIDs::outMix, 1 },
+        "Output - Mix",
+        juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f),
+        0.7f,
+        juce::AudioParameterFloatAttributes()
+            .withStringFromValueFunction ([] (float value, int) {
+                return juce::String (juce::roundToInt (value * 100.0f)) + "%";
+            })
+    ));
+
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        juce::ParameterID { ParamIDs::outLevel, 1 },
+        "Output - Level",
+        juce::NormalisableRange<float> (-24.0f, 6.0f, 0.1f),
+        0.0f,
+        juce::AudioParameterFloatAttributes()
+            .withStringFromValueFunction ([] (float value, int) {
+                if (value <= -24.0f) return juce::String ("-inf dB");
+                return juce::String (value, 1) + " dB";
+            })
+            .withValueFromStringFunction ([] (const juce::String& text) {
+                if (text == "-inf dB") return -24.0f;
+                return text.trimCharactersAtEnd (" dB").getFloatValue();
+            })
+    ));
+
     return layout;
 }
