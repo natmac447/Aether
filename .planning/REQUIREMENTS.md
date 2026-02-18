@@ -1,7 +1,7 @@
 # Requirements: Aether
 
 **Defined:** 2026-02-18
-**Core Value:** Make digital amp sims and DI recordings sound like they were recorded in a real room with a real microphone — through physically-modeled environmental layers, not reverb effects.
+**Core Value:** Make digital amp sims and DI recordings sound like they were recorded in a real room with a real microphone -- through physically-modeled environmental layers, not reverb effects.
 
 ## v1 Requirements
 
@@ -17,9 +17,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Early Reflections (Stage II)
 
-- [ ] **REFL-01**: User can control room size via Room Size knob (Small → Large), scaling delay times from 1ms-30ms
-- [ ] **REFL-02**: User can control reflection distribution via Shape knob (Regular → Irregular), adjusting tap spacing from even to randomized
-- [ ] **REFL-03**: User can control mic distance via Proximity knob (Near → Far), adjusting direct/reflected ratio and HF rolloff
+- [ ] **REFL-01**: User can control room size via Room Size knob (Small -> Large), scaling delay times from 1ms-30ms
+- [ ] **REFL-02**: User can control reflection distribution via Shape knob (Regular -> Irregular), adjusting tap spacing from even to randomized
+- [ ] **REFL-03**: User can control mic distance via Proximity knob (Near -> Far), adjusting direct/reflected ratio and HF rolloff
 - [ ] **REFL-04**: Early Reflections use 8-16 individually filtered delay taps
 - [ ] **REFL-05**: Left and right channels have different delay tap times and pan positions for stereo decorrelation
 - [ ] **REFL-06**: User can bypass Early Reflections stage independently
@@ -73,7 +73,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **ENG-03**: Plugin reports latency via setLatencySamples() for DAW PDC
 - [ ] **ENG-04**: Processing works with any buffer size (no buffer size assumptions)
 - [ ] **ENG-05**: Audio thread is allocation-free (no malloc/new in processBlock)
-- [ ] **ENG-06**: Signal flow follows specified order: Input → I → II → III → IV → V → VI → Mix → Output
+- [ ] **ENG-06**: Signal flow follows specified order: Input -> I -> II -> III -> IV -> V -> VI -> Mix -> Output
 
 ### User Interface
 
@@ -95,14 +95,14 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **VIZ-01**: Center acoustic ray diagram (340x340px) showing top-down room propagation
 - [ ] **VIZ-02**: Diagram includes: room boundary, source point, listener indicator, concentric wavefronts, direct rays, reflection paths, wall reflection wavefronts (copper-tinted)
 - [ ] **VIZ-03**: Diagram reacts to Room Size (boundary scale, wavefront spacing), Shape (reflection angles), and Proximity (listener position)
-- [ ] **VIZ-04**: Subtle breathing animation on wavefront rings (4-second cycle, 1.0→1.02 scale)
+- [ ] **VIZ-04**: Subtle breathing animation on wavefront rings (4-second cycle, 1.0->1.02 scale)
 - [ ] **VIZ-05**: Bypassed stages fade their corresponding visual elements to ghost opacity
 
 ### Presets
 
 - [ ] **PRST-01**: 6 factory presets: Tight Booth, Live Room, Garage, Warehouse, Bedroom, Church Hall
 - [ ] **PRST-02**: Each preset configures all six stages to a cohesive starting point
-- [ ] **PRST-03**: Preset selector dropdown with Roman numeral naming (I. — Tight Booth, etc.)
+- [ ] **PRST-03**: Preset selector dropdown with Roman numeral naming (I. -- Tight Booth, etc.)
 - [ ] **PRST-04**: User can save and recall plugin state via DAW's built-in preset/state management
 
 ### Build & Platform
@@ -157,13 +157,82 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| — | — | — |
+| CAB-01 | Phase 2 | Pending |
+| CAB-02 | Phase 2 | Pending |
+| CAB-03 | Phase 2 | Pending |
+| CAB-04 | Phase 2 | Pending |
+| CAB-05 | Phase 2 | Pending |
+| REFL-01 | Phase 3 | Pending |
+| REFL-02 | Phase 3 | Pending |
+| REFL-03 | Phase 3 | Pending |
+| REFL-04 | Phase 3 | Pending |
+| REFL-05 | Phase 3 | Pending |
+| REFL-06 | Phase 3 | Pending |
+| AIR-01 | Phase 4 | Pending |
+| AIR-02 | Phase 4 | Pending |
+| AIR-03 | Phase 4 | Pending |
+| AIR-04 | Phase 4 | Pending |
+| AIR-05 | Phase 4 | Pending |
+| EXCIT-01 | Phase 5 | Pending |
+| EXCIT-02 | Phase 5 | Pending |
+| EXCIT-03 | Phase 5 | Pending |
+| EXCIT-04 | Phase 5 | Pending |
+| EXCIT-05 | Phase 5 | Pending |
+| TONE-01 | Phase 5 | Pending |
+| TONE-02 | Phase 5 | Pending |
+| TONE-03 | Phase 5 | Pending |
+| TONE-04 | Phase 5 | Pending |
+| TONE-05 | Phase 5 | Pending |
+| TONE-06 | Phase 5 | Pending |
+| TONE-07 | Phase 5 | Pending |
+| TAIL-01 | Phase 3 | Pending |
+| TAIL-02 | Phase 3 | Pending |
+| TAIL-03 | Phase 3 | Pending |
+| TAIL-04 | Phase 3 | Pending |
+| TAIL-05 | Phase 3 | Pending |
+| TAIL-06 | Phase 3 | Pending |
+| OUT-01 | Phase 1 | Pending |
+| OUT-02 | Phase 1 | Pending |
+| OUT-03 | Phase 1 | Pending |
+| OUT-04 | Phase 1 | Pending |
+| ENG-01 | Phase 1 | Pending |
+| ENG-02 | Phase 1 | Pending |
+| ENG-03 | Phase 1 | Pending |
+| ENG-04 | Phase 1 | Pending |
+| ENG-05 | Phase 1 | Pending |
+| ENG-06 | Phase 1 | Pending |
+| UI-01 | Phase 6 | Pending |
+| UI-02 | Phase 6 | Pending |
+| UI-03 | Phase 6 | Pending |
+| UI-04 | Phase 6 | Pending |
+| UI-05 | Phase 6 | Pending |
+| UI-06 | Phase 6 | Pending |
+| UI-07 | Phase 6 | Pending |
+| UI-08 | Phase 6 | Pending |
+| UI-09 | Phase 6 | Pending |
+| UI-10 | Phase 6 | Pending |
+| UI-11 | Phase 6 | Pending |
+| UI-12 | Phase 6 | Pending |
+| VIZ-01 | Phase 7 | Pending |
+| VIZ-02 | Phase 7 | Pending |
+| VIZ-03 | Phase 7 | Pending |
+| VIZ-04 | Phase 7 | Pending |
+| VIZ-05 | Phase 7 | Pending |
+| PRST-01 | Phase 8 | Pending |
+| PRST-02 | Phase 8 | Pending |
+| PRST-03 | Phase 8 | Pending |
+| PRST-04 | Phase 8 | Pending |
+| BUILD-01 | Phase 8 | Pending |
+| BUILD-02 | Phase 8 | Pending |
+| BUILD-03 | Phase 8 | Pending |
+| BUILD-04 | Phase 1 | Pending |
+| BUILD-05 | Phase 8 | Pending |
 
 **Coverage:**
-- v1 requirements: 55 total
-- Mapped to phases: 0
-- Unmapped: 55
+- v1 requirements: 70 total
+- Mapped to phases: 70
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-18*
-*Last updated: 2026-02-18 after initial definition*
+*Last updated: 2026-02-18 after roadmap creation*
