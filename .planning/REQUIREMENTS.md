@@ -61,19 +61,19 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Output
 
-- [ ] **OUT-01**: User can blend dry/wet signal via Mix knob (0-100%, default 70%)
-- [ ] **OUT-02**: User can trim output level via Output knob (-24dB to +6dB, default 0.0dB)
-- [ ] **OUT-03**: Mix knob applies auto-gain compensation (slightly reduces output as Mix increases to maintain perceived loudness)
-- [ ] **OUT-04**: Dry signal for Mix is tapped at input (pre all processing)
+- [x] **OUT-01**: User can blend dry/wet signal via Mix knob (0-100%, default 70%)
+- [x] **OUT-02**: User can trim output level via Output knob (-24dB to +6dB, default 0.0dB)
+- [x] **OUT-03**: Mix knob applies auto-gain compensation (slightly reduces output as Mix increases to maintain perceived loudness)
+- [x] **OUT-04**: Dry signal for Mix is tapped at input (pre all processing)
 
 ### Audio Engine
 
-- [ ] **ENG-01**: All knob parameters are smoothed (10-50ms ramp time) to prevent zipper noise
-- [ ] **ENG-02**: All delay times and filter frequencies are sample-rate aware (correct at 44.1, 48, 88.2, 96, 176.4, 192 kHz)
-- [ ] **ENG-03**: Plugin reports latency via setLatencySamples() for DAW PDC
-- [ ] **ENG-04**: Processing works with any buffer size (no buffer size assumptions)
+- [x] **ENG-01**: All knob parameters are smoothed (10-50ms ramp time) to prevent zipper noise
+- [x] **ENG-02**: All delay times and filter frequencies are sample-rate aware (correct at 44.1, 48, 88.2, 96, 176.4, 192 kHz)
+- [x] **ENG-03**: Plugin reports latency via setLatencySamples() for DAW PDC
+- [x] **ENG-04**: Processing works with any buffer size (no buffer size assumptions)
 - [x] **ENG-05**: Audio thread is allocation-free (no malloc/new in processBlock)
-- [ ] **ENG-06**: Signal flow follows specified order: Input -> I -> II -> III -> IV -> V -> VI -> Mix -> Output
+- [x] **ENG-06**: Signal flow follows specified order: Input -> I -> II -> III -> IV -> V -> VI -> Mix -> Output
 
 ### User Interface
 
@@ -191,16 +191,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TAIL-04 | Phase 3 | Pending |
 | TAIL-05 | Phase 3 | Pending |
 | TAIL-06 | Phase 3 | Pending |
-| OUT-01 | Phase 1 | Pending |
-| OUT-02 | Phase 1 | Pending |
-| OUT-03 | Phase 1 | Pending |
-| OUT-04 | Phase 1 | Pending |
-| ENG-01 | Phase 1 | Pending |
-| ENG-02 | Phase 1 | Pending |
-| ENG-03 | Phase 1 | Pending |
-| ENG-04 | Phase 1 | Pending |
+| OUT-01 | Phase 1 | Complete |
+| OUT-02 | Phase 1 | Complete |
+| OUT-03 | Phase 1 | Complete |
+| OUT-04 | Phase 1 | Complete |
+| ENG-01 | Phase 1 | Complete |
+| ENG-02 | Phase 1 | Complete |
+| ENG-03 | Phase 1 | Complete |
+| ENG-04 | Phase 1 | Complete |
 | ENG-05 | Phase 1 | Complete |
-| ENG-06 | Phase 1 | Pending |
+| ENG-06 | Phase 1 | Complete |
 | UI-01 | Phase 6 | Pending |
 | UI-02 | Phase 6 | Pending |
 | UI-03 | Phase 6 | Pending |
