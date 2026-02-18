@@ -64,11 +64,12 @@ Plans:
   3. User can hear mic proximity change from near-field to far-field by sweeping the Proximity knob (direct/reflected ratio shifts)
   4. Diffuse Tail adds smooth reverb decay (50-500ms) without metallic ringing, with Diffusion knob controlling texture density
   5. Pre-delay of Diffuse Tail automatically tracks Room Size setting (larger room = audibly longer gap before tail)
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
+- [ ] 03-01-PLAN.md -- Parameter migration (Shape->Choice, refl_width, tail_decay range) and complete ReflectionsSection with stereo TDL, 7 shape presets, Room Size/Shape/Proximity/Width
+- [ ] 03-02-PLAN.md -- Complete DiffuseTailSection with 8-line Hadamard FDN, input allpass diffusion, pre-delay, frequency-dependent feedback damping
+- [ ] 03-03-PLAN.md -- Cross-stage parameter linking (Room Size->pre-delay, Air->HF damping, Shape->tail character) and DAW verification
 
 ### Phase 4: Air & Distance
 **Goal**: Users can simulate high-frequency absorption and air diffusion that makes the signal sound like it traveled through a real room
