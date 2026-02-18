@@ -158,10 +158,10 @@ inline juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout
     ));
 
     layout.add (std::make_unique<juce::AudioParameterChoice> (
-        juce::ParameterID { ParamIDs::airChar, 1 },
+        juce::ParameterID { ParamIDs::airChar, 2 },
         "III Air - Character",
-        juce::StringArray { "Warm", "Neutral" },
-        0  // default: Warm
+        juce::StringArray { "Warm", "Neutral", "Cold" },
+        1  // default: Neutral
     ));
 
     layout.add (std::make_unique<juce::AudioParameterBool> (
