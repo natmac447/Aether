@@ -13,7 +13,7 @@ Aether is built in eight phases that progress from a silent plugin scaffold to a
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Project Scaffold & Audio Pipeline** - Build system, APVTS parameter tree, processBlock skeleton with mix/output and real-time safety (completed 2026-02-18)
-- [ ] **Phase 2: Cabinet Resonance** - First DSP stage (Stage I) with short FDN, ten material types, validates section interface
+- [x] **Phase 2: Cabinet Resonance** - First DSP stage (Stage I) with short FDN, ten material types, validates section interface (completed 2026-02-18)
 - [ ] **Phase 3: Early Reflections & Diffuse Tail** - Core spatial engine (Stages II + VI) with multi-tap delays, FDN reverb, and cross-stage parameter linking
 - [ ] **Phase 4: Air & Distance** - Frequency-dependent absorption stage (Stage III) with character toggle and HF damping link to Diffuse Tail
 - [ ] **Phase 5: Excitation & Room Tone** - Remaining DSP stages (Stages IV + V) completing the full six-stage processing chain
@@ -155,7 +155,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Project Scaffold & Audio Pipeline | 0/0 | Complete    | 2026-02-18 |
-| 2. Cabinet Resonance | 0/2 | Not started | - |
+| 2. Cabinet Resonance | 2/2 | Complete    | 2026-02-18 |
 | 3. Early Reflections & Diffuse Tail | 0/0 | Not started | - |
 | 4. Air & Distance | 0/0 | Not started | - |
 | 5. Excitation & Room Tone | 0/0 | Not started | - |
