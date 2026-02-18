@@ -1,0 +1,12 @@
+# Build output
+build/
+
+# IDE files
+.vs/
+.vscode/
+*.xcodeproj/
+*.xcworkspace/
+
+# OS files
+.DS_Store
+Thumbs.db
