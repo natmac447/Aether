@@ -12,6 +12,7 @@ namespace ParamIDs
     inline constexpr auto reflSize    { "refl_size" };
     inline constexpr auto reflShape   { "refl_shape" };
     inline constexpr auto reflProx    { "refl_prox" };
+    inline constexpr auto reflWidth   { "refl_width" };
     inline constexpr auto reflBypass  { "refl_bypass" };
 
     // Stage III: Air & Distance
@@ -72,9 +73,9 @@ inline juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout
     // Stage II: Early Reflections
     // =========================================================================
     layout.add (std::make_unique<juce::AudioParameterFloat> (
-        juce::ParameterID { ParamIDs::reflSize, 1 },
+        juce::ParameterID { ParamIDs::reflSize, 3 },
         "II Reflections - Room Size",
-        juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f),
+        juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f, 0.4f),
         0.4f,
         juce::AudioParameterFloatAttributes()
             .withStringFromValueFunction ([] (float value, int) -> juce::String {
@@ -94,27 +95,12 @@ inline juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout
             })
     ));
 
-    layout.add (std::make_unique<juce::AudioParameterFloat> (
-        juce::ParameterID { ParamIDs::reflShape, 1 },
+    layout.add (std::make_unique<juce::AudioParameterChoice> (
+        juce::ParameterID { ParamIDs::reflShape, 3 },
         "II Reflections - Shape",
-        juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f),
-        0.4f,
-        juce::AudioParameterFloatAttributes()
-            .withStringFromValueFunction ([] (float value, int) -> juce::String {
-                if (value < 0.2f)  return "Regular";
-                if (value < 0.4f)  return "Reg-Irr";
-                if (value < 0.6f)  return "Mixed";
-                if (value < 0.8f)  return "Irr-Reg";
-                return "Irregular";
-            })
-            .withValueFromStringFunction ([] (const juce::String& text) -> float {
-                if (text == "Regular")  return 0.1f;
-                if (text == "Reg-Irr")  return 0.3f;
-                if (text == "Mixed")    return 0.5f;
-                if (text == "Irr-Reg")  return 0.7f;
-                if (text == "Irregular") return 0.9f;
-                return text.getFloatValue();
-            })
+        juce::StringArray { "The Parlour", "The Gallery", "The Chamber", "The Nave",
+                            "The Alcove", "The Crypt", "The Conservatory" },
+        0  // default: The Parlour
     ));
 
     layout.add (std::make_unique<juce::AudioParameterFloat> (
@@ -137,6 +123,17 @@ inline juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout
                 if (text == "Mid-Far") return 0.7f;
                 if (text == "Far")     return 0.9f;
                 return text.getFloatValue();
+            })
+    ));
+
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        juce::ParameterID { ParamIDs::reflWidth, 3 },
+        "II Reflections - Width",
+        juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f),
+        0.7f,
+        juce::AudioParameterFloatAttributes()
+            .withStringFromValueFunction ([] (float value, int) {
+                return juce::String (juce::roundToInt (value * 100.0f)) + "%";
             })
     ));
 
@@ -217,9 +214,9 @@ inline juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout
     // Stage VI: Diffuse Tail
     // =========================================================================
     layout.add (std::make_unique<juce::AudioParameterFloat> (
-        juce::ParameterID { ParamIDs::tailDecay, 1 },
+        juce::ParameterID { ParamIDs::tailDecay, 3 },
         "VI Tail - Decay",
-        juce::NormalisableRange<float> (50.0f, 500.0f, 1.0f),
+        juce::NormalisableRange<float> (50.0f, 2000.0f, 1.0f, 0.3f),
         150.0f,
         juce::AudioParameterFloatAttributes()
             .withStringFromValueFunction ([] (float value, int) {

@@ -55,6 +55,7 @@ private:
     std::atomic<float>* reflSizeParam    = nullptr;
     std::atomic<float>* reflShapeParam   = nullptr;
     std::atomic<float>* reflProxParam    = nullptr;
+    std::atomic<float>* reflWidthParam   = nullptr;
     std::atomic<float>* reflBypassParam  = nullptr;
 
     // Stage III: Air

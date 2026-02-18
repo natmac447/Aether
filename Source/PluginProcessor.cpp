@@ -17,6 +17,7 @@ AetherProcessor::AetherProcessor()
     reflSizeParam   = apvts.getRawParameterValue (ParamIDs::reflSize);
     reflShapeParam  = apvts.getRawParameterValue (ParamIDs::reflShape);
     reflProxParam   = apvts.getRawParameterValue (ParamIDs::reflProx);
+    reflWidthParam  = apvts.getRawParameterValue (ParamIDs::reflWidth);
     reflBypassParam = apvts.getRawParameterValue (ParamIDs::reflBypass);
 
     // Stage III: Air
@@ -129,7 +130,13 @@ void AetherProcessor::updateStageParams()
     resonanceSection.setWeight (resWeightParam->load());
     resonanceSection.setMaterial (static_cast<int> (resMaterialParam->load()));
     resonanceSection.setBypass (resBypassParam->load() >= 0.5f);
+    // Stage II: Reflections
+    reflectionsSection.setRoomSize (reflSizeParam->load());
+    reflectionsSection.setShape (static_cast<int> (reflShapeParam->load()));
+    reflectionsSection.setProximity (reflProxParam->load());
+    reflectionsSection.setWidth (reflWidthParam->load());
     reflectionsSection.setBypass (reflBypassParam->load() >= 0.5f);
+
     airSection.setBypass (airBypassParam->load() >= 0.5f);
     excitationSection.setBypass (excitBypassParam->load() >= 0.5f);
     roomToneSection.setBypass (toneBypassParam->load() >= 0.5f);

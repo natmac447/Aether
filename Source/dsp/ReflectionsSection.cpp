@@ -26,3 +26,27 @@ void ReflectionsSection::setBypass (bool shouldBypass)
 {
     bypassed = shouldBypass;
 }
+
+void ReflectionsSection::setRoomSize (float size)
+{
+    juce::ignoreUnused (size);
+    // Phase 3 Task 2: will update roomSizeSmoothed target
+}
+
+void ReflectionsSection::setShape (int shapeIndex)
+{
+    juce::ignoreUnused (shapeIndex);
+    // Phase 3 Task 2: will trigger shape crossfade
+}
+
+void ReflectionsSection::setProximity (float proximity)
+{
+    juce::ignoreUnused (proximity);
+    // Phase 3 Task 2: will update proximitySmoothed target
+}
+
+void ReflectionsSection::setWidth (float width)
+{
+    juce::ignoreUnused (width);
+    // Phase 3 Task 2: will update widthSmoothed target
+}
