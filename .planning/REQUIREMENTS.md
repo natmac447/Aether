@@ -42,13 +42,13 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Room Tone (Stage V)
 
-- [ ] **TONE-01**: User can add shaped ambient noise floor via Ambience knob (0-100%)
-- [ ] **TONE-02**: Noise is shaped to sound like actual room tone: rolled off below ~80Hz, presence bump 200-500Hz, rolled off above ~8kHz
-- [ ] **TONE-03**: Noise character subtly changes based on Room Size setting (larger rooms = lower resonant character)
-- [ ] **TONE-04**: Left and right channels use decorrelated noise generators
-- [ ] **TONE-05**: At 100%, noise is very quiet relative to signal (-40dB to -30dB below signal)
-- [ ] **TONE-06**: Room Tone stage defaults to bypassed (Out)
-- [ ] **TONE-07**: User can bypass Room Tone stage independently
+- [x] **TONE-01**: User can add shaped ambient noise floor via Ambience knob (0-100%)
+- [x] **TONE-02**: Noise is shaped to sound like actual room tone: rolled off below ~80Hz, presence bump 200-500Hz, rolled off above ~8kHz
+- [x] **TONE-03**: Noise character subtly changes based on Room Size setting (larger rooms = lower resonant character)
+- [x] **TONE-04**: Left and right channels use decorrelated noise generators
+- [x] **TONE-05**: At 100%, noise is very quiet relative to signal (-40dB to -30dB below signal)
+- [x] **TONE-06**: Room Tone stage defaults to bypassed (Out)
+- [x] **TONE-07**: User can bypass Room Tone stage independently
 
 ### Diffuse Tail (Stage VI)
 
@@ -178,13 +178,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EXCIT-03 | Phase 5 | Complete |
 | EXCIT-04 | Phase 5 | Complete |
 | EXCIT-05 | Phase 5 | Complete |
-| TONE-01 | Phase 5 | Pending |
-| TONE-02 | Phase 5 | Pending |
-| TONE-03 | Phase 5 | Pending |
-| TONE-04 | Phase 5 | Pending |
-| TONE-05 | Phase 5 | Pending |
-| TONE-06 | Phase 5 | Pending |
-| TONE-07 | Phase 5 | Pending |
+| TONE-01 | Phase 5 | Complete |
+| TONE-02 | Phase 5 | Complete |
+| TONE-03 | Phase 5 | Complete |
+| TONE-04 | Phase 5 | Complete |
+| TONE-05 | Phase 5 | Complete |
+| TONE-06 | Phase 5 | Complete |
+| TONE-07 | Phase 5 | Complete |
 | TAIL-01 | Phase 3 | Complete |
 | TAIL-02 | Phase 3 | Complete |
 | TAIL-03 | Phase 3 | Complete |

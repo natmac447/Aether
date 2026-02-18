@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Cabinet Resonance** - First DSP stage (Stage I) with short FDN, ten material types, validates section interface (completed 2026-02-18)
 - [x] **Phase 3: Early Reflections & Diffuse Tail** - Core spatial engine (Stages II + VI) with multi-tap delays, FDN reverb, and cross-stage parameter linking (completed 2026-02-18)
 - [x] **Phase 4: Air & Distance** - Frequency-dependent absorption stage (Stage III) with character toggle and HF damping link to Diffuse Tail (completed 2026-02-18)
-- [ ] **Phase 5: Excitation & Room Tone** - Remaining DSP stages (Stages IV + V) completing the full six-stage processing chain
+- [x] **Phase 5: Excitation & Room Tone** - Remaining DSP stages (Stages IV + V) completing the full six-stage processing chain (completed 2026-02-18)
 - [ ] **Phase 6: User Interface** - Victorian parchment theme with three-column layout, custom knobs/toggles/bypass, typography, and ornamental elements
 - [ ] **Phase 7: Visualization** - Center acoustic ray diagram reactive to Room Size, Shape, and Proximity with breathing animation
 - [ ] **Phase 8: Presets, Formats & Validation** - Factory presets, VST3/AU/Standalone builds, pluginval validation, and release readiness
@@ -160,7 +160,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 2. Cabinet Resonance | 2/2 | Complete    | 2026-02-18 |
 | 3. Early Reflections & Diffuse Tail | 3/3 | Complete    | 2026-02-18 |
 | 4. Air & Distance | 2/2 | Complete    | 2026-02-18 |
-| 5. Excitation & Room Tone | 0/0 | Not started | - |
+| 5. Excitation & Room Tone | 2/2 | Complete   | 2026-02-18 |
 | 6. User Interface | 0/0 | Not started | - |
 | 7. Visualization | 0/0 | Not started | - |
 | 8. Presets, Formats & Validation | 0/0 | Not started | - |

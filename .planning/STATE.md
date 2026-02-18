@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Make digital amp sims and DI recordings sound like they were recorded in a real room with a real microphone -- through physically-modeled environmental layers, not reverb effects.
-**Current focus:** Phase 5 in progress. Excitation Section complete. Next: Room Tone (05-02)
+**Current focus:** Phase 5 complete. Full 6-stage DSP chain operational. Next: Phase 6 (User Interface)
 
 ## Current Position
 
-Phase: 5 of 8 (Excitation & Room Tone)
-Plan: 1 of 2 in current phase (05-01 complete)
+Phase: 6 of 8 (User Interface)
+Plan: 0 of 0 in current phase (not yet planned)
 Status: In Progress
-Last activity: 2026-02-18 -- Completed 05-01-PLAN.md (ExcitationSection multiband saturation + oversampling)
+Last activity: 2026-02-18 -- Completed 05-02-PLAN.md (RoomToneSection + auto-gain tuning + full chain verification)
 
-Progress: [███████░░░] 63%
+Progress: [████████░░] 75%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10
-- Average duration: 6min
-- Total execution time: 1.1 hours
+- Total plans completed: 11
+- Average duration: 7min
+- Total execution time: 1.4 hours
 
 **By Phase:**
 
@@ -31,11 +31,11 @@ Progress: [███████░░░] 63%
 | 2 - Cabinet Resonance | 2 | 17min | 9min |
 | 3 - Early Reflections & Diffuse Tail | 3 | 20min | 7min |
 | 4 - Air & Distance | 2 | 10min | 5min |
-| 5 - Excitation & Room Tone | 1/2 | 4min | 4min |
+| 5 - Excitation & Room Tone | 2/2 | 23min | 12min |
 
 **Recent Trend:**
-- Last 5 plans: 03-03 (8min), 04-01 (4min), 04-02 (6min), 05-01 (4min)
-- Trend: Consistent (averaging 5min across recent plans)
+- Last 5 plans: 04-01 (4min), 04-02 (6min), 05-01 (4min), 05-02 (19min)
+- Trend: 05-02 longer due to DAW verification checkpoint and bug fix during verification
 
 *Updated after each plan completion*
 
@@ -91,6 +91,10 @@ Recent decisions affecting current work:
 - 05-01: Drive smoothing once per block (not per oversampled sample) since knob changes are slow
 - 05-01: kMinG=0.15 at Drive 0% ensures subtle room nonlinearity when not bypassed
 - 05-01: MaterialExcitationBias lookup table: 10 entries with per-band (low/mid/high) scale modifiers per material
+- 05-02: Auto-gain formula updated to -3.5*pow(mix,1.4) for full 6-stage chain (was -2.5*pow(mix,1.5))
+- 05-02: Resonance Weight changed from crossfade to additive blend -- preserves dry signal, adds resonance energy on top
+- 05-02: One-pole asymmetric gate envelope (50ms attack, 500ms release) for natural room tone gating behavior
+- 05-02: ShapeAmbientCharacter lookup table maps 7 room shapes to spectral offsets for room tone character
 
 ### Pending Todos
 
@@ -98,11 +102,11 @@ None yet.
 
 ### Blockers/Concerns
 
-- Volume drops slightly when Resonance Weight is turned up (user-reported). Expected: auto-gain compensation formula was designed for full 6-stage chain. Should self-correct as stages are added. Revisit in Phase 5 if compensation curve needs tuning.
+- ~~Volume drops slightly when Resonance Weight is turned up~~ -- RESOLVED in 05-02: Root cause was crossfade formula replacing dry signal instead of adding resonance energy. Fixed to additive blend (commit e95b5ab). Auto-gain also retuned to -3.5*pow(mix,1.4).
 - Room Size sweep produces comb-filter artifacts at intermediate positions (user-reported during 03-03 DAW verification). Tapped delay line delay time combinations create constructive/destructive interference at certain ratios. Not a blocker -- classified as tuning refinement. Potential mitigations: delay time jitter during sweeps, non-linear room size curves to skip problematic ratios, per-tap detuning at intermediate sizes.
 
 ## Session Continuity
 
 Last session: 2026-02-18
-Stopped at: Completed 05-01-PLAN.md
-Resume file: .planning/phases/05-excitation-room-tone/05-02-PLAN.md
+Stopped at: Completed 05-02-PLAN.md (Phase 5 complete)
+Resume file: Phase 6 (User Interface) -- needs planning
