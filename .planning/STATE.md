@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Make digital amp sims and DI recordings sound like they were recorded in a real room with a real microphone -- through physically-modeled environmental layers, not reverb effects.
-**Current focus:** Phase 3 in progress. Diffuse Tail FDN implemented. Next: Plan 03 (parameter wiring and cross-stage linking)
+**Current focus:** Phase 3 in progress. Early Reflections (03-01) and Diffuse Tail (03-02) complete. Next: Plan 03-03 (cross-stage linking and integration)
 
 ## Current Position
 
 Phase: 3 of 8 (Early Reflections & Diffuse Tail)
-Plan: 2 of 3 in current phase
+Plan: 3 of 3 in current phase
 Status: In Progress
-Last activity: 2026-02-18 -- Completed 03-02-PLAN.md
+Last activity: 2026-02-18 -- Completed 03-01-PLAN.md
 
-Progress: [████░░░░░░] 31%
+Progress: [████░░░░░░] 38%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
+- Total plans completed: 6
 - Average duration: 6min
-- Total execution time: 0.6 hours
+- Total execution time: 0.7 hours
 
 **By Phase:**
 
@@ -29,11 +29,11 @@ Progress: [████░░░░░░] 31%
 |-------|-------|-------|----------|
 | 1 - Project Scaffold | 2 | 11min | 6min |
 | 2 - Cabinet Resonance | 2 | 17min | 9min |
-| 3 - Early Reflections & Diffuse Tail | 1 | 5min | 5min |
+| 3 - Early Reflections & Diffuse Tail | 2 | 12min | 6min |
 
 **Recent Trend:**
-- Last 5 plans: 01-02 (4min), 02-01 (5min), 02-02 (12min), 03-02 (5min)
-- Trend: Stable (03-02 straightforward single-task FDN implementation)
+- Last 5 plans: 02-01 (5min), 02-02 (12min), 03-02 (5min), 03-01 (7min)
+- Trend: Stable (03-01 two-task parameter migration + full TDL implementation)
 
 *Updated after each plan completion*
 
@@ -63,6 +63,12 @@ Recent decisions affecting current work:
 - 02-02: Quadratic weight curve (weight^2) for musical response
 - 02-02: Immediate material coefficient switching (no crossfade) -- FDN settles in ~5ms
 - 02-02: Volume compensation deferred to Phase 5 -- auto-gain designed for full 6-stage chain
+- 03-01: Shape and Room Size independent -- any shape works at any size for maximum flexibility
+- 03-01: No Stage I material coupling to reflections -- stages remain orthogonal
+- 03-01: Subtle room size darkening via per-tap filter cutoff (12kHz at min, 6kHz at max)
+- 03-01: Width via tap pattern interpolation (mono->stereo), not mid-side -- avoids phase cancellation on mono sum
+- 03-01: Proximity Far extreme: -12dB direct floor, never fully removes direct signal
+- 03-01: Shape crossfade uses 30ms linear ramp, both shape tap patterns read simultaneously during transition
 - 03-02: 8-line Hadamard FDN for diffuse tail -- higher mixing density than Householder for 22-63ms delay lines
 - 03-02: Even/odd stereo distribution (L=even, R=odd) instead of StereoMultiMixer -- simpler, Hadamard provides cross-coupling
 - 03-02: Shape-to-tail influence via lookup table -- keeps stages orthogonal per ARCHITECTURE.md
@@ -79,5 +85,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-18
-Stopped at: Completed 03-02-PLAN.md
+Stopped at: Completed 03-01-PLAN.md (Early Reflections parameters + stereo TDL)
 Resume file: None

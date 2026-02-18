@@ -17,12 +17,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Early Reflections (Stage II)
 
-- [ ] **REFL-01**: User can control room size via Room Size knob (Small -> Large), scaling delay times from 1ms-30ms
-- [ ] **REFL-02**: User can control reflection distribution via Shape knob (Regular -> Irregular), adjusting tap spacing from even to randomized
-- [ ] **REFL-03**: User can control mic distance via Proximity knob (Near -> Far), adjusting direct/reflected ratio and HF rolloff
-- [ ] **REFL-04**: Early Reflections use 8-16 individually filtered delay taps
-- [ ] **REFL-05**: Left and right channels have different delay tap times and pan positions for stereo decorrelation
-- [ ] **REFL-06**: User can bypass Early Reflections stage independently
+- [x] **REFL-01**: User can control room size via Room Size knob (Small -> Large), scaling delay times from 1ms-30ms
+- [x] **REFL-02**: User can control reflection distribution via Shape knob (Regular -> Irregular), adjusting tap spacing from even to randomized
+- [x] **REFL-03**: User can control mic distance via Proximity knob (Near -> Far), adjusting direct/reflected ratio and HF rolloff
+- [x] **REFL-04**: Early Reflections use 8-16 individually filtered delay taps
+- [x] **REFL-05**: Left and right channels have different delay tap times and pan positions for stereo decorrelation
+- [x] **REFL-06**: User can bypass Early Reflections stage independently
 
 ### Air & Distance (Stage III)
 
@@ -162,12 +162,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CAB-03 | Phase 2 | Complete |
 | CAB-04 | Phase 2 | Complete |
 | CAB-05 | Phase 2 | Complete |
-| REFL-01 | Phase 3 | Pending |
-| REFL-02 | Phase 3 | Pending |
-| REFL-03 | Phase 3 | Pending |
-| REFL-04 | Phase 3 | Pending |
-| REFL-05 | Phase 3 | Pending |
-| REFL-06 | Phase 3 | Pending |
+| REFL-01 | Phase 3 | Complete |
+| REFL-02 | Phase 3 | Complete |
+| REFL-03 | Phase 3 | Complete |
+| REFL-04 | Phase 3 | Complete |
+| REFL-05 | Phase 3 | Complete |
+| REFL-06 | Phase 3 | Complete |
 | AIR-01 | Phase 4 | Pending |
 | AIR-02 | Phase 4 | Pending |
 | AIR-03 | Phase 4 | Pending |
