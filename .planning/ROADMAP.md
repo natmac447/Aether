@@ -80,10 +80,11 @@ Plans:
   2. User can hear difference between Warm character (gentle, carpeted room) and Neutral character (steeper, hard surfaces)
   3. Higher Air values produce subtle transient softening (not just EQ -- the sound becomes less "immediate")
   4. Air setting automatically influences Diffuse Tail HF damping (more air = darker tail)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 04-01: TBD
+- [ ] 04-01-PLAN.md -- Update air_char to 3 choices (Warm/Neutral/Cold), implement complete AirSection DSP with HF shelf, LF shelf, allpass phase smearing, character presets, bypass/character crossfade
+- [ ] 04-02-PLAN.md -- Cross-stage coupling (Air -> Reflections darkening, Character -> Tail decay bias), processor forwarding, DAW verification checkpoint
 
 ### Phase 5: Excitation & Room Tone
 **Goal**: The full six-stage processing chain is operational -- users can drive room excitation for liveliness and add ambient noise floor for realism
