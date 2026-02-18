@@ -7,7 +7,8 @@
 
 // Stage I: Resonance -- 4-line Householder FDN for material body resonance
 // with resonant bandpass filtering. 10 material types across wood, metal,
-// and stone families. Weight knob controls wet/dry with quadratic curve.
+// and stone families. Weight knob controls additive resonance level (quadratic curve).
+// Dry signal always passes through; FDN output is added on top.
 
 struct MaterialParams
 {

@@ -334,9 +334,9 @@ void ResonanceSection::process (juce::AudioBuffer<float>& buffer)
         // Safety hard limit to prevent runaway
         fdnOut = juce::jlimit (-2.0f, 2.0f, fdnOut);
 
-        // g. Blend: output = dry * (1 - blend*wetGain) + wet * blend*wetGain
+        // g. Additive blend: dry signal always passes through, resonance layered on top
         float effectiveWet = blend * wetGain;
-        float output = mono * (1.0f - effectiveWet) + fdnOut * effectiveWet;
+        float output = mono + fdnOut * effectiveWet;
 
         // h. Write mono output to both channels (CAB-05: mono processing)
         channelL[s] = output;
