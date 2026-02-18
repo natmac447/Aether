@@ -1,6 +1,14 @@
 #pragma once
 #include <JuceHeader.h>
 #include "Parameters.h"
+#include "dsp/CabinetSection.h"
+#include "dsp/ReflectionsSection.h"
+#include "dsp/AirSection.h"
+#include "dsp/ExcitationSection.h"
+#include "dsp/RoomToneSection.h"
+#include "dsp/DiffuseTailSection.h"
+#include "dsp/MixSection.h"
+#include "dsp/OutputSection.h"
 
 class AetherProcessor : public juce::AudioProcessor
 {
@@ -34,6 +42,9 @@ public:
     juce::AudioProcessorValueTreeState apvts;
 
 private:
+    // Read cached atomic params and push to DSP sections
+    void updateStageParams();
+
     // Cached atomic parameter pointers (zero-overhead audio-thread access)
     // Stage I: Cabinet
     std::atomic<float>* cabBodyParam   = nullptr;
@@ -68,7 +79,17 @@ private:
     std::atomic<float>* outMixParam   = nullptr;
     std::atomic<float>* outLevelParam = nullptr;
 
-    // Stored sample rate and block size for DSP stages (Plan 02)
+    // DSP stage instances
+    CabinetSection     cabinetSection;
+    ReflectionsSection reflectionsSection;
+    AirSection         airSection;
+    ExcitationSection  excitationSection;
+    RoomToneSection    roomToneSection;
+    DiffuseTailSection diffuseTailSection;
+    MixSection         mixSection;
+    OutputSection      outputSection;
+
+    // Stored sample rate and block size for DSP stages
     double currentSampleRate = 44100.0;
     int    currentBlockSize  = 512;
 

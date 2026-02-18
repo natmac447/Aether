@@ -60,22 +60,81 @@ void AetherProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     currentSampleRate = sampleRate;
     currentBlockSize  = samplesPerBlock;
 
-    // DSP stage preparation will be added in Plan 02
+    // Prepare all DSP sections (ENG-02: sample-rate aware)
+    cabinetSection.prepare (sampleRate, samplesPerBlock);
+    reflectionsSection.prepare (sampleRate, samplesPerBlock);
+    airSection.prepare (sampleRate, samplesPerBlock);
+    excitationSection.prepare (sampleRate, samplesPerBlock);
+    roomToneSection.prepare (sampleRate, samplesPerBlock);
+    diffuseTailSection.prepare (sampleRate, samplesPerBlock);
+    mixSection.prepare (sampleRate, samplesPerBlock);
+    outputSection.prepare (sampleRate, samplesPerBlock);
+
+    // ENG-03: Report latency (0 in Phase 1, updated when DSP adds latency)
+    setLatencySamples (0);
 }
 
-void AetherProcessor::releaseResources() {}
+void AetherProcessor::releaseResources()
+{
+    cabinetSection.reset();
+    reflectionsSection.reset();
+    airSection.reset();
+    excitationSection.reset();
+    roomToneSection.reset();
+    diffuseTailSection.reset();
+    mixSection.reset();
+    outputSection.reset();
+}
 
 void AetherProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ignoreUnused (midiMessages);
-    juce::ScopedNoDenormals noDenormals;
+    juce::ScopedNoDenormals noDenormals;  // ENG-05: prevent denormal CPU spikes
 
-    // Clear unused output channels (real-time safe: uses existing buffer)
+    // Clear unused output channels (ENG-04: works with any channel config)
     for (auto i = getTotalNumInputChannels(); i < getTotalNumOutputChannels(); ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    // Full DSP pipeline (dry capture, 6-stage chain, mix, output) added in Plan 02.
-    // Currently passthrough: audio passes through unchanged.
+    // Read parameters and push to sections
+    updateStageParams();
+
+    // OUT-04: Capture dry signal at input (pre all processing)
+    mixSection.pushDrySamples (juce::dsp::AudioBlock<float> (buffer));
+
+    // ENG-06: Fixed serial chain I -> II -> III -> IV -> V -> VI
+    cabinetSection.process (buffer);
+    reflectionsSection.process (buffer);
+    airSection.process (buffer);
+    excitationSection.process (buffer);
+    roomToneSection.process (buffer);
+    diffuseTailSection.process (buffer);
+
+    // OUT-01: Mix dry/wet with equal-power crossfade (sin3dB)
+    {
+        juce::dsp::AudioBlock<float> wetBlock (buffer);
+        mixSection.mixWetSamples (wetBlock);
+    }
+
+    // OUT-03: Auto-gain compensation
+    const float currentMix = outMixParam->load();
+    mixSection.applyAutoGainCompensation (buffer, currentMix);
+
+    // OUT-02: Output level trim
+    outputSection.process (buffer, outLevelParam->load());
+}
+
+void AetherProcessor::updateStageParams()
+{
+    // Stage bypasses (all stages)
+    cabinetSection.setBypass (cabBypassParam->load() >= 0.5f);
+    reflectionsSection.setBypass (reflBypassParam->load() >= 0.5f);
+    airSection.setBypass (airBypassParam->load() >= 0.5f);
+    excitationSection.setBypass (excitBypassParam->load() >= 0.5f);
+    roomToneSection.setBypass (toneBypassParam->load() >= 0.5f);
+    diffuseTailSection.setBypass (tailBypassParam->load() >= 0.5f);
+
+    // Mix level
+    mixSection.setMixLevel (outMixParam->load());
 }
 
 bool AetherProcessor::hasEditor() const { return true; }
