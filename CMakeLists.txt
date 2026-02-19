@@ -107,6 +107,10 @@ target_sources(Aether
         Source/ui/ParchmentElements.cpp
         Source/ui/AetherKnob.h
         Source/ui/AetherKnob.cpp
+        Source/ui/AetherToggle.h
+        Source/ui/AetherToggle.cpp
+        Source/ui/AetherBypassButton.h
+        Source/ui/AetherBypassButton.cpp
 )
 
 target_compile_definitions(Aether
