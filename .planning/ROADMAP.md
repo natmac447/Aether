@@ -125,10 +125,10 @@ Plans:
 **Depends on**: Phase 6
 **Requirements**: VIZ-01, VIZ-02, VIZ-03, VIZ-04, VIZ-05
 **Success Criteria** (what must be TRUE):
-  1. Center column displays 340x340px acoustic ray diagram showing room boundary, source, listener, wavefronts, and reflection paths
-  2. Diagram reacts in real-time to Room Size (boundary scale), Shape (reflection angles), and Proximity (listener position)
-  3. Wavefront rings animate with a subtle breathing cycle (visible slow pulse)
-  4. Bypassed stages fade their corresponding visual elements to ghost opacity
+  1. Center column displays Victorian perception diagram with head profile silhouette, concentric wavefronts, and per-stage visual elements in monochrome ink (no room boundary, no copper tints)
+  2. Diagram reacts in real-time to Room Size (wavefront extent/spacing), Shape (wave pattern fingerprint morphs), and Proximity (source position and direct/reflected balance)
+  3. Wavefront rings animate with a 4-second breathing cycle (1.0-1.02 scale), boosted by audio RMS
+  4. Bypassed stages fade their visual elements to 0.0 alpha (fully invisible, no ghost traces)
 **Plans**: 2 plans
 
 Plans:
