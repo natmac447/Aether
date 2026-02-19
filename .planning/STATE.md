@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Make digital amp sims and DI recordings sound like they were recorded in a real room with a real microphone -- through physically-modeled environmental layers, not reverb effects.
-**Current focus:** Phase 5 complete. Full 6-stage DSP chain operational. Next: Phase 6 (User Interface)
+**Current focus:** Phase 6 in progress. Visual foundation complete (fonts, colours, LookAndFeel). Next: Plan 02 (custom components)
 
 ## Current Position
 
 Phase: 6 of 8 (User Interface)
-Plan: 0 of 0 in current phase (not yet planned)
+Plan: 1 of 4 in current phase (06-01-PLAN.md complete)
 Status: In Progress
-Last activity: 2026-02-18 -- Completed 05-02-PLAN.md (RoomToneSection + auto-gain tuning + full chain verification)
+Last activity: 2026-02-18 -- Completed 06-01-PLAN.md (Visual foundation: fonts, colours, LookAndFeel)
 
-Progress: [████████░░] 75%
+Progress: [████████░░] 77%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
+- Total plans completed: 12
 - Average duration: 7min
-- Total execution time: 1.4 hours
+- Total execution time: 1.5 hours
 
 **By Phase:**
 
@@ -32,10 +32,11 @@ Progress: [████████░░] 75%
 | 3 - Early Reflections & Diffuse Tail | 3 | 20min | 7min |
 | 4 - Air & Distance | 2 | 10min | 5min |
 | 5 - Excitation & Room Tone | 2/2 | 23min | 12min |
+| 6 - User Interface | 1/4 | 6min | 6min |
 
 **Recent Trend:**
-- Last 5 plans: 04-01 (4min), 04-02 (6min), 05-01 (4min), 05-02 (19min)
-- Trend: 05-02 longer due to DAW verification checkpoint and bug fix during verification
+- Last 5 plans: 04-02 (6min), 05-01 (4min), 05-02 (19min), 06-01 (6min)
+- Trend: 06-01 back to average -- straightforward font embedding and LookAndFeel setup
 
 *Updated after each plan completion*
 
@@ -95,6 +96,10 @@ Recent decisions affecting current work:
 - 05-02: Resonance Weight changed from crossfade to additive blend -- preserves dry signal, adds resonance energy on top
 - 05-02: One-pole asymmetric gate envelope (50ms attack, 500ms release) for natural room tone gating behavior
 - 05-02: ShapeAmbientCharacter lookup table maps 7 room shapes to spectral offsets for room tone character
+- 06-01: Font helper getSpectralFont(float) instead of getLabelFont(float) to avoid JUCE override name clash
+- 06-01: EB Garamond as variable-weight TTF (Google Fonts format); JUCE handles via createSystemTypefaceFor
+- 06-01: Bypass buttons identified via "isBypass" component property for distinct outline-only LookAndFeel styling
+- 06-01: Indicator line length adapts to knob radius via jmin(16px, radius*0.55) for 56px/64px knob sizes
 
 ### Pending Todos
 
@@ -108,5 +113,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-18
-Stopped at: Phase 6 context gathered
-Resume file: .planning/phases/06-user-interface/06-CONTEXT.md
+Stopped at: Completed 06-01-PLAN.md (visual foundation)
+Resume file: .planning/phases/06-user-interface/06-02-PLAN.md
