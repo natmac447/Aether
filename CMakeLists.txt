@@ -103,6 +103,8 @@ target_sources(Aether
         Source/ui/AetherColours.h
         Source/ui/AetherLookAndFeel.h
         Source/ui/AetherLookAndFeel.cpp
+        Source/ui/ParchmentElements.h
+        Source/ui/ParchmentElements.cpp
 )
 
 target_compile_definitions(Aether
