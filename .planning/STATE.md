@@ -108,5 +108,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-18
-Stopped at: Completed 05-02-PLAN.md (Phase 5 complete)
-Resume file: Phase 6 (User Interface) -- needs planning
+Stopped at: Phase 6 context gathered
+Resume file: .planning/phases/06-user-interface/06-CONTEXT.md
