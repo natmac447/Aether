@@ -27,7 +27,7 @@ namespace Layout
 
 //==============================================================================
 AetherEditor::AetherEditor (AetherProcessor& p)
-    : AudioProcessorEditor (&p), processorRef (p)
+    : AudioProcessorEditor (&p), processorRef (p), presetSelector (processorRef.apvts)
 {
     // 1. Set LookAndFeel (NOT setDefaultLookAndFeel -- per Crucible pattern)
     setLookAndFeel (&lookAndFeel);
