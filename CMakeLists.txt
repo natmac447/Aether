@@ -83,6 +83,7 @@ target_sources(Aether
         Source/PluginEditor.cpp
         Source/PluginEditor.h
         Source/Parameters.h
+        Source/presets/FactoryPresets.h
         Source/dsp/StageSection.h
         Source/dsp/ResonanceSection.cpp
         Source/dsp/ResonanceSection.h
