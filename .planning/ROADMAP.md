@@ -112,12 +112,13 @@ Plans:
   3. Custom knob components render with parchment gradient body and ink indicator (not default JUCE sliders)
   4. Header shows "AETHER" title, preset selector, and "Cosmos Series" mark; footer shows version and brand info
   5. Typography uses embedded Cormorant Garamond/EB Garamond/Spectral fonts with Roman numeral section labels
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 06-01: TBD
-- [ ] 06-02: TBD
-- [ ] 06-03: TBD
+- [ ] 06-01-PLAN.md -- Font embedding (3 families, 7 TTF files), AetherColours palette, AetherLookAndFeel with custom knob rendering
+- [ ] 06-02-PLAN.md -- AetherKnob (full interaction: drag, scroll, animation, click-to-type), AetherToggle, AetherBypassButton
+- [ ] 06-03-PLAN.md -- ParchmentElements decorative helpers (texture, vignette, dividers, corners, double-rule borders)
+- [ ] 06-04-PLAN.md -- Full editor layout, SectionComponent, PresetSelector, all 21 parameters wired, visual verification
 
 ### Phase 7: Visualization
 **Goal**: Users see a live acoustic ray diagram in the center column that visually represents the room environment and reacts to parameter changes
@@ -161,7 +162,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 3. Early Reflections & Diffuse Tail | 3/3 | Complete    | 2026-02-18 |
 | 4. Air & Distance | 2/2 | Complete    | 2026-02-18 |
 | 5. Excitation & Room Tone | 2/2 | Complete    | 2026-02-18 |
-| 6. User Interface | 0/0 | Not started | - |
+| 6. User Interface | 0/4 | Planned     | - |
 | 7. Visualization | 0/0 | Not started | - |
 | 8. Presets, Formats & Validation | 0/0 | Not started | - |
 
