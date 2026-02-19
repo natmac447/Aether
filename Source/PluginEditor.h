@@ -6,6 +6,8 @@
 #include "ui/AetherBypassButton.h"
 #include "ui/SectionComponent.h"
 #include "ui/PresetSelector.h"
+#include "ui/MixLockButton.h"
+#include "ui/ArrowStepButton.h"
 #include "ui/VisualizationComponent.h"
 
 class AetherProcessor;
@@ -89,6 +91,19 @@ private:
     //==========================================================================
     // Visualization
     VisualizationComponent vizComponent;
+
+    //==========================================================================
+    // Mix lock button (UI-only toggle, not an APVTS parameter)
+    MixLockButton mixLockButton;
+
+    //==========================================================================
+    // Arrow step buttons for combo boxes (6 total: 2 per combo)
+    ArrowStepButton materialUpArrow;
+    ArrowStepButton materialDownArrow;
+    ArrowStepButton shapeUpArrow;
+    ArrowStepButton shapeDownArrow;
+    ArrowStepButton presetUpArrow;
+    ArrowStepButton presetDownArrow;
 
     //==========================================================================
     // Parameter attachments (created AFTER addAndMakeVisible)

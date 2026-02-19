@@ -84,6 +84,8 @@ target_sources(Aether
         Source/PluginEditor.h
         Source/Parameters.h
         Source/presets/FactoryPresets.h
+        Source/presets/UserPresetManager.h
+        Source/presets/UserPresetManager.cpp
         Source/dsp/StageSection.h
         Source/dsp/ResonanceSection.cpp
         Source/dsp/ResonanceSection.h
@@ -114,6 +116,10 @@ target_sources(Aether
         Source/ui/AetherBypassButton.cpp
         Source/ui/SectionComponent.h
         Source/ui/SectionComponent.cpp
+        Source/ui/MixLockButton.h
+        Source/ui/MixLockButton.cpp
+        Source/ui/ArrowStepButton.h
+        Source/ui/ArrowStepButton.cpp
         Source/ui/PresetSelector.h
         Source/ui/PresetSelector.cpp
         Source/ui/VisualizationComponent.h

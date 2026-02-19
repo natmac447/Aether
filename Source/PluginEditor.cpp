@@ -27,7 +27,13 @@ namespace Layout
 
 //==============================================================================
 AetherEditor::AetherEditor (AetherProcessor& p)
-    : AudioProcessorEditor (&p), processorRef (p), presetSelector (processorRef.apvts)
+    : AudioProcessorEditor (&p), processorRef (p), presetSelector (processorRef.apvts),
+      materialUpArrow (ArrowStepButton::Up, materialCombo),
+      materialDownArrow (ArrowStepButton::Down, materialCombo),
+      shapeUpArrow (ArrowStepButton::Up, reflShapeCombo),
+      shapeDownArrow (ArrowStepButton::Down, reflShapeCombo),
+      presetUpArrow (ArrowStepButton::Up, presetSelector.getComboBox()),
+      presetDownArrow (ArrowStepButton::Down, presetSelector.getComboBox())
 {
     // 1. Set LookAndFeel (NOT setDefaultLookAndFeel -- per Crucible pattern)
     setLookAndFeel (&lookAndFeel);
@@ -110,6 +116,16 @@ AetherEditor::AetherEditor (AetherProcessor& p)
     // 8. Preset selector
     // =========================================================================
     addAndMakeVisible (presetSelector);
+    presetSelector.setMixLockButton (&mixLockButton);
+
+    // 8a. Mix lock + arrow step buttons
+    addAndMakeVisible (mixLockButton);
+    addAndMakeVisible (materialUpArrow);
+    addAndMakeVisible (materialDownArrow);
+    addAndMakeVisible (shapeUpArrow);
+    addAndMakeVisible (shapeDownArrow);
+    addAndMakeVisible (presetUpArrow);
+    addAndMakeVisible (presetDownArrow);
 
     // 8b. Visualization component
     addAndMakeVisible (vizComponent);
@@ -412,8 +428,11 @@ void AetherEditor::resized()
     // =========================================================================
     // Header
     // =========================================================================
-    // Center preset selector in header
-    presetSelector.setBounds ((kWidth - 180) / 2, 10, 180, 22);
+    // Center preset selector in header (220px: ~184 combo + 36 save button)
+    presetSelector.setBounds ((kWidth - 220) / 2, 10, 220, 22);
+    // Preset arrow buttons
+    presetUpArrow.setBounds (presetSelector.getRight() + 2, presetSelector.getY(), 14, 11);
+    presetDownArrow.setBounds (presetSelector.getRight() + 2, presetSelector.getY() + 11, 14, 11);
 
     // =========================================================================
     // Shared layout metrics
@@ -434,6 +453,9 @@ void AetherEditor::resized()
         int knobX = resCtrl.getX() + (resCtrl.getWidth() - knobDia) / 2;
         resWeightKnob.setBounds (knobX, resCtrl.getY(), knobDia, knobH);
         materialCombo.setBounds (resCtrl.getX(), resCtrl.getY() + knobH + 4, resCtrl.getWidth(), 24);
+        // Material arrow buttons
+        materialUpArrow.setBounds (materialCombo.getRight() + 2, materialCombo.getY(), 14, 12);
+        materialDownArrow.setBounds (materialCombo.getRight() + 2, materialCombo.getY() + 12, 14, 12);
 
         // Stage IV: Excitation (y=210, h=115)
         excitSection.setBounds (lx, 210, lw, 115);
@@ -465,6 +487,9 @@ void AetherEditor::resized()
         // Shape dropdown above knobs (below visualization + caption)
         const int shapeY = 350;
         reflShapeCombo.setBounds (cx + 60, shapeY, cw - 120, 24);
+        // Shape arrow buttons
+        shapeUpArrow.setBounds (reflShapeCombo.getRight() + 2, reflShapeCombo.getY(), 14, 12);
+        shapeDownArrow.setBounds (reflShapeCombo.getRight() + 2, reflShapeCombo.getY() + 12, 14, 12);
 
         // Room control knobs centred between dropdown bottom and footer rule
         const int dropdownBottom = shapeY + 24;
@@ -505,5 +530,8 @@ void AetherEditor::resized()
         auto outCtrl = outputSection.getControlArea().translated (rx, 340);
         mixKnob.setBounds (outCtrl.getX(), outCtrl.getY(), twoKnobW, knobH);
         levelKnob.setBounds (outCtrl.getX() + twoKnobW, outCtrl.getY(), twoKnobW, knobH);
+
+        // Mix lock button: top-right corner of mix knob area
+        mixLockButton.setBounds (mixKnob.getRight() - 2, mixKnob.getY() + 2, 20, 20);
     }
 }
