@@ -172,11 +172,11 @@ void AetherLookAndFeel::drawRotarySlider (juce::Graphics& g, int x, int y,
                         highlightR * 2.0f, highlightR * 2.0f, 0.5f);
     }
 
-    // ---- Border: 1.5px Ink Light ellipse stroke ----
+    // ---- Border: 1px Ink Light ellipse stroke ----
     {
         g.setColour (juce::Colour (AetherColours::inkLight));
         g.drawEllipse (centre.x - radius, centre.y - radius,
-                        radius * 2.0f, radius * 2.0f, 1.5f);
+                        radius * 2.0f, radius * 2.0f, 1.0f);
     }
 
     // ---- Indicator line: 1.5px wide, from inner to outer radius ----
@@ -194,7 +194,7 @@ void AetherLookAndFeel::drawRotarySlider (juce::Graphics& g, int x, int y,
         float lineY2 = centre.y - outerR * std::cos (currentAngle);
 
         g.setColour (juce::Colour (AetherColours::ink));
-        g.drawLine (lineX1, lineY1, lineX2, lineY2, 1.5f);
+        g.drawLine (lineX1, lineY1, lineX2, lineY2, 1.0f);
     }
 }
 
@@ -216,34 +216,48 @@ void AetherLookAndFeel::drawButtonBackground (juce::Graphics& g, juce::Button& b
 
     if (isBypass)
     {
-        // Bypass button: outline-only style
-        if (isOn)
-        {
-            // Active (In): Ink Light border at full opacity
-            g.setColour (juce::Colour (AetherColours::inkLight));
-            g.drawRoundedRectangle (bounds, cornerR, 1.0f);
-        }
-        else
-        {
-            // Bypassed (Out): Ink Ghost border at 60% opacity
-            g.setColour (juce::Colour (AetherColours::inkGhost).withAlpha (0.6f));
-            g.drawRoundedRectangle (bounds, cornerR, 1.0f);
-        }
+        // Bypass button: power symbol (circle + top line)
+        auto colour = isOn ? juce::Colour (AetherColours::inkLight)
+                           : juce::Colour (AetherColours::inkGhost).withAlpha (0.6f);
+        g.setColour (colour);
 
-        // Hover: full opacity regardless of state
+        float cx = bounds.getCentreX();
+        float cy = bounds.getCentreY();
+        float radius = juce::jmin (bounds.getWidth(), bounds.getHeight()) * 0.32f;
+
+        // Semi-circle with opening at top: draw arc at origin then rotate 180°
+        juce::Path arc;
+        const float gap = juce::MathConstants<float>::pi * 0.25f;
+        // Original arc has gap at 9 o'clock (left)
+        arc.addArc (-radius, -radius, radius * 2.0f, radius * 2.0f,
+                    -juce::MathConstants<float>::pi + gap,
+                     juce::MathConstants<float>::pi - gap, true);
+        // Rotate 180° to move gap from left (9 o'clock) to top (12 o'clock)
+        arc.applyTransform (juce::AffineTransform::rotation (
+            -juce::MathConstants<float>::pi));
+        // Translate to button centre
+        arc.applyTransform (juce::AffineTransform::translation (cx, cy));
+        g.strokePath (arc, juce::PathStrokeType (0.9f));
+
+        // Vertical line through gap at top of circle
+        float lineLen = radius * 0.75f;
+        g.drawLine (cx, cy - radius - 0.5f, cx, cy - radius + lineLen, 0.9f);
+
+        // Hover highlight
         if (shouldDrawButtonAsHighlighted)
         {
             g.setColour (juce::Colour (AetherColours::inkLight).withAlpha (0.15f));
             g.fillRoundedRectangle (bounds, cornerR);
         }
     }
-    else if (button.getClickingTogglesState())
+    else if (button.getClickingTogglesState()
+             || bool (button.getProperties().getWithDefault ("isToggleOption", false)))
     {
-        // Toggle button (e.g., material selection, air character)
+        // Toggle button (e.g., air character, gate mode)
         if (isOn || shouldDrawButtonAsDown)
         {
-            // Active: Ink fill with 2px corner radius
-            g.setColour (juce::Colour (AetherColours::ink));
+            // Active: warm accent fill (subtler than full ink)
+            g.setColour (juce::Colour (AetherColours::accentWarm));
             g.fillRoundedRectangle (bounds, cornerR);
         }
         else
@@ -298,24 +312,21 @@ void AetherLookAndFeel::drawButtonText (juce::Graphics& g, juce::TextButton& but
 
     if (isBypass)
     {
-        // Bypass buttons: Spectral 7px uppercase with 2px tracking
-        font = getSpectralFont (9.0f);
-        textColour = isOn ? juce::Colour (AetherColours::inkLight)
-                          : juce::Colour (AetherColours::inkGhost);
-        if (! isOn)
-            textColour = textColour.withAlpha (0.6f);
+        // Bypass buttons use symbol drawn in drawButtonBackground -- no text
+        return;
     }
-    else if (button.getClickingTogglesState())
+    else if (button.getClickingTogglesState()
+             || bool (button.getProperties().getWithDefault ("isToggleOption", false)))
     {
         // Toggle buttons
-        font = getSpectralFont (10.0f);
-        textColour = isOn ? juce::Colour (AetherColours::parchment)   // Ink-inverted
+        font = getSpectralFont (12.0f);
+        textColour = isOn ? juce::Colour (AetherColours::parchmentLight)   // Light on warm accent
                           : juce::Colour (AetherColours::inkFaint);
     }
     else
     {
         // Standard buttons
-        font = getSpectralFont (11.0f);
+        font = getSpectralFont (12.0f);
         textColour = juce::Colour (AetherColours::ink);
     }
 
@@ -396,7 +407,7 @@ void AetherLookAndFeel::drawPopupMenuItem (juce::Graphics& g,
     constexpr int tickMargin = 22;
     auto textArea = area.withTrimmedLeft (tickMargin).withTrimmedRight (8);
 
-    g.setFont (getBodyFont (13.0f));
+    g.setFont (getBodyFont (14.0f));
 
     if (isHighlighted && isActive)
     {
@@ -451,10 +462,46 @@ juce::Font AetherLookAndFeel::getTextButtonFont (juce::TextButton& /*button*/, i
 
 juce::Font AetherLookAndFeel::getLabelFont (juce::Label& label)
 {
-    return getBodyFont (juce::jmin (14.0f, static_cast<float> (label.getHeight()) * 0.75f));
+    return getBodyFont (juce::jmin (15.0f, static_cast<float> (label.getHeight()) * 0.8f));
 }
 
 juce::Font AetherLookAndFeel::getPopupMenuFont()
 {
-    return getBodyFont (13.0f);
+    return getBodyFont (14.0f);
+}
+
+//==============================================================================
+// ComboBox: centre text across full width (ignoring arrow button)
+//==============================================================================
+
+void AetherLookAndFeel::positionComboBoxText (juce::ComboBox& box, juce::Label& label)
+{
+    // Place the label across the full width so centred text ignores the arrow
+    label.setBounds (0, 0, box.getWidth(), box.getHeight());
+    label.setJustificationType (juce::Justification::centred);
+    label.setFont (getComboBoxFont (box));
+}
+
+juce::Font AetherLookAndFeel::getComboBoxFont (juce::ComboBox& /*box*/)
+{
+    return getBodyFont (14.0f);
+}
+
+//==============================================================================
+// Constrain popup menus to parent editor bounds
+//==============================================================================
+
+juce::Component* AetherLookAndFeel::getParentComponentForMenuOptions (
+    const juce::PopupMenu::Options& options)
+{
+    // Walk up the component tree to find the top-level parent (the editor)
+    // so popup menus are constrained within the plugin window bounds
+    if (auto* target = options.getTargetComponent())
+    {
+        auto* comp = target;
+        while (comp->getParentComponent() != nullptr)
+            comp = comp->getParentComponent();
+        return comp;
+    }
+    return nullptr;
 }

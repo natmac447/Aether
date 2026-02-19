@@ -75,7 +75,7 @@ void drawCornerBrackets (juce::Graphics& g, juce::Rectangle<int> bounds)
     const float by = static_cast<float> (bounds.getY());
 
     constexpr float inset  = 6.0f;
-    constexpr float length = 20.0f;
+    constexpr float length = 14.0f;
     constexpr float thick  = 1.0f;
 
     g.setColour (juce::Colour (AetherColours::inkGhost));
@@ -162,23 +162,53 @@ void drawSectionLabel (juce::Graphics& g, const juce::String& numeral,
                        const juce::Font& numeralFont, const juce::Font& nameFont)
 {
     const auto labelColour = juce::Colour (AetherColours::inkFaint);
+    const float tracking = 3.0f;
+    const juce::String upperName = name.toUpperCase();
 
     // Measure numeral width
-    juce::GlyphArrangement numeralGlyphs;
-    numeralGlyphs.addLineOfText (numeralFont, numeral, 0.0f, 0.0f);
-    const float numeralWidth = numeralGlyphs.getBoundingBox (0, numeralGlyphs.getNumGlyphs(), true).getWidth();
+    float numeralWidth = 0.0f;
+    if (numeral.isNotEmpty())
+    {
+        juce::GlyphArrangement ng;
+        ng.addLineOfText (numeralFont, numeral, 0.0f, 0.0f);
+        numeralWidth = ng.getBoundingBox (0, ng.getNumGlyphs(), true).getWidth();
+    }
 
-    // Draw numeral (e.g., "I.")
-    g.setColour (labelColour);
-    numeralGlyphs.moveRangeOfGlyphs (0, -1, x, y);
-    numeralGlyphs.draw (g);
+    // Measure tracked name width
+    float nameWidth = 0.0f;
+    if (upperName.isNotEmpty())
+    {
+        juce::GlyphArrangement ng;
+        ng.addLineOfText (nameFont, upperName, 0.0f, 0.0f);
+        for (int i = 0; i < ng.getNumGlyphs(); ++i)
+            ng.moveRangeOfGlyphs (i, 1, static_cast<float> (i) * tracking, 0.0f);
+        nameWidth = ng.getBoundingBox (0, ng.getNumGlyphs(), true).getWidth();
+    }
 
-    // Draw section name with 3px letter spacing, 4px after numeral
-    const float nameX = x + numeralWidth + 4.0f;
-    const float nameWidth = width - numeralWidth - 4.0f;
+    // Total width and gap
+    const float gap = (numeral.isNotEmpty() && upperName.isNotEmpty()) ? 5.0f : 0.0f;
+    const float totalWidth = numeralWidth + gap + nameWidth;
 
-    drawLetterSpacedText (g, name.toUpperCase(), nameX, y, nameWidth, 3.0f,
-                          nameFont, labelColour, juce::Justification::left);
+    // Center within available width
+    const float startX = x + (width - totalWidth) / 2.0f;
+
+    // Draw numeral
+    if (numeral.isNotEmpty())
+    {
+        juce::GlyphArrangement ng;
+        ng.addLineOfText (numeralFont, numeral, 0.0f, 0.0f);
+        ng.moveRangeOfGlyphs (0, -1, startX, y);
+        g.setColour (labelColour);
+        ng.draw (g);
+    }
+
+    // Draw tracked name
+    if (upperName.isNotEmpty())
+    {
+        const float nameX = startX + numeralWidth + gap;
+        drawLetterSpacedText (g, upperName, nameX, y, nameWidth + 10.0f, tracking,
+                              nameFont, labelColour, juce::Justification::left);
+    }
 }
 
 } // namespace ParchmentElements

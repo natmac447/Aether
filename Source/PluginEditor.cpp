@@ -87,6 +87,7 @@ AetherEditor::AetherEditor (AetherProcessor& p)
     materialCombo.setColour (juce::ComboBox::outlineColourId, juce::Colour (AetherColours::inkGhost));
     materialCombo.setColour (juce::ComboBox::backgroundColourId, juce::Colours::transparentBlack);
     materialCombo.setColour (juce::ComboBox::arrowColourId, juce::Colour (AetherColours::inkFaint));
+    materialCombo.setJustificationType (juce::Justification::centred);
     addAndMakeVisible (materialCombo);
 
     reflShapeCombo.addItemList (
@@ -96,6 +97,7 @@ AetherEditor::AetherEditor (AetherProcessor& p)
     reflShapeCombo.setColour (juce::ComboBox::outlineColourId, juce::Colour (AetherColours::inkGhost));
     reflShapeCombo.setColour (juce::ComboBox::backgroundColourId, juce::Colours::transparentBlack);
     reflShapeCombo.setColour (juce::ComboBox::arrowColourId, juce::Colour (AetherColours::inkFaint));
+    reflShapeCombo.setJustificationType (juce::Justification::centred);
     addAndMakeVisible (reflShapeCombo);
 
     // =========================================================================
@@ -199,10 +201,12 @@ AetherEditor::AetherEditor (AetherProcessor& p)
                 knob->setBypassed (isBypassed);
             else if (auto* toggle = dynamic_cast<AetherToggle*> (ctrl))
                 toggle->setBypassed (isBypassed);
+            else
+                ctrl->setAlpha (isBypassed ? 0.35f : 1.0f);
         }
     };
 
-    syncBypass (ParamIDs::resBypass, resSection, { &resWeightKnob });
+    syncBypass (ParamIDs::resBypass, resSection, { &resWeightKnob, &materialCombo });
     syncBypass (ParamIDs::reflBypass, reflSection, { &reflSizeKnob, &reflProxKnob, &reflWidthKnob });
     syncBypass (ParamIDs::airBypass, airSection, { &airAmountKnob, &airCharToggle });
     syncBypass (ParamIDs::excitBypass, excitSection, { &excitDriveKnob });
@@ -240,6 +244,7 @@ void AetherEditor::parameterChanged (const juce::String& parameterID, float newV
         {
             resSection.setBypassed (isBypassed);
             resWeightKnob.setBypassed (isBypassed);
+            materialCombo.setAlpha (isBypassed ? 0.35f : 1.0f);
         }
         else if (parameterID == ParamIDs::reflBypass)
         {
@@ -283,72 +288,86 @@ void AetherEditor::paint (juce::Graphics& g)
     // 2. Corner brackets
     ParchmentElements::drawCornerBrackets (g, getLocalBounds());
 
-    // 3. Header zone (0-50px)
+    // 3. Header zone (0-40px)
     {
-        // "AETHER" title
+        // "AETHER" title centred over left column
         ParchmentElements::drawLetterSpacedText (
-            g, "AETHER", 30.0f, 28.0f, 200.0f, 6.0f,
-            lookAndFeel.getDisplayFont (32.0f),
+            g, "AETHER", 0.0f, 26.0f,
+            static_cast<float> (Layout::kLeftPanelWidth), 6.0f,
+            lookAndFeel.getDisplayFont (30.0f),
             juce::Colour (AetherColours::ink),
-            juce::Justification::left);
-
-        // "Environment Simulator" subtitle
-        ParchmentElements::drawLetterSpacedText (
-            g, "Environment Simulator", 30.0f, 44.0f, 200.0f, 2.0f,
-            lookAndFeel.getSpectralFontItalic (11.0f),
-            juce::Colour (AetherColours::inkFaint),
-            juce::Justification::left);
-
-        // "COSMOS SERIES" mark at right
-        ParchmentElements::drawLetterSpacedText (
-            g, "COSMOS SERIES", 0.0f, 34.0f, 880.0f, 2.0f,
-            lookAndFeel.getSpectralFont (10.0f),
-            juce::Colour (AetherColours::inkFaint),
-            juce::Justification::right);
+            juce::Justification::horizontallyCentred);
     }
 
     // 4. Header double-rule border
-    ParchmentElements::drawDoubleRule (g, 50.0f, 0.0f, 900.0f, true);
+    ParchmentElements::drawDoubleRule (g, 40.0f, 0.0f, 900.0f, true);
 
-    // 5. Footer zone (490-530px)
+    // 5. Footer zone (500-530px)
     {
         // Footer double-rule border
-        ParchmentElements::drawDoubleRule (g, 490.0f, 0.0f, 900.0f, false);
+        ParchmentElements::drawDoubleRule (g, 500.0f, 0.0f, 900.0f, false);
 
-        // "Aether v0.1.0" at left
+        // Version at left
         ParchmentElements::drawLetterSpacedText (
-            g, "AETHER V0.1.0", 30.0f, 510.0f, 200.0f, 2.0f,
-            lookAndFeel.getSpectralFont (9.0f),
+            g, "V0.1.0", 30.0f, 518.0f, 200.0f, 2.0f,
+            lookAndFeel.getSpectralFont (10.0f),
             juce::Colour (AetherColours::inkFaint),
             juce::Justification::left);
 
-        // Tagline centred
-        ParchmentElements::drawLetterSpacedText (
-            g, "THE INVISIBLE MEDIUM THROUGH WHICH ALL SOUND PROPAGATES.",
-            0.0f, 510.0f, 900.0f, 1.0f,
-            lookAndFeel.getSpectralFontItalic (9.0f),
-            juce::Colour (AetherColours::inkFaint),
-            juce::Justification::horizontallyCentred);
+        // Cairn maker's mark centred: triangle icon + "CAIRN" side by side
+        {
+            const auto markColour = juce::Colour (AetherColours::inkFaint);
+            const float baseY = 518.0f;
 
-        // "CAIRN" mark at right
-        ParchmentElements::drawLetterSpacedText (
-            g, "CAIRN", 0.0f, 510.0f, 870.0f, 2.0f,
-            lookAndFeel.getSpectralFont (9.0f),
-            juce::Colour (AetherColours::inkFaint),
-            juce::Justification::right);
+            // Measure "CAIRN" text width for centering the pair
+            const float textWidth = 42.0f;
+            const float triH = 9.0f;
+            const float triW = triH * 1.15f;
+            const float gap = 6.0f;
+            const float totalW = triW + gap + textWidth;
+            const float startX = (900.0f - totalW) / 2.0f;
+
+            // Triangle icon (vertically centered with text baseline)
+            const float triCentreX = startX + triW / 2.0f;
+            const float triTop = baseY - triH + 1.0f;
+
+            juce::Path triangle;
+            triangle.startNewSubPath (triCentreX, triTop);
+            triangle.lineTo (triCentreX + triW / 2.0f, triTop + triH);
+            triangle.lineTo (triCentreX - triW / 2.0f, triTop + triH);
+            triangle.closeSubPath();
+
+            g.setColour (markColour);
+            g.strokePath (triangle, juce::PathStrokeType (0.8f, juce::PathStrokeType::mitered));
+
+            // Bisecting line at ~62% height
+            const float lineY = triTop + triH * 0.62f;
+            const float extend = triW * 0.15f;
+            g.setColour (markColour.withAlpha (0.5f));
+            g.drawLine (triCentreX - triW / 2.0f - extend, lineY,
+                        triCentreX + triW / 2.0f + extend, lineY, 0.5f);
+
+            // "CAIRN" wordmark to the right of triangle
+            const float textX = startX + triW + gap;
+            ParchmentElements::drawLetterSpacedText (
+                g, "CAIRN", textX, baseY, textWidth + 10.0f, 3.0f,
+                lookAndFeel.getDisplayFont (10.0f),
+                markColour,
+                juce::Justification::left);
+        }
     }
 
     // 6. Column dividers: 1px Ink Ghost vertical lines
     g.setColour (juce::Colour (AetherColours::inkGhost));
-    g.drawLine (220.0f, 53.0f, 220.0f, 487.0f, 1.0f);
-    g.drawLine (680.0f, 53.0f, 680.0f, 487.0f, 1.0f);
+    g.drawLine (220.0f, 43.0f, 220.0f, 497.0f, 1.0f);
+    g.drawLine (680.0f, 43.0f, 680.0f, 497.0f, 1.0f);
 
     // 7. Diamond dividers between left panel sections
     {
         float leftX = static_cast<float> (Layout::kSidePadding);
         float rightX = static_cast<float> (Layout::kLeftPanelWidth - Layout::kSidePadding);
         ParchmentElements::drawDiamondDivider (g, 200.0f, leftX, rightX);
-        ParchmentElements::drawDiamondDivider (g, 320.0f, leftX, rightX);
+        ParchmentElements::drawDiamondDivider (g, 330.0f, leftX, rightX);
     }
 
     // 8. Diamond dividers between right panel sections
@@ -356,19 +375,19 @@ void AetherEditor::paint (juce::Graphics& g)
         float leftX = static_cast<float> (Layout::kRightX + Layout::kSidePadding);
         float rightX = static_cast<float> (Layout::kRightX + Layout::kRightPanelWidth - Layout::kSidePadding);
         ParchmentElements::drawDiamondDivider (g, 200.0f, leftX, rightX);
-        ParchmentElements::drawDiamondDivider (g, 410.0f, leftX, rightX);
+        ParchmentElements::drawDiamondDivider (g, 330.0f, leftX, rightX);
     }
 
     // 9. Center panel: Visualization placeholder
     {
-        auto vizBounds = juce::Rectangle<int> (280, 80, 340, 300);
+        auto vizBounds = juce::Rectangle<int> (280, 68, 340, 260);
         g.setColour (juce::Colour (AetherColours::parchmentDark));
         g.drawRect (vizBounds, 1);
 
         // "Fig. 1" caption below visualization
         ParchmentElements::drawLetterSpacedText (
-            g, "Fig. 1", 280.0f, 392.0f, 340.0f, 2.0f,
-            lookAndFeel.getSpectralFontItalic (9.0f),
+            g, "Fig. 1", 280.0f, 340.0f, 340.0f, 2.0f,
+            lookAndFeel.getSpectralFontItalic (10.0f),
             juce::Colour (AetherColours::inkFaint),
             juce::Justification::horizontallyCentred);
     }
@@ -382,7 +401,14 @@ void AetherEditor::resized()
     // =========================================================================
     // Header
     // =========================================================================
-    presetSelector.setBounds (500, 16, 160, 24);
+    // Center preset selector in header
+    presetSelector.setBounds ((kWidth - 180) / 2, 10, 180, 22);
+
+    // =========================================================================
+    // Shared layout metrics
+    // =========================================================================
+    const int knobH = 89;   // 56px knob + 2+14+1+16 label/value
+    const int knobDia = 56;
 
     // =========================================================================
     // Left panel: Stages I, IV, V
@@ -391,26 +417,25 @@ void AetherEditor::resized()
         const int lx = kSidePadding;
         const int lw = kLeftPanelWidth - 2 * kSidePadding;
 
-        // Stage I: Resonance (y=55, ~134px)
-        resSection.setBounds (lx, 55, lw, 140);
-        auto resCtrl = resSection.getControlArea().translated (lx, 55);
-        int knobW = 90;  // 56px knob + 34px label/value
-        int knobX = resCtrl.getX() + (resCtrl.getWidth() - 56) / 2;
-        resWeightKnob.setBounds (knobX, resCtrl.getY(), 56, knobW);
-        materialCombo.setBounds (resCtrl.getX(), resCtrl.getY() + 95, resCtrl.getWidth(), 24);
+        // Stage I: Resonance (y=46, h=148)
+        resSection.setBounds (lx, 46, lw, 148);
+        auto resCtrl = resSection.getControlArea().translated (lx, 46);
+        int knobX = resCtrl.getX() + (resCtrl.getWidth() - knobDia) / 2;
+        resWeightKnob.setBounds (knobX, resCtrl.getY(), knobDia, knobH);
+        materialCombo.setBounds (resCtrl.getX(), resCtrl.getY() + knobH + 4, resCtrl.getWidth(), 24);
 
-        // Stage IV: Excitation (y=210, ~110px)
-        excitSection.setBounds (lx, 210, lw, 100);
+        // Stage IV: Excitation (y=210, h=115)
+        excitSection.setBounds (lx, 210, lw, 115);
         auto excitCtrl = excitSection.getControlArea().translated (lx, 210);
-        knobX = excitCtrl.getX() + (excitCtrl.getWidth() - 56) / 2;
-        excitDriveKnob.setBounds (knobX, excitCtrl.getY(), 56, knobW);
+        knobX = excitCtrl.getX() + (excitCtrl.getWidth() - knobDia) / 2;
+        excitDriveKnob.setBounds (knobX, excitCtrl.getY(), knobDia, knobH);
 
-        // Stage V: Room Tone (y=330, ~134px)
-        toneSection.setBounds (lx, 330, lw, 150);
-        auto toneCtrl = toneSection.getControlArea().translated (lx, 330);
-        knobX = toneCtrl.getX() + (toneCtrl.getWidth() - 56) / 2;
-        toneAmbKnob.setBounds (knobX, toneCtrl.getY(), 56, knobW);
-        toneGateToggle.setBounds (toneCtrl.getX(), toneCtrl.getY() + 95, toneCtrl.getWidth(), 24);
+        // Stage V: Room Tone (y=340, h=140)
+        toneSection.setBounds (lx, 340, lw, 140);
+        auto toneCtrl = toneSection.getControlArea().translated (lx, 340);
+        knobX = toneCtrl.getX() + (toneCtrl.getWidth() - knobDia) / 2;
+        toneAmbKnob.setBounds (knobX, toneCtrl.getY(), knobDia, knobH);
+        toneGateToggle.setBounds (toneCtrl.getX(), toneCtrl.getY() + knobH + 4, toneCtrl.getWidth(), 20);
     }
 
     // =========================================================================
@@ -421,21 +446,23 @@ void AetherEditor::resized()
         const int cw = kCenterWidth - 2 * kCenterPadding;
 
         // Section label at top
-        reflSection.setBounds (cx, 55, cw, 24);
+        reflSection.setBounds (cx, 46, cw, 24);
 
-        // Room control knobs below visualization (y=410)
-        const int knobRowY = 410;
-        const int largeKnobH = 98;  // 64px knob + 34px label/value
-        const int knobSpacing = 10;
-        const int totalKnobsW = 3 * 64 + 2 * knobSpacing;
+        // Shape dropdown above knobs (below visualization + caption)
+        const int shapeY = 350;
+        reflShapeCombo.setBounds (cx + 60, shapeY, cw - 120, 24);
+
+        // Room control knobs centred between dropdown bottom and footer rule
+        const int dropdownBottom = shapeY + 24;
+        const int knobRowY = dropdownBottom + (500 - dropdownBottom - knobH) / 2;
+        const int knobW = 80;
+        const int knobSpacing = 30;
+        const int totalKnobsW = 3 * knobW + 2 * knobSpacing;
         const int knobStartX = cx + (cw - totalKnobsW) / 2;
 
-        reflSizeKnob.setBounds (knobStartX, knobRowY, 64, largeKnobH);
-        reflProxKnob.setBounds (knobStartX + 64 + knobSpacing, knobRowY, 64, largeKnobH);
-        reflWidthKnob.setBounds (knobStartX + 2 * (64 + knobSpacing), knobRowY, 64, largeKnobH);
-
-        // Shape dropdown below knobs (full width)
-        reflShapeCombo.setBounds (cx + 40, knobRowY + largeKnobH + 2, cw - 80, 24);
+        reflSizeKnob.setBounds (knobStartX, knobRowY, knobW, knobH);
+        reflProxKnob.setBounds (knobStartX + knobW + knobSpacing, knobRowY, knobW, knobH);
+        reflWidthKnob.setBounds (knobStartX + 2 * (knobW + knobSpacing), knobRowY, knobW, knobH);
     }
 
     // =========================================================================
@@ -445,31 +472,24 @@ void AetherEditor::resized()
         const int rx = kRightX + kSidePadding;
         const int rw = kRightPanelWidth - 2 * kSidePadding;
 
-        // Stage III: Air (y=55, ~134px)
-        airSection.setBounds (rx, 55, rw, 140);
-        auto airCtrl = airSection.getControlArea().translated (rx, 55);
-        int knobW = 90;
-        int knobX = airCtrl.getX() + (airCtrl.getWidth() - 56) / 2;
-        airAmountKnob.setBounds (knobX, airCtrl.getY(), 56, knobW);
-        airCharToggle.setBounds (airCtrl.getX(), airCtrl.getY() + 95, airCtrl.getWidth(), 24);
+        // Stage III: Air (y=46, h=148)
+        airSection.setBounds (rx, 46, rw, 148);
+        auto airCtrl = airSection.getControlArea().translated (rx, 46);
+        int knobX = airCtrl.getX() + (airCtrl.getWidth() - knobDia) / 2;
+        airAmountKnob.setBounds (knobX, airCtrl.getY(), knobDia, knobH);
+        airCharToggle.setBounds (airCtrl.getX(), airCtrl.getY() + knobH + 4, airCtrl.getWidth(), 20);
 
-        // Stage VI: Diffuse Tail (y=218, ~180px)
-        tailSection.setBounds (rx, 218, rw, 180);
-        auto tailCtrl = tailSection.getControlArea().translated (rx, 218);
-        // Two knobs side by side
-        int twoKnobW = 80;  // Slightly compressed to fit 188px panel
-        int twoKnobGap = rw - 2 * twoKnobW;
-        int tailKnob1X = tailCtrl.getX();
-        int tailKnob2X = tailCtrl.getX() + twoKnobW + twoKnobGap;
-        tailDecayKnob.setBounds (tailKnob1X, tailCtrl.getY(), twoKnobW, knobW);
-        tailDiffKnob.setBounds (tailKnob2X, tailCtrl.getY(), twoKnobW, knobW);
+        // Stage VI: Diffuse Tail (y=210, h=115)
+        tailSection.setBounds (rx, 210, rw, 115);
+        auto tailCtrl = tailSection.getControlArea().translated (rx, 210);
+        int twoKnobW = rw / 2;
+        tailDecayKnob.setBounds (tailCtrl.getX(), tailCtrl.getY(), twoKnobW, knobH);
+        tailDiffKnob.setBounds (tailCtrl.getX() + twoKnobW, tailCtrl.getY(), twoKnobW, knobH);
 
-        // Output (y=420, ~68px -- compact, no bypass)
-        outputSection.setBounds (rx, 420, rw, 68);
-        auto outCtrl = outputSection.getControlArea().translated (rx, 420);
-        int outKnob1X = outCtrl.getX();
-        int outKnob2X = outCtrl.getX() + twoKnobW + twoKnobGap;
-        mixKnob.setBounds (outKnob1X, outCtrl.getY(), twoKnobW, 56);
-        levelKnob.setBounds (outKnob2X, outCtrl.getY(), twoKnobW, 56);
+        // Output (y=340, h=140 -- enough room for knobs)
+        outputSection.setBounds (rx, 340, rw, 140);
+        auto outCtrl = outputSection.getControlArea().translated (rx, 340);
+        mixKnob.setBounds (outCtrl.getX(), outCtrl.getY(), twoKnobW, knobH);
+        levelKnob.setBounds (outCtrl.getX() + twoKnobW, outCtrl.getY(), twoKnobW, knobH);
     }
 }

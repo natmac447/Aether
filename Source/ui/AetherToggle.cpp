@@ -11,6 +11,7 @@ AetherToggle::AetherToggle (const juce::StringArray& options)
     {
         auto* btn = buttons.add (new juce::TextButton (options[i]));
         btn->setClickingTogglesState (false);
+        btn->getProperties().set ("isToggleOption", true);
 
         // Each button click sets the hidden ComboBox index
         btn->onClick = [this, i]
@@ -56,7 +57,7 @@ void AetherToggle::setBypassed (bool shouldBeBypassed)
     if (bypassed != shouldBeBypassed)
     {
         bypassed = shouldBeBypassed;
-        repaint();
+        setAlpha (bypassed ? 0.35f : 1.0f);
     }
 }
 
@@ -72,14 +73,9 @@ void AetherToggle::paint (juce::Graphics& g)
     g.drawRoundedRectangle (bounds, 2.0f, 1.0f);
 }
 
-void AetherToggle::paintOverChildren (juce::Graphics& g)
+void AetherToggle::paintOverChildren (juce::Graphics& /*g*/)
 {
-    // Bypassed overlay: translucent Parchment at 40% opacity
-    if (bypassed)
-    {
-        g.setColour (juce::Colour (AetherColours::parchment).withAlpha (0.4f));
-        g.fillRoundedRectangle (getLocalBounds().toFloat(), 2.0f);
-    }
+    // Bypassed state handled by setAlpha() -- no overlay needed
 }
 
 void AetherToggle::resized()

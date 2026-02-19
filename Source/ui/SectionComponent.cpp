@@ -36,26 +36,24 @@ void SectionComponent::paint (juce::Graphics& g)
     // Draw section label using ParchmentElements
     auto* laf = dynamic_cast<AetherLookAndFeel*> (&getLookAndFeel());
 
-    juce::Font numeralFont (juce::FontOptions ("Georgia", 13.0f, juce::Font::italic));
-    juce::Font nameFont (juce::FontOptions ("Georgia", 9.0f, juce::Font::plain));
+    juce::Font numeralFont (juce::FontOptions ("Georgia", 12.0f, juce::Font::italic));
+    juce::Font nameFont (juce::FontOptions ("Georgia", 13.0f, juce::Font::plain));
 
     if (laf != nullptr)
     {
-        numeralFont = laf->getDisplayFontItalic (13.0f);
-        nameFont = laf->getSpectralFont (9.0f);
+        numeralFont = laf->getDisplayFontItalic (12.0f);
+        nameFont = laf->getSpectralFont (13.0f);
     }
+
+    // Center label over full width (bypass button overlaps but titles look better centred)
+    float availWidth = static_cast<float> (getWidth());
 
     ParchmentElements::drawSectionLabel (g, sectionNumeral, sectionName,
                                           0.0f, 14.0f, // x, y (baseline)
-                                          static_cast<float> (getWidth()),
+                                          availWidth,
                                           numeralFont, nameFont);
 
-    // Bypassed overlay: 40% parchment over control area (below label row)
-    if (bypassed && ! controlArea.isEmpty())
-    {
-        g.setColour (juce::Colour (AetherColours::parchment).withAlpha (0.4f));
-        g.fillRect (controlArea);
-    }
+    // Bypassed state is handled by reducing child component alpha (no overlay)
 }
 
 void SectionComponent::resized()
@@ -68,7 +66,7 @@ void SectionComponent::resized()
     // Position bypass button right-aligned in label row
     if (hasbypassButton)
     {
-        bypassButton.setBounds (labelRow.removeFromRight (30).reduced (0, 2));
+        bypassButton.setBounds (labelRow.removeFromRight (16).reduced (0, 5));
     }
 
     // Remaining area is the control area

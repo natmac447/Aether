@@ -56,7 +56,7 @@ private:
 
     juce::Rectangle<int> controlArea;
 
-    static constexpr int kLabelRowHeight = 20;
+    static constexpr int kLabelRowHeight = 26;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SectionComponent)
 };

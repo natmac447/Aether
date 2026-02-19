@@ -70,6 +70,15 @@ public:
     juce::Font getLabelFont (juce::Label& label) override;
     juce::Font getPopupMenuFont() override;
 
+    //==========================================================================
+    // ComboBox: centre text across the full width (ignore arrow button)
+    void positionComboBoxText (juce::ComboBox& box, juce::Label& label) override;
+    juce::Font getComboBoxFont (juce::ComboBox& box) override;
+
+    //==========================================================================
+    // Constrain popup menus to parent editor bounds
+    juce::Component* getParentComponentForMenuOptions (const juce::PopupMenu::Options& options) override;
+
 private:
     // Embedded font typefaces
     juce::Typeface::Ptr displayTypeface;        // Cormorant Garamond Regular

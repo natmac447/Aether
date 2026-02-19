@@ -50,38 +50,38 @@ private:
 
     //==========================================================================
     // Stage I: Resonance (left panel)
-    SectionComponent resSection { "I.", "Cabinet Resonance" };
+    SectionComponent resSection { "", "Cabinet Resonance" };
     AetherKnob       resWeightKnob { "Body", 56 };
     juce::ComboBox   materialCombo;
 
     // Stage II: Early Reflections (center panel)
-    SectionComponent reflSection { "II.", "Early Reflections" };
-    AetherKnob       reflSizeKnob { "Room Size", 64 };
-    AetherKnob       reflProxKnob { "Proximity", 64 };
-    AetherKnob       reflWidthKnob { "Width", 64 };
+    SectionComponent reflSection { "", "Early Reflections" };
+    AetherKnob       reflSizeKnob { "Room Size", 56 };
+    AetherKnob       reflProxKnob { "Proximity", 56 };
+    AetherKnob       reflWidthKnob { "Width", 56 };
     juce::ComboBox   reflShapeCombo;
 
     // Stage III: Air & Distance (right panel)
-    SectionComponent airSection { "III.", "Air & Distance" };
+    SectionComponent airSection { "", "Air & Distance" };
     AetherKnob       airAmountKnob { "Air", 56 };
     AetherToggle     airCharToggle { juce::StringArray { "Warm", "Neutral", "Cold" } };
 
     // Stage IV: Excitation (left panel)
-    SectionComponent excitSection { "IV.", "Excitation" };
+    SectionComponent excitSection { "", "Excitation" };
     AetherKnob       excitDriveKnob { "Drive", 56 };
 
     // Stage V: Room Tone (left panel)
-    SectionComponent toneSection { "V.", "Room Tone" };
+    SectionComponent toneSection { "", "Room Tone" };
     AetherKnob       toneAmbKnob { "Ambience", 56 };
     AetherToggle     toneGateToggle { juce::StringArray { "Always", "Gated", "Transport" } };
 
     // Stage VI: Diffuse Tail (right panel)
-    SectionComponent tailSection { "VI.", "Diffuse Tail" };
+    SectionComponent tailSection { "", "Diffuse Tail" };
     AetherKnob       tailDecayKnob { "Decay", 56 };
     AetherKnob       tailDiffKnob { "Diffusion", 56 };
 
     // Output (right panel, no bypass)
-    SectionComponent outputSection { "Out", "Output", false };
+    SectionComponent outputSection { "", "Output", false };
     AetherKnob       mixKnob { "Mix", 56 };
     AetherKnob       levelKnob { "Level", 56 };
 

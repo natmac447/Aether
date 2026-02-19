@@ -3,7 +3,7 @@
 
 //==============================================================================
 AetherBypassButton::AetherBypassButton()
-    : juce::TextButton ("IN")
+    : juce::TextButton ("")
 {
     setClickingTogglesState (true);
 
@@ -36,12 +36,6 @@ void AetherBypassButton::attachToParameter (juce::AudioProcessorValueTreeState& 
 
 void AetherBypassButton::updateText()
 {
-    // Bypass parameter: true = bypassed, false = active
-    // ButtonAttachment: getToggleState() reflects the parameter value
-    // Toggle ON (true) = bypassed = "OUT"
-    // Toggle OFF (false) = active = "IN"
-    if (getToggleState())
-        setButtonText ("OUT");
-    else
-        setButtonText ("IN");
+    // No text -- symbol is drawn by LookAndFeel
+    setButtonText ("");
 }

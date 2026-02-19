@@ -22,12 +22,10 @@ AetherKnob::AetherKnob (const juce::String& name, int knobSize,
     slider.setScrollWheelEnabled (true);
     slider.setDoubleClickReturnValue (true, 0.5f);  // Updated per-param by attachToParameter
 
-    // ---- Drag sensitivity (LOCKED DECISION: ~300px for full sweep) ----
-    // Velocity mode with sensitivity 0.5 = user needs ~double default pixels (~300px)
-    // Shift key activates fine mode (10x slower) via JUCE's built-in handling
-    slider.setVelocityBasedMode (true);
-    slider.setVelocityModeParameters (0.5, 1, 0.0, true,
-                                       juce::ModifierKeys::shiftModifier);
+    // ---- Drag sensitivity (matched to Crucible: direct linear response) ----
+    // Velocity mode disabled for consistent, responsive feel.
+    // Shift-drag fine control still works via JUCE's built-in handling.
+    slider.setVelocityBasedMode (false);
     slider.setSliderSnapsToMousePosition (false);
 
     // Make the slider invisible -- all rendering happens in paint()
@@ -42,8 +40,8 @@ AetherKnob::AetherKnob (const juce::String& name, int knobSize,
     // =========================================================================
     // Value display label
     // =========================================================================
-    // Style: EB Garamond 11px italic, Ink Faint, centred
-    valueLabel.setFont (juce::Font (juce::FontOptions ("Georgia", 11.0f, juce::Font::italic)));
+    // Style: EB Garamond 13px italic, Ink Faint, centred
+    valueLabel.setFont (juce::Font (juce::FontOptions ("Georgia", 13.0f, juce::Font::italic)));
     valueLabel.setColour (juce::Label::textColourId, juce::Colour (AetherColours::inkFaint));
     valueLabel.setJustificationType (juce::Justification::centred);
 
@@ -70,9 +68,16 @@ void AetherKnob::attachToParameter (juce::AudioProcessorValueTreeState& apvts,
     attachedAPVTS = &apvts;
     attachedParamID = paramID;
 
+    // Re-register our listener AFTER the attachment so that the attachment's
+    // sliderValueChanged runs first (updating the parameter) before ours reads
+    // the parameter's text. Without this, our listener fires with stale param values.
+    slider.removeListener (this);
+
     // Create the attachment (syncs slider range and value)
     attachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (
         apvts, paramID, slider);
+
+    slider.addListener (this);
 
     // Read parameter's default value for double-click reset
     if (auto* param = apvts.getParameter (paramID))
@@ -88,16 +93,16 @@ void AetherKnob::attachToParameter (juce::AudioProcessorValueTreeState& apvts,
 
     // Update the value label font from the LookAndFeel if available
     if (auto* laf = dynamic_cast<AetherLookAndFeel*> (&getLookAndFeel()))
-        valueLabel.setFont (laf->getBodyFontItalic (11.0f));
+        valueLabel.setFont (laf->getBodyFontItalic (13.0f));
 
-    // Initialise display state
-    float norm = static_cast<float> (slider.proportionOfLengthToValue (slider.getValue()));
-    // Simpler: use the normalised position
-    if (auto* param = apvts.getParameter (paramID))
+    // Initialise display state from slider's linear proportion (matches drawRotarySlider)
     {
-        float currentNorm = param->getValue();
-        displayValue = currentNorm;
-        targetValue  = currentNorm;
+        auto range = slider.getRange();
+        float initProportion = 0.5f;
+        if (range.getLength() > 0.0)
+            initProportion = static_cast<float> ((slider.getValue() - range.getStart()) / range.getLength());
+        displayValue = initProportion;
+        targetValue  = initProportion;
     }
 
     updateValueLabel();
@@ -124,7 +129,7 @@ void AetherKnob::setBypassed (bool shouldBeBypassed)
     if (bypassed != shouldBeBypassed)
     {
         bypassed = shouldBeBypassed;
-        repaint();
+        setAlpha (bypassed ? 0.35f : 1.0f);
     }
 }
 
@@ -156,29 +161,21 @@ void AetherKnob::paint (juce::Graphics& g)
 
     // ---- Draw the knob name label with letter spacing ----
     {
-        int nameY = knobDiameter + 6;
-        int nameHeight = 12;
+        int nameY = knobDiameter + 2;
+        int nameHeight = 14;
         auto nameArea = juce::Rectangle<float> (0.0f, static_cast<float> (nameY),
                                                   static_cast<float> (componentWidth),
                                                   static_cast<float> (nameHeight));
 
-        juce::Font nameFont (juce::FontOptions ("Georgia", 9.0f, juce::Font::plain));
+        juce::Font nameFont (juce::FontOptions ("Georgia", 11.0f, juce::Font::plain));
         if (auto* laf = dynamic_cast<AetherLookAndFeel*> (&getLookAndFeel()))
-            nameFont = laf->getSpectralFont (9.0f);
+            nameFont = laf->getSpectralFont (11.0f);
 
         g.setColour (juce::Colour (AetherColours::inkLight));
         drawSpacedLabel (g, knobName.toUpperCase(), nameArea, nameFont, 2.0f);
     }
 
-    // ---- Bypassed overlay (LOCKED DECISION: 40% parchment overlay, controls interactive) ----
-    if (bypassed)
-    {
-        g.setColour (juce::Colour (AetherColours::parchment).withAlpha (0.4f));
-        int knobX = (componentWidth - knobDiameter) / 2;
-        g.fillEllipse (static_cast<float> (knobX), 0.0f,
-                        static_cast<float> (knobDiameter),
-                        static_cast<float> (knobDiameter));
-    }
+    // Bypassed state handled by setAlpha() -- no overlay needed
 }
 
 void AetherKnob::resized()
@@ -191,9 +188,9 @@ void AetherKnob::resized()
     slider.setBounds (knobX, 0, knobDiameter, knobDiameter);
 
     // Value label below the name label
-    // Layout: knobDiameter + 6px gap + 12px name + 2px gap + 14px value
-    int valueLabelY = knobDiameter + 6 + 12 + 2;
-    valueLabel.setBounds (0, valueLabelY, componentWidth, 14);
+    // Layout: knobDiameter + 2px gap + 14px name + 1px gap + 16px value
+    int valueLabelY = knobDiameter + 2 + 14 + 1;
+    valueLabel.setBounds (0, valueLabelY, componentWidth, 16);
 }
 
 //==============================================================================
@@ -202,22 +199,17 @@ void AetherKnob::resized()
 
 void AetherKnob::sliderValueChanged (juce::Slider* /*s*/)
 {
-    // Calculate normalised position (0-1)
-    float newNorm = 0.5f;
-    if (attachedAPVTS != nullptr && attachedParamID.isNotEmpty())
-    {
-        if (auto* param = attachedAPVTS->getParameter (attachedParamID))
-            newNorm = param->getValue();
-    }
-    else
-    {
-        // Fallback: compute from slider range
-        auto range = slider.getRange();
-        if (range.getLength() > 0.0)
-            newNorm = static_cast<float> ((slider.getValue() - range.getStart()) / range.getLength());
-    }
+    // Calculate the slider's linear proportion (0-1) for visual rendering.
+    // We must use the raw slider proportion, NOT param->getValue(), because
+    // param->getValue() applies the NormalisableRange skew transform, which
+    // would make the visual indicator position not match the mouse interaction
+    // for skewed parameters (e.g., Room Size skew=0.4, Decay skew=0.3).
+    auto range = slider.getRange();
+    float newProportion = 0.5f;
+    if (range.getLength() > 0.0)
+        newProportion = static_cast<float> ((slider.getValue() - range.getStart()) / range.getLength());
 
-    targetValue = newNorm;
+    targetValue = newProportion;
 
     if (isDragging || std::abs (targetValue - displayValue) < 0.05f)
     {
