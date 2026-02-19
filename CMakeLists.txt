@@ -105,6 +105,8 @@ target_sources(Aether
         Source/ui/AetherLookAndFeel.cpp
         Source/ui/ParchmentElements.h
         Source/ui/ParchmentElements.cpp
+        Source/ui/AetherKnob.h
+        Source/ui/AetherKnob.cpp
 )
 
 target_compile_definitions(Aether
