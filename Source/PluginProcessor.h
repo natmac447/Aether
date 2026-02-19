@@ -41,6 +41,10 @@ public:
 
     juce::AudioProcessorValueTreeState apvts;
 
+    /** RMS level bridge for visualization breathing boost.
+     *  Written by processBlock (compare-and-swap peak), read by GUI via exchange(0.0f). */
+    std::atomic<float> visualizationRmsLevel { 0.0f };
+
 private:
     // Read cached atomic params and push to DSP sections
     void updateStageParams();

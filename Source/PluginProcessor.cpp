@@ -135,6 +135,20 @@ void AetherProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Midi
 
     // OUT-02: Output level trim
     outputSection.process (buffer, outLevelParam->load());
+
+    // RMS level for visualization breathing boost
+    {
+        float rms = buffer.getRMSLevel (0, 0, buffer.getNumSamples());
+        if (getTotalNumInputChannels() > 1)
+            rms = std::max (rms, buffer.getRMSLevel (1, 0, buffer.getNumSamples()));
+
+        // Keep peak since last GUI read (compare-and-swap)
+        float expected = visualizationRmsLevel.load (std::memory_order_relaxed);
+        while (rms > expected &&
+               !visualizationRmsLevel.compare_exchange_weak (expected, rms,
+                   std::memory_order_relaxed))
+        {}
+    }
 }
 
 void AetherProcessor::updateStageParams()
