@@ -78,16 +78,16 @@ Requirements for initial release. Each maps to roadmap phases.
 ### User Interface
 
 - [ ] **UI-01**: Plugin window is 900x530px with three-column layout (220px | flex | 220px)
-- [ ] **UI-02**: Parchment background (#f0e6d3) with subtle paper texture and edge vignette
+- [x] **UI-02**: Parchment background (#f0e6d3) with subtle paper texture and edge vignette
 - [x] **UI-03**: Custom knob components: 56px standard, 64px for center room controls, parchment gradient body with ink indicator
 - [ ] **UI-04**: Custom toggle switches with ink-inverted active state (Open/Closed/Combo, Warm/Neutral)
 - [ ] **UI-05**: Custom bypass buttons per section (In/Out states with opacity changes)
 - [ ] **UI-06**: Section labels with Roman numerals (I. through VI.) in Spectral font
-- [ ] **UI-07**: Diamond ornament dividers between sections in side panels
-- [ ] **UI-08**: Corner L-shaped ornaments at plugin frame corners
+- [x] **UI-07**: Diamond ornament dividers between sections in side panels
+- [x] **UI-08**: Corner L-shaped ornaments at plugin frame corners
 - [ ] **UI-09**: Header zone with "AETHER" title, "Environment Simulator" subtitle, preset selector, and "Cosmos Series" mark
 - [ ] **UI-10**: Footer zone with version, tagline, and brand mark
-- [ ] **UI-11**: Double-rule header/footer borders (Victorian publication style)
+- [x] **UI-11**: Double-rule header/footer borders (Victorian publication style)
 - [x] **UI-12**: Custom typography embedded: Cormorant Garamond, EB Garamond, Spectral (fallback to Georgia)
 
 ### Visualization
@@ -202,16 +202,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ENG-05 | Phase 1 | Complete |
 | ENG-06 | Phase 1 | Complete |
 | UI-01 | Phase 6 | Pending |
-| UI-02 | Phase 6 | Pending |
+| UI-02 | Phase 6 | Complete |
 | UI-03 | Phase 6 | Complete |
 | UI-04 | Phase 6 | Pending |
 | UI-05 | Phase 6 | Pending |
 | UI-06 | Phase 6 | Pending |
-| UI-07 | Phase 6 | Pending |
-| UI-08 | Phase 6 | Pending |
+| UI-07 | Phase 6 | Complete |
+| UI-08 | Phase 6 | Complete |
 | UI-09 | Phase 6 | Pending |
 | UI-10 | Phase 6 | Pending |
-| UI-11 | Phase 6 | Pending |
+| UI-11 | Phase 6 | Complete |
 | UI-12 | Phase 6 | Complete |
 | VIZ-01 | Phase 7 | Pending |
 | VIZ-02 | Phase 7 | Pending |
