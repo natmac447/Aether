@@ -6,6 +6,7 @@
 #include "ui/AetherBypassButton.h"
 #include "ui/SectionComponent.h"
 #include "ui/PresetSelector.h"
+#include "ui/VisualizationComponent.h"
 
 class AetherProcessor;
 
@@ -84,6 +85,10 @@ private:
     SectionComponent outputSection { "", "Output", false };
     AetherKnob       mixKnob { "Mix", 56 };
     AetherKnob       levelKnob { "Level", 56 };
+
+    //==========================================================================
+    // Visualization
+    VisualizationComponent vizComponent;
 
     //==========================================================================
     // Parameter attachments (created AFTER addAndMakeVisible)

@@ -111,6 +111,9 @@ AetherEditor::AetherEditor (AetherProcessor& p)
     // =========================================================================
     addAndMakeVisible (presetSelector);
 
+    // 8b. Visualization component
+    addAndMakeVisible (vizComponent);
+
     // =========================================================================
     // 9. Set up ALL parameter attachments AFTER addAndMakeVisible
     //    (per Crucible pattern -- avoids silent initial sync failure)
@@ -212,11 +215,31 @@ AetherEditor::AetherEditor (AetherProcessor& p)
     syncBypass (ParamIDs::excitBypass, excitSection, { &excitDriveKnob });
     syncBypass (ParamIDs::toneBypass, toneSection, { &toneAmbKnob, &toneGateToggle });
     syncBypass (ParamIDs::tailBypass, tailSection, { &tailDecayKnob, &tailDiffKnob });
+
+    // =========================================================================
+    // 12. Wire visualization parameter sources
+    // =========================================================================
+    vizComponent.setParameterSources (
+        apvts.getRawParameterValue (ParamIDs::reflSize),
+        apvts.getRawParameterValue (ParamIDs::reflShape),
+        apvts.getRawParameterValue (ParamIDs::reflProx),
+        apvts.getRawParameterValue (ParamIDs::airAmount),
+        apvts.getRawParameterValue (ParamIDs::excitDrive),
+        apvts.getRawParameterValue (ParamIDs::reflBypass),
+        apvts.getRawParameterValue (ParamIDs::airBypass),
+        apvts.getRawParameterValue (ParamIDs::excitBypass),
+        apvts.getRawParameterValue (ParamIDs::tailBypass),
+        &processorRef.visualizationRmsLevel
+    );
+    vizComponent.startAnimation();
 }
 
 //==============================================================================
 AetherEditor::~AetherEditor()
 {
+    // Stop visualization timer before any cleanup to prevent dangling pointer access
+    vizComponent.stopAnimation();
+
     // Remove parameter listeners
     auto& apvts = processorRef.apvts;
     apvts.removeParameterListener (ParamIDs::resBypass, this);
@@ -378,19 +401,7 @@ void AetherEditor::paint (juce::Graphics& g)
         ParchmentElements::drawDiamondDivider (g, 330.0f, leftX, rightX);
     }
 
-    // 9. Center panel: Visualization placeholder
-    {
-        auto vizBounds = juce::Rectangle<int> (280, 68, 340, 260);
-        g.setColour (juce::Colour (AetherColours::parchmentDark));
-        g.drawRect (vizBounds, 1);
-
-        // "Fig. 1" caption below visualization
-        ParchmentElements::drawLetterSpacedText (
-            g, "Fig. 1", 280.0f, 340.0f, 340.0f, 2.0f,
-            lookAndFeel.getSpectralFontItalic (10.0f),
-            juce::Colour (AetherColours::inkFaint),
-            juce::Justification::horizontallyCentred);
-    }
+    // 9. (Visualization is now a child component -- no placeholder drawing needed)
 }
 
 //==============================================================================
@@ -447,6 +458,9 @@ void AetherEditor::resized()
 
         // Section label at top
         reflSection.setBounds (cx, 46, cw, 24);
+
+        // Visualization component (replaces placeholder rectangle)
+        vizComponent.setBounds (280, 68, 340, 260);
 
         // Shape dropdown above knobs (below visualization + caption)
         const int shapeY = 350;

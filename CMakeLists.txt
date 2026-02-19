@@ -115,6 +115,8 @@ target_sources(Aether
         Source/ui/SectionComponent.cpp
         Source/ui/PresetSelector.h
         Source/ui/PresetSelector.cpp
+        Source/ui/VisualizationComponent.h
+        Source/ui/VisualizationComponent.cpp
 )
 
 target_compile_definitions(Aether
