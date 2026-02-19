@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Make digital amp sims and DI recordings sound like they were recorded in a real room with a real microphone -- through physically-modeled environmental layers, not reverb effects.
-**Current focus:** Phase 6 in progress. Decorative elements complete (ParchmentElements namespace). Next: Plan 04 (editor layout)
+**Current focus:** Phase 6 in progress. Custom components complete (AetherKnob, AetherToggle, AetherBypassButton). Next: Plan 04 (editor layout)
 
 ## Current Position
 
@@ -35,10 +35,11 @@ Progress: [████████░░] 77%
 | 6 - User Interface | 3/4 | 8min | 3min |
 
 **Recent Trend:**
-- Last 5 plans: 05-01 (4min), 05-02 (19min), 06-01 (6min), 06-02 (?min), 06-03 (2min)
-- Trend: 06-03 fast -- single task creating reusable drawing helpers, clean execution
+- Last 5 plans: 05-02 (19min), 06-01 (6min), 06-02 (4min), 06-03 (2min)
+- Trend: Phase 6 UI plans consistently fast (2-6min) -- component creation with established patterns
 
 *Updated after each plan completion*
+| Phase 06 P02 | 4min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -100,6 +101,9 @@ Recent decisions affecting current work:
 - 06-01: EB Garamond as variable-weight TTF (Google Fonts format); JUCE handles via createSystemTypefaceFor
 - 06-01: Bypass buttons identified via "isBypass" component property for distinct outline-only LookAndFeel styling
 - 06-01: Indicator line length adapts to knob radius via jmin(16px, radius*0.55) for 56px/64px knob sizes
+- 06-02: GlyphArrangement for spaced label drawing (non-deprecated API) instead of Font::getStringWidthFloat
+- 06-02: Slider alpha 0.0 (invisible) with all rendering in paint() using displayValue -- prevents visual desync
+- 06-02: Rich value formatter takes normalised value + parameter text for composite displays like "62% (Medium)"
 - 06-03: GlyphArrangement offset for letter-spacing (addLineOfText + moveRangeOfGlyphs per glyph) -- simpler than character-by-character
 - 06-03: Radial vignette uses corner distance endpoint with 0.6 colour stop for natural 60% onset darkening
 
@@ -115,5 +119,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-18
-Stopped at: Completed 06-03-PLAN.md (ParchmentElements decorative drawing helpers)
+Stopped at: Completed 06-02-PLAN.md (custom control components)
 Resume file: .planning/phases/06-user-interface/06-04-PLAN.md
