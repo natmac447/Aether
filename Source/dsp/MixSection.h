@@ -1,5 +1,6 @@
 #pragma once
 #include <JuceHeader.h>
+#include <signalsmith-dsp/filters.h>
 
 // Mix Section
 // Dry/wet mixing with DryWetMixer (sin3dB equal-power crossfade) and auto-gain compensation.
@@ -21,4 +22,9 @@ private:
     juce::dsp::DryWetMixer<float> dryWetMixer;
     juce::SmoothedValue<float, juce::ValueSmoothingTypes::Multiplicative> compensationSmoothed;
     float currentMix = 0.7f;
+
+    static constexpr int kDryDecorrelationStages = 3;
+    signalsmith::filters::BiquadStatic<float> dryDecorrelationL[kDryDecorrelationStages];
+    signalsmith::filters::BiquadStatic<float> dryDecorrelationR[kDryDecorrelationStages];
+    double storedSampleRate = 44100.0;
 };
