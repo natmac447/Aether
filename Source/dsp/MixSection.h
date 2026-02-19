@@ -16,7 +16,8 @@ public:
     void setMixLevel (float mixValue);
     void applyAutoGainCompensation (juce::AudioBuffer<float>& buffer, float mixValue,
                                      float driveValue = 0.0f, float decayNorm = 0.0f,
-                                     float diffusionValue = 0.0f);
+                                     float diffusionValue = 0.0f,
+                                     float roomSizeNorm = 0.4f, float proximity = 0.3f);
     void setWetLatency (float samples);
     void reset();
 
@@ -25,8 +26,14 @@ private:
     juce::SmoothedValue<float, juce::ValueSmoothingTypes::Multiplicative> compensationSmoothed;
     float currentMix = 0.7f;
 
-    static constexpr int kDryDecorrelationStages = 3;
+    static constexpr int kDryDecorrelationStages = 2;
     signalsmith::filters::BiquadStatic<float> dryDecorrelationL[kDryDecorrelationStages];
     signalsmith::filters::BiquadStatic<float> dryDecorrelationR[kDryDecorrelationStages];
+
+    // Gentle low shelf on wet path to restore low-end body lost to
+    // phase cancellation during dry/wet mixing (100-250Hz region).
+    signalsmith::filters::BiquadStatic<float> wetLowShelfL;
+    signalsmith::filters::BiquadStatic<float> wetLowShelfR;
+
     double storedSampleRate = 44100.0;
 };

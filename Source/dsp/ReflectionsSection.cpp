@@ -223,6 +223,18 @@ void ReflectionsSection::process (juce::AudioBuffer<float>& buffer)
     const float sr = static_cast<float> (currentSampleRate);
     const float minDelaySamples = sr * 0.001f;  // 1ms floor at any sample rate
 
+    // Precompute average gain sums per shape for coherence normalization.
+    // Computed once (static) since kShapes is constant.
+    static float sGainSums[kNumShapes] = {};
+    static bool sGainSumsReady = false;
+    if (! sGainSumsReady)
+    {
+        for (int si = 0; si < kNumShapes; ++si)
+            for (int t = 0; t < kTapsPerChannel; ++t)
+                sGainSums[si] += (kShapes[si].gainL[t] + kShapes[si].gainR[t]) * 0.5f;
+        sGainSumsReady = true;
+    }
+
     for (int s = 0; s < numSamples; ++s)
     {
         // a. Read smoothed parameter values
@@ -378,7 +390,23 @@ void ReflectionsSection::process (juce::AudioBuffer<float>& buffer)
             }
         }
 
-        // f. Apply proximity blend
+        // f. Compensate for coherent tap summation at small room sizes.
+        // When room size is small, all 8 taps collapse to the 1ms delay floor
+        // and read the same sample, causing gain sums of 3.6-5.0x (+11 to +14dB).
+        // Normalize by room-size-dependent coherence: full at min, none at max.
+        {
+            float activeGS = sGainSums[currentShapeIndex];
+            if (pendingShapeIndex >= 0)
+                activeGS = currentGain * sGainSums[currentShapeIndex]
+                         + pendingGain * sGainSums[pendingShapeIndex];
+
+            float coherence = (1.0f - roomSize) * (1.0f - roomSize);
+            float normDivisor = 1.0f + coherence * (activeGS - 1.0f);
+            sumL /= normDivisor;
+            sumR /= normDivisor;
+        }
+
+        // Apply proximity blend
         // Near (0.0): direct at 0dB, reflected at -18dB
         // Far (1.0): direct at -12dB, reflected at 0dB
         static constexpr float kMinus12dB = 0.251189f; // pow(10, -12/20)
@@ -389,11 +417,11 @@ void ReflectionsSection::process (juce::AudioBuffer<float>& buffer)
         float outputL = inputL * directGain + sumL * reflGain;
         float outputR = inputR * directGain + sumR * reflGain;
 
-        // g. Apply bypass crossfade
+        // Apply bypass crossfade
         float finalL = inputL * (1.0f - blend) + outputL * blend;
         float finalR = inputR * (1.0f - blend) + outputR * blend;
 
-        // h. Write output
+        // Write output
         channelL[s] = finalL;
         if (channelR != nullptr)
             channelR[s] = finalR;

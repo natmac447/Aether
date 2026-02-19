@@ -17,10 +17,10 @@ void MixSection::prepare (double sampleRate, int samplesPerBlock)
 
     storedSampleRate = sampleRate;
 
-    // Allpass frequencies targeting upper-mid range only (800Hz-3kHz)
-    // to decorrelate comb-prone frequencies without shifting low-end phase.
-    // Equivalent delays: ~0.07ms, ~0.11ms, ~0.18ms -- well above bass range
-    const double decorrelationFreqs[3] = { 2200.0, 1400.0, 900.0 };
+    // Two allpass stages in the upper-mid range (1.5kHz-3.5kHz) to decorrelate
+    // comb-prone frequencies.  Fewer stages = less cumulative phase rotation,
+    // keeping the low end intact while still softening comb-filter notches.
+    const double decorrelationFreqs[2] = { 2800.0, 1800.0 };
     for (int i = 0; i < kDryDecorrelationStages; ++i)
     {
         double scaledFreq = decorrelationFreqs[i] / sampleRate;
@@ -28,6 +28,12 @@ void MixSection::prepare (double sampleRate, int samplesPerBlock)
         // Slightly offset R channel frequencies for stereo decorrelation
         dryDecorrelationR[i].allpassQ (scaledFreq * 1.12, 0.707);
     }
+
+    // Gentle low shelf on wet signal to restore low-end body (100-250Hz)
+    // lost to phase cancellation between dry and wet paths during mixing.
+    double shelfFreq = 200.0 / sampleRate;
+    wetLowShelfL.lowShelfDb (shelfFreq, 3.0, 2.0);
+    wetLowShelfR.lowShelfDb (shelfFreq, 3.0, 2.0);
 }
 
 void MixSection::pushDrySamples (const juce::dsp::AudioBlock<float>& dryBlock)
@@ -75,6 +81,20 @@ void MixSection::pushDrySamples (const juce::dsp::AudioBlock<float>& dryBlock)
 
 void MixSection::mixWetSamples (juce::dsp::AudioBlock<float>& wetBlock)
 {
+    // Restore low-end body on wet signal before mixing with dry
+    const auto numSamples = wetBlock.getNumSamples();
+
+    auto* dataL = wetBlock.getChannelPointer (0);
+    for (size_t s = 0; s < numSamples; ++s)
+        dataL[s] = wetLowShelfL (dataL[s]);
+
+    if (wetBlock.getNumChannels() >= 2)
+    {
+        auto* dataR = wetBlock.getChannelPointer (1);
+        for (size_t s = 0; s < numSamples; ++s)
+            dataR[s] = wetLowShelfR (dataR[s]);
+    }
+
     dryWetMixer.mixWetSamples (wetBlock);
 }
 
@@ -91,17 +111,24 @@ void MixSection::setWetLatency (float samples)
 
 void MixSection::applyAutoGainCompensation (juce::AudioBuffer<float>& buffer, float mixValue,
                                              float driveValue, float decayNorm,
-                                             float diffusionValue)
+                                             float diffusionValue,
+                                             float roomSizeNorm, float proximity)
 {
     // Base auto-gain: compensationDb = -3.5 * pow(mix, 1.4)
     // Additional compensation for energy-adding parameters:
     //   Drive: saturator adds harmonic energy (up to ~2.5dB at full drive)
     //   Decay: longer tail accumulates reverberant energy (up to ~2dB at max)
     //   Diffusion: handled internally by DiffuseTailSection (not needed here)
+    //   Room Size + Proximity: small room with high proximity causes coherent
+    //     tap summation in reflections and short pre-delay in tail, cascading
+    //     through all downstream stages (+8-9dB at extremes).
     // Each term is scaled by mix since at Mix=0% wet signal is inaudible.
     float compensationDb = -3.5f * std::pow (mixValue, 1.4f);
     compensationDb -= 4.0f * std::pow (driveValue, 2.0f) * mixValue;
     compensationDb -= 3.5f * std::pow (decayNorm, 1.5f) * mixValue;
+    float smallRoom = (1.0f - roomSizeNorm) * (1.0f - roomSizeNorm);
+    float proxCurve = std::pow (proximity, 1.5f);   // softer onset, full at extremes
+    compensationDb -= 15.0f * smallRoom * proxCurve * mixValue;
     const float targetGain = juce::Decibels::decibelsToGain (compensationDb, -100.0f);
     compensationSmoothed.setTargetValue (targetGain);
 
@@ -135,4 +162,7 @@ void MixSection::reset()
         dryDecorrelationL[i].reset();
         dryDecorrelationR[i].reset();
     }
+
+    wetLowShelfL.reset();
+    wetLowShelfR.reset();
 }
