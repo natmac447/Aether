@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-18)
 Phase: 7 of 8 (Visualization)
 Plan: 1 of 2 in current phase (07-01 complete)
 Status: Executing Phase 7 -- Plan 01 complete, Plan 02 next
-Last activity: 2026-02-19 - Completed quick task 2: Fix comb filtering with minimum delay floor and dry decorrelation
+Last activity: 2026-02-19 - Completed quick task 3: Mix lock button, arrow step buttons, user preset save/load
 
 Progress: [████████░░] 88%
 
@@ -114,6 +114,10 @@ Recent decisions affecting current work:
 - quick-2: 1ms delay floor on reflection taps (sr * 0.001) prevents near-zero-delay copies at small Room Size
 - quick-2: 3-stage allpass decorrelation on dry signal (318/145/94 Hz coprime frequencies) before dry/wet mix reduces comb notches
 - quick-2: R-channel 1.12x allpass frequency offset matches AirSection stereo decorrelation convention
+- quick-3: Mix lock is purely UI state (not APVTS parameter) -- no need to persist lock across sessions
+- quick-3: ArrowStepButton navigates by item index (not ID) to handle non-contiguous IDs after separators
+- quick-3: User preset IDs start at 100 (kUserPresetIdOffset) to avoid collision with factory preset IDs 1-7
+- quick-3: User presets stored at ~/Library/Audio/Presets/Cairn/Aether/ per macOS audio preset conventions
 
 ### Pending Todos
 
@@ -125,6 +129,7 @@ None yet.
 |---|-------------|------|--------|-----------|
 | 1 | Implement 6 factory presets and wire PresetSelector | 2026-02-19 | 5a0ddac | [1-implement-6-factory-presets-and-wire-pre](./quick/1-implement-6-factory-presets-and-wire-pre/) |
 | 2 | Fix comb filtering: 1ms delay floor + dry allpass decorrelation | 2026-02-19 | 6008809 | [2-fix-comb-filtering-minimum-delay-floor-d](./quick/2-fix-comb-filtering-minimum-delay-floor-d/) |
+| 3 | Mix lock button, arrow step buttons, user preset save/load | 2026-02-19 | 6d9face | [3-mix-lock-dropdown-arrows-user-preset-sav](./quick/3-mix-lock-dropdown-arrows-user-preset-sav/) |
 
 ### Blockers/Concerns
 
@@ -134,5 +139,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-19
-Stopped at: Completed quick-2 (Fix comb filtering: delay floor + dry decorrelation)
-Resume file: .planning/quick/2-fix-comb-filtering-minimum-delay-floor-d/2-SUMMARY.md
+Stopped at: Completed quick-3 (Mix lock button, arrow step buttons, user preset save/load)
+Resume file: .planning/quick/3-mix-lock-dropdown-arrows-user-preset-sav/3-SUMMARY.md
