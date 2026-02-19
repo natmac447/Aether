@@ -17,10 +17,10 @@ void MixSection::prepare (double sampleRate, int samplesPerBlock)
 
     storedSampleRate = sampleRate;
 
-    // Allpass frequencies derived from delay times: f = 1/(2*pi*delay)
-    // 0.5ms -> ~318Hz, 1.1ms -> ~145Hz, 1.7ms -> ~94Hz
-    // Coprime-ish delay times avoid reinforcing any single frequency
-    const double decorrelationFreqs[3] = { 318.0, 145.0, 94.0 };
+    // Allpass frequencies targeting upper-mid range only (800Hz-3kHz)
+    // to decorrelate comb-prone frequencies without shifting low-end phase.
+    // Equivalent delays: ~0.07ms, ~0.11ms, ~0.18ms -- well above bass range
+    const double decorrelationFreqs[3] = { 2200.0, 1400.0, 900.0 };
     for (int i = 0; i < kDryDecorrelationStages; ++i)
     {
         double scaledFreq = decorrelationFreqs[i] / sampleRate;
@@ -89,14 +89,19 @@ void MixSection::setWetLatency (float samples)
     dryWetMixer.setWetLatency (samples);
 }
 
-void MixSection::applyAutoGainCompensation (juce::AudioBuffer<float>& buffer, float mixValue)
+void MixSection::applyAutoGainCompensation (juce::AudioBuffer<float>& buffer, float mixValue,
+                                             float driveValue, float decayNorm,
+                                             float diffusionValue)
 {
-    // Auto-gain curve: compensationDb = -3.5 * pow(mix, 1.4)
-    // Tuned for full 6-stage chain (Phase 5). Excitation adds ~1-2dB harmonic energy.
-    // At Mix=0%:   0.0 dB (no compensation)
-    // At Mix=50%: -1.33 dB
-    // At Mix=100%: -3.5 dB
-    const float compensationDb = -3.5f * std::pow (mixValue, 1.4f);
+    // Base auto-gain: compensationDb = -3.5 * pow(mix, 1.4)
+    // Additional compensation for energy-adding parameters:
+    //   Drive: saturator adds harmonic energy (up to ~2.5dB at full drive)
+    //   Decay: longer tail accumulates reverberant energy (up to ~2dB at max)
+    //   Diffusion: handled internally by DiffuseTailSection (not needed here)
+    // Each term is scaled by mix since at Mix=0% wet signal is inaudible.
+    float compensationDb = -3.5f * std::pow (mixValue, 1.4f);
+    compensationDb -= 4.0f * std::pow (driveValue, 2.0f) * mixValue;
+    compensationDb -= 3.5f * std::pow (decayNorm, 1.5f) * mixValue;
     const float targetGain = juce::Decibels::decibelsToGain (compensationDb, -100.0f);
     compensationSmoothed.setTargetValue (targetGain);
 

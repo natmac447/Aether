@@ -471,6 +471,27 @@ juce::Font AetherLookAndFeel::getPopupMenuFont()
 }
 
 //==============================================================================
+// ComboBox: no default arrow -- ArrowStepButtons handle navigation
+//==============================================================================
+
+void AetherLookAndFeel::drawComboBox (juce::Graphics& g, int width, int height,
+                                       bool /*isButtonDown*/,
+                                       int /*buttonX*/, int /*buttonY*/,
+                                       int /*buttonW*/, int /*buttonH*/,
+                                       juce::ComboBox& box)
+{
+    auto bounds = juce::Rectangle<int> (0, 0, width, height).toFloat().reduced (0.5f);
+
+    g.setColour (box.findColour (juce::ComboBox::backgroundColourId));
+    g.fillRoundedRectangle (bounds, 2.0f);
+
+    g.setColour (box.findColour (juce::ComboBox::outlineColourId));
+    g.drawRoundedRectangle (bounds, 2.0f, 1.0f);
+
+    // No arrow chevron -- custom ArrowStepButtons overlay at the right edge
+}
+
+//==============================================================================
 // ComboBox: centre text across full width (ignoring arrow button)
 //==============================================================================
 

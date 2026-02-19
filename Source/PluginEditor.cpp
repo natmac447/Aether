@@ -127,6 +127,10 @@ AetherEditor::AetherEditor (AetherProcessor& p)
     addAndMakeVisible (presetUpArrow);
     addAndMakeVisible (presetDownArrow);
 
+    // Preset arrows should skip the "Save Preset..." action item
+    presetUpArrow.addSkipId (99);    // kSavePresetId
+    presetDownArrow.addSkipId (99);
+
     // 8b. Visualization component
     addAndMakeVisible (vizComponent);
 
@@ -430,9 +434,9 @@ void AetherEditor::resized()
     // =========================================================================
     // Center preset selector in header (220px: ~184 combo + 36 save button)
     presetSelector.setBounds ((kWidth - 220) / 2, 10, 220, 22);
-    // Preset arrow buttons
-    presetUpArrow.setBounds (presetSelector.getRight() + 2, presetSelector.getY(), 14, 11);
-    presetDownArrow.setBounds (presetSelector.getRight() + 2, presetSelector.getY() + 11, 14, 11);
+    // Preset arrow buttons (inside combo, offset from right edge)
+    presetUpArrow.setBounds (presetSelector.getRight() - 18, presetSelector.getY(), 14, 11);
+    presetDownArrow.setBounds (presetSelector.getRight() - 18, presetSelector.getY() + 11, 14, 11);
 
     // =========================================================================
     // Shared layout metrics
@@ -453,9 +457,9 @@ void AetherEditor::resized()
         int knobX = resCtrl.getX() + (resCtrl.getWidth() - knobDia) / 2;
         resWeightKnob.setBounds (knobX, resCtrl.getY(), knobDia, knobH);
         materialCombo.setBounds (resCtrl.getX(), resCtrl.getY() + knobH + 4, resCtrl.getWidth(), 24);
-        // Material arrow buttons
-        materialUpArrow.setBounds (materialCombo.getRight() + 2, materialCombo.getY(), 14, 12);
-        materialDownArrow.setBounds (materialCombo.getRight() + 2, materialCombo.getY() + 12, 14, 12);
+        // Material arrow buttons (inside combo box, offset from right edge)
+        materialUpArrow.setBounds (materialCombo.getRight() - 18, materialCombo.getY(), 14, 12);
+        materialDownArrow.setBounds (materialCombo.getRight() - 18, materialCombo.getY() + 12, 14, 12);
 
         // Stage IV: Excitation (y=210, h=115)
         excitSection.setBounds (lx, 210, lw, 115);
@@ -487,9 +491,9 @@ void AetherEditor::resized()
         // Shape dropdown above knobs (below visualization + caption)
         const int shapeY = 350;
         reflShapeCombo.setBounds (cx + 60, shapeY, cw - 120, 24);
-        // Shape arrow buttons
-        shapeUpArrow.setBounds (reflShapeCombo.getRight() + 2, reflShapeCombo.getY(), 14, 12);
-        shapeDownArrow.setBounds (reflShapeCombo.getRight() + 2, reflShapeCombo.getY() + 12, 14, 12);
+        // Shape arrow buttons (inside combo box, offset from right edge)
+        shapeUpArrow.setBounds (reflShapeCombo.getRight() - 18, reflShapeCombo.getY(), 14, 12);
+        shapeDownArrow.setBounds (reflShapeCombo.getRight() - 18, reflShapeCombo.getY() + 12, 14, 12);
 
         // Room control knobs centred between dropdown bottom and footer rule
         const int dropdownBottom = shapeY + 24;
@@ -531,7 +535,7 @@ void AetherEditor::resized()
         mixKnob.setBounds (outCtrl.getX(), outCtrl.getY(), twoKnobW, knobH);
         levelKnob.setBounds (outCtrl.getX() + twoKnobW, outCtrl.getY(), twoKnobW, knobH);
 
-        // Mix lock button: top-right corner of mix knob area
-        mixLockButton.setBounds (mixKnob.getRight() - 2, mixKnob.getY() + 2, 20, 20);
+        // Mix lock button: upper-left corner of mix knob
+        mixLockButton.setBounds (mixKnob.getX() - 4, mixKnob.getY() - 2, 20, 20);
     }
 }

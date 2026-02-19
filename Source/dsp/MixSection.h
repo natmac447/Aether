@@ -14,7 +14,9 @@ public:
     void pushDrySamples (const juce::dsp::AudioBlock<float>& dryBlock);
     void mixWetSamples (juce::dsp::AudioBlock<float>& wetBlock);
     void setMixLevel (float mixValue);
-    void applyAutoGainCompensation (juce::AudioBuffer<float>& buffer, float mixValue);
+    void applyAutoGainCompensation (juce::AudioBuffer<float>& buffer, float mixValue,
+                                     float driveValue = 0.0f, float decayNorm = 0.0f,
+                                     float diffusionValue = 0.0f);
     void setWetLatency (float samples);
     void reset();
 

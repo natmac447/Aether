@@ -10,7 +10,7 @@
 PresetSelector::PresetSelector (juce::AudioProcessorValueTreeState& apvtsRef)
     : apvts (apvtsRef)
 {
-    // Populate preset list (factory + user)
+    // Populate preset list (factory + user + save action)
     rebuildPresetList();
 
     // Style: Ink Light text, Ink Ghost border, transparent background
@@ -19,21 +19,63 @@ PresetSelector::PresetSelector (juce::AudioProcessorValueTreeState& apvtsRef)
     comboBox.setColour (juce::ComboBox::backgroundColourId, juce::Colours::transparentBlack);
     comboBox.setColour (juce::ComboBox::arrowColourId, juce::Colour (AetherColours::inkFaint));
 
-    // Wire onChange to apply presets
+    // Wire onChange to apply presets or trigger save
     comboBox.onChange = [this]
     {
         const int selectedId = comboBox.getSelectedId();
 
+        if (selectedId == kSavePresetId)
+        {
+            // Revert combo display to previous selection immediately
+            comboBox.setSelectedId (lastSelectedId, juce::dontSendNotification);
+
+            // Show save dialog
+            auto* aw = new juce::AlertWindow ("Save Preset", "Enter a name for your preset:",
+                                               juce::MessageBoxIconType::NoIcon);
+            aw->addTextEditor ("name", "", "Preset name:");
+            aw->addButton ("Save", 1);
+            aw->addButton ("Cancel", 0);
+            aw->enterModalState (true, juce::ModalCallbackFunction::create (
+                [this, aw] (int result)
+                {
+                    if (result == 1)
+                    {
+                        auto name = aw->getTextEditorContents ("name");
+                        if (name.isNotEmpty())
+                        {
+                            UserPresetManager::savePreset (name, apvts);
+                            rebuildPresetList();
+
+                            // Select the newly saved preset
+                            for (int i = 0; i < userPresetFiles.size(); ++i)
+                            {
+                                if (userPresetFiles[i].getFileNameWithoutExtension() == name)
+                                {
+                                    int newId = kUserPresetIdOffset + i;
+                                    comboBox.setSelectedId (newId, juce::dontSendNotification);
+                                    lastSelectedId = newId;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    delete aw;
+                }), false);
+            return;
+        }
+
+        // Track selection for revert after save cancel
+        lastSelectedId = selectedId;
+
         if (selectedId == 1)
         {
             // "Default" -- reset all parameters to their APVTS defaults
-            // If mix is locked, capture current value first
             float savedMix = 0.0f;
             bool lockMix = (mixLockBtn != nullptr && mixLockBtn->isLocked());
             if (lockMix)
             {
                 if (auto* mixParam = apvts.getParameter (ParamIDs::outMix))
-                    savedMix = mixParam->getValue();  // normalised 0-1
+                    savedMix = mixParam->getValue();
             }
 
             for (auto* param : apvts.processor.getParameters())
@@ -46,7 +88,6 @@ PresetSelector::PresetSelector (juce::AudioProcessorValueTreeState& apvtsRef)
                 }
             }
 
-            // Restore mix if locked
             if (lockMix)
             {
                 if (auto* mixParam = apvts.getParameter (ParamIDs::outMix))
@@ -66,18 +107,16 @@ PresetSelector::PresetSelector (juce::AudioProcessorValueTreeState& apvtsRef)
             int userIndex = selectedId - kUserPresetIdOffset;
             if (userIndex >= 0 && userIndex < userPresetFiles.size())
             {
-                // If mix is locked, capture current mix value
                 float savedMix = 0.0f;
                 bool lockMix = (mixLockBtn != nullptr && mixLockBtn->isLocked());
                 if (lockMix)
                 {
                     if (auto* mixParam = apvts.getParameter (ParamIDs::outMix))
-                        savedMix = mixParam->getValue();  // normalised 0-1
+                        savedMix = mixParam->getValue();
                 }
 
                 UserPresetManager::loadPreset (userPresetFiles[userIndex], apvts);
 
-                // Restore mix if locked
                 if (lockMix)
                 {
                     if (auto* mixParam = apvts.getParameter (ParamIDs::outMix))
@@ -92,33 +131,6 @@ PresetSelector::PresetSelector (juce::AudioProcessorValueTreeState& apvtsRef)
     };
 
     addAndMakeVisible (comboBox);
-
-    // Save button
-    saveButton.setColour (juce::TextButton::textColourOffId, juce::Colour (AetherColours::inkFaint));
-    saveButton.setColour (juce::TextButton::buttonColourId, juce::Colours::transparentBlack);
-    saveButton.onClick = [this]
-    {
-        auto* aw = new juce::AlertWindow ("Save Preset", "Enter a name for your preset:",
-                                           juce::MessageBoxIconType::NoIcon);
-        aw->addTextEditor ("name", "", "Preset name:");
-        aw->addButton ("Save", 1);
-        aw->addButton ("Cancel", 0);
-        aw->enterModalState (true, juce::ModalCallbackFunction::create (
-            [this, aw] (int result)
-            {
-                if (result == 1)
-                {
-                    auto name = aw->getTextEditorContents ("name");
-                    if (name.isNotEmpty())
-                    {
-                        UserPresetManager::savePreset (name, apvts);
-                        rebuildPresetList();
-                    }
-                }
-                delete aw;
-            }), false);
-    };
-    addAndMakeVisible (saveButton);
 }
 
 //==============================================================================
@@ -203,13 +215,16 @@ void PresetSelector::rebuildPresetList()
                               kUserPresetIdOffset + i);
     }
 
+    // Save action at the bottom
+    comboBox.addSeparator();
+    comboBox.addItem ("Save Preset...", kSavePresetId);
+
     comboBox.setSelectedId (1, juce::dontSendNotification);
+    lastSelectedId = 1;
 }
 
 //==============================================================================
 void PresetSelector::resized()
 {
-    auto bounds = getLocalBounds();
-    saveButton.setBounds (bounds.removeFromRight (36));
-    comboBox.setBounds (bounds);
+    comboBox.setBounds (getLocalBounds());
 }

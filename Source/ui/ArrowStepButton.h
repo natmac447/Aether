@@ -25,9 +25,13 @@ public:
 
     void clicked() override;
 
+    /** Add a combo item ID that the arrow should skip over when stepping. */
+    void addSkipId (int itemId) { skipIds.add (itemId); }
+
 private:
     Direction dir;
     juce::ComboBox& comboBox;
+    juce::Array<int> skipIds;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ArrowStepButton)
 };

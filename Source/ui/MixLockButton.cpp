@@ -58,14 +58,16 @@ void MixLockButton::paintButton (juce::Graphics& g,
     }
     else
     {
-        // Open shackle: arc shifted up, right side open (lifted)
+        // Open shackle: rigid U-shape lifted up, right leg floats above body
+        const float lift = 3.0f;
         const float sx = cx - shackleW / 2.0f;
-        const float sy = bodyY;
+        const float sy = bodyY - lift;
 
-        shackle.startNewSubPath (sx, sy);
-        shackle.cubicTo (sx, sy - shackleH,
-                         sx + shackleW, sy - shackleH - 2.0f,
-                         sx + shackleW, sy - 3.0f);
+        shackle.startNewSubPath (sx, bodyY);           // left leg at body
+        shackle.lineTo (sx, sy);                       // straight up to lifted arc
+        shackle.cubicTo (sx, sy - shackleH,            // symmetric arc (same as closed)
+                         sx + shackleW, sy - shackleH,
+                         sx + shackleW, sy);            // right leg ends lifted
     }
 
     g.strokePath (shackle, juce::PathStrokeType (1.5f, juce::PathStrokeType::curved,

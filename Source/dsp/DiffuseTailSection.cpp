@@ -316,7 +316,15 @@ void DiffuseTailSection::process (juce::AudioBuffer<float>& buffer)
         wetL *= 0.5f;  // normalize (4 lines per channel)
         wetR *= 0.5f;
 
-        // h. Safety hard limit to prevent runaway
+        // h. Diffusion-dependent output compensation
+        // Higher diffusion feeds sustained energy into the FDN, building up
+        // steady-state level. Quadratic curve: gentle at low values, steeper at high.
+        float diffCompDb = -14.0f * diffNorm * diffNorm;
+        float diffCompGain = juce::Decibels::decibelsToGain (diffCompDb, -100.0f);
+        wetL *= diffCompGain;
+        wetR *= diffCompGain;
+
+        // Safety hard limit to prevent runaway
         wetL = juce::jlimit (-4.0f, 4.0f, wetL);
         wetR = juce::jlimit (-4.0f, 4.0f, wetR);
 

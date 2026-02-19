@@ -2,14 +2,12 @@
 #include <JuceHeader.h>
 
 /**
- * VisualizationComponent - Victorian perception-inspired acoustic ray diagram.
+ * VisualizationComponent - Placeholder for the central display area.
  *
- * Renders a head profile silhouette with concentric wavefront rings, air particles,
- * excitation stars, and diffuse scatter elements. All rendering uses monochrome ink
- * tones from AetherColours. Timer-driven at 30Hz with breathing animation.
+ * Maintains timer and parameter source infrastructure for future
+ * custom visualization assets. Currently renders nothing.
  *
  * Parameter state is read via std::atomic<float>* pointers set by the editor.
- * All visual transitions use exponential smoothing (~300ms settle time).
  */
 class VisualizationComponent : public juce::Component,
                                 private juce::Timer
@@ -52,38 +50,11 @@ private:
     void updateSmoothedState();
 
     //==========================================================================
-    // Draw methods (each renders one visual layer)
-    void drawHeadProfile          (juce::Graphics& g, juce::Rectangle<float> bounds);
-    void drawReflectionWavefronts (juce::Graphics& g, juce::Rectangle<float> bounds);
-    void drawDiffuseScatter       (juce::Graphics& g, juce::Rectangle<float> bounds);
-    void drawAirParticles         (juce::Graphics& g, juce::Rectangle<float> bounds);
-    void drawExcitationStars      (juce::Graphics& g, juce::Rectangle<float> bounds);
-    void drawCaption              (juce::Graphics& g, juce::Rectangle<float> bounds);
-
-    //==========================================================================
-    // Head profile path (built once, transformed per frame)
-    static juce::Path createHeadProfilePath();
-
-    //==========================================================================
-    // Shape fingerprint: data-driven wave distortion per room shape
-    struct ShapeFingerprint
-    {
-        float xStretch;      // horizontal stretch factor (1.0 = circular)
-        float yStretch;      // vertical stretch factor
-        float asymmetry;     // 0.0 = symmetric, 1.0 = maximum distortion
-        float densityBias;   // ring spacing modifier (1.0 = even)
-        float angularWarp;   // angular distortion amount for irregular shapes
-        int   ringCount;     // base number of wavefront rings
-    };
-
-    static const ShapeFingerprint kShapeFingerprints[7];
-
-    //==========================================================================
     // Smoothed visual state (interpolated each frame)
-    float smoothedSize      = 0.4f;   // from reflSize default
-    float smoothedProx      = 0.3f;   // from reflProx default
-    float smoothedAir       = 0.4f;   // from airAmount default
-    float smoothedDrive     = 0.25f;  // from excitDrive default
+    float smoothedSize      = 0.4f;
+    float smoothedProx      = 0.3f;
+    float smoothedAir       = 0.4f;
+    float smoothedDrive     = 0.25f;
 
     // Bypass fade alphas (1.0 = active, 0.0 = bypassed)
     float smoothedReflAlpha  = 1.0f;
@@ -92,18 +63,8 @@ private:
     float smoothedTailAlpha  = 1.0f;
 
     // Animation phase
-    float breathPhase       = 0.0f;   // 0..2pi, advances each frame
-    float starRotation      = 0.0f;   // continuous spin for excitation stars
-    float currentRmsSmoothed = 0.0f;  // smoothed audio RMS level
-
-    // Shape fingerprint interpolation
-    ShapeFingerprint currentFingerprint {};
-    ShapeFingerprint targetFingerprint {};
-    int lastShapeIndex = 0;
-
-    // Cached head profile path and transform
-    juce::Path headPath;
-    juce::AffineTransform headTransform;
+    float breathPhase       = 0.0f;
+    float currentRmsSmoothed = 0.0f;
 
     //==========================================================================
     // Atomic parameter pointers (set once, read every frame)

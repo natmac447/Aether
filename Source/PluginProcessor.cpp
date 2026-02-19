@@ -129,9 +129,12 @@ void AetherProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Midi
         mixSection.mixWetSamples (wetBlock);
     }
 
-    // OUT-03: Auto-gain compensation
-    const float currentMix = outMixParam->load();
-    mixSection.applyAutoGainCompensation (buffer, currentMix);
+    // OUT-03: Auto-gain compensation (factors in mix + energy-adding params)
+    const float currentMix   = outMixParam->load();
+    const float currentDrive = excitDriveParam->load();                           // 0-1
+    const float currentDecayNorm = (tailDecayParam->load() - 50.0f) / 1950.0f;   // 50-2000ms -> 0-1
+    const float currentDiff  = tailDiffParam->load();                             // 0-1
+    mixSection.applyAutoGainCompensation (buffer, currentMix, currentDrive, currentDecayNorm, currentDiff);
 
     // OUT-02: Output level trim
     outputSection.process (buffer, outLevelParam->load());

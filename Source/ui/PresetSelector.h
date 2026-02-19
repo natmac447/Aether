@@ -42,12 +42,13 @@ private:
 
     juce::AudioProcessorValueTreeState& apvts;
     juce::ComboBox comboBox;
-    juce::TextButton saveButton { "Save" };
 
     MixLockButton* mixLockBtn = nullptr;
 
     juce::Array<juce::File> userPresetFiles;   // Cached list of user preset files
+    static constexpr int kSavePresetId = 99;         // Special ID for "Save Preset..." action
     static constexpr int kUserPresetIdOffset = 100;  // User preset IDs start at 100
+    int lastSelectedId = 1;                           // Track selection for revert after save
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PresetSelector)
 };

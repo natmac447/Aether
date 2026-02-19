@@ -70,11 +70,11 @@ static const AirCharacterPreset kCharacterPresets[kNumCharacters] =
         0.0f,        // lfMinShelfDb: no LF change at Air 0%
         1.5f,        // lfMaxShelfDb: subtle LF boost at Air 100% (+1.5dB)
 
-        2000.0f,     // allpassBaseFreqHz: lower range
-        2.5f,        // allpassSpreadOctaves: wide spread
-        0.15f,       // allpassMinQ: minimal smearing at Air 0%
-        0.8f,        // allpassMaxQ: more diffusion (warm air)
-        5,           // allpassStages: 5 stages
+        2500.0f,     // allpassBaseFreqHz: unified across characters
+        2.0f,        // allpassSpreadOctaves: unified
+        0.1f,        // allpassMinQ: unified
+        0.5f,        // allpassMaxQ: slightly more diffusion (warm air)
+        4,           // allpassStages: unified at 4
 
         0.15f,       // tailDecayBias: positive = extends perceived decay
         1.2f         // reflDarkeningScale: stronger coupling (thick air)
@@ -94,11 +94,11 @@ static const AirCharacterPreset kCharacterPresets[kNumCharacters] =
         0.0f,        // lfMinShelfDb: N/A
         0.0f,        // lfMaxShelfDb: N/A
 
-        2500.0f,     // allpassBaseFreqHz
-        2.0f,        // allpassSpreadOctaves
-        0.1f,        // allpassMinQ
-        0.6f,        // allpassMaxQ
-        4,           // allpassStages: 4 stages
+        2500.0f,     // allpassBaseFreqHz: unified across characters
+        2.0f,        // allpassSpreadOctaves: unified
+        0.1f,        // allpassMinQ: unified
+        0.45f,       // allpassMaxQ: moderate diffusion
+        4,           // allpassStages: unified at 4
 
         0.0f,        // tailDecayBias: neutral (no change)
         1.0f         // reflDarkeningScale: standard coupling
@@ -119,11 +119,11 @@ static const AirCharacterPreset kCharacterPresets[kNumCharacters] =
         0.0f,        // lfMinShelfDb: no change at Air 0%
         -1.0f,       // lfMaxShelfDb: slight LF cut (cold, thin quality)
 
-        3000.0f,     // allpassBaseFreqHz: higher range
-        1.5f,        // allpassSpreadOctaves: tighter spread
-        0.08f,       // allpassMinQ: minimal smearing
-        0.4f,        // allpassMaxQ: less diffusion (dry air)
-        4,           // allpassStages: 4 stages
+        2500.0f,     // allpassBaseFreqHz: unified across characters
+        2.0f,        // allpassSpreadOctaves: unified
+        0.1f,        // allpassMinQ: unified
+        0.4f,        // allpassMaxQ: slightly less diffusion (dry air)
+        4,           // allpassStages: unified at 4
 
         -0.1f,       // tailDecayBias: negative = tightens perceived decay
         0.7f         // reflDarkeningScale: weaker coupling (bright environment)
