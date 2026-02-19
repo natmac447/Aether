@@ -221,6 +221,7 @@ void ReflectionsSection::process (juce::AudioBuffer<float>& buffer)
     float* channelR = (numChannels >= 2) ? buffer.getWritePointer (1) : nullptr;
 
     const float sr = static_cast<float> (currentSampleRate);
+    const float minDelaySamples = sr * 0.001f;  // 1ms floor at any sample rate
 
     for (int s = 0; s < numSamples; ++s)
     {
@@ -290,8 +291,8 @@ void ReflectionsSection::process (juce::AudioBuffer<float>& buffer)
                 lDMs = lDMs * delayMs / 30.0f;
                 rDMs = rDMs * delayMs / 30.0f;
 
-                float lSamp = juce::jmax (0.0f, lDMs * sr / 1000.0f);
-                float rSamp = juce::jmax (0.0f, rDMs * sr / 1000.0f);
+                float lSamp = juce::jmax (minDelaySamples, lDMs * sr / 1000.0f);
+                float rSamp = juce::jmax (minDelaySamples, rDMs * sr / 1000.0f);
 
                 float tapL = delayLineL.read (lSamp);
                 float tapR = delayLineR.read (rSamp);
@@ -348,8 +349,8 @@ void ReflectionsSection::process (juce::AudioBuffer<float>& buffer)
                 lDMs = lDMs * delayMs / 30.0f;
                 rDMs = rDMs * delayMs / 30.0f;
 
-                float lSamp = juce::jmax (0.0f, lDMs * sr / 1000.0f);
-                float rSamp = juce::jmax (0.0f, rDMs * sr / 1000.0f);
+                float lSamp = juce::jmax (minDelaySamples, lDMs * sr / 1000.0f);
+                float rSamp = juce::jmax (minDelaySamples, rDMs * sr / 1000.0f);
 
                 float tapL = delayLineL.read (lSamp);
                 float tapR = delayLineR.read (rSamp);
