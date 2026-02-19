@@ -92,10 +92,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Visualization
 
-- [ ] **VIZ-01**: Center acoustic ray diagram (340x340px) showing top-down room propagation
-- [ ] **VIZ-02**: Diagram includes: room boundary, source point, listener indicator, concentric wavefronts, direct rays, reflection paths, wall reflection wavefronts (copper-tinted)
-- [ ] **VIZ-03**: Diagram reacts to Room Size (boundary scale, wavefront spacing), Shape (reflection angles), and Proximity (listener position)
-- [ ] **VIZ-04**: Subtle breathing animation on wavefront rings (4-second cycle, 1.0->1.02 scale)
+- [x] **VIZ-01**: Center acoustic ray diagram (340x340px) showing top-down room propagation
+- [x] **VIZ-02**: Diagram includes: room boundary, source point, listener indicator, concentric wavefronts, direct rays, reflection paths, wall reflection wavefronts (copper-tinted)
+- [x] **VIZ-03**: Diagram reacts to Room Size (boundary scale, wavefront spacing), Shape (reflection angles), and Proximity (listener position)
+- [x] **VIZ-04**: Subtle breathing animation on wavefront rings (4-second cycle, 1.0->1.02 scale)
 - [ ] **VIZ-05**: Bypassed stages fade their corresponding visual elements to ghost opacity
 
 ### Presets
@@ -213,10 +213,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UI-10 | Phase 6 | Pending |
 | UI-11 | Phase 6 | Complete |
 | UI-12 | Phase 6 | Complete |
-| VIZ-01 | Phase 7 | Pending |
-| VIZ-02 | Phase 7 | Pending |
-| VIZ-03 | Phase 7 | Pending |
-| VIZ-04 | Phase 7 | Pending |
+| VIZ-01 | Phase 7 | Complete |
+| VIZ-02 | Phase 7 | Complete |
+| VIZ-03 | Phase 7 | Complete |
+| VIZ-04 | Phase 7 | Complete |
 | VIZ-05 | Phase 7 | Pending |
 | PRST-01 | Phase 8 | Pending |
 | PRST-02 | Phase 8 | Pending |
