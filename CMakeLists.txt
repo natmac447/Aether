@@ -46,7 +46,7 @@ juce_add_plugin(Aether
     PLUGIN_MANUFACTURER_CODE Carn
     PLUGIN_CODE Aeth
 
-    FORMATS VST3
+    FORMATS VST3 Standalone
 
     PRODUCT_NAME "Aether"
 
@@ -111,6 +111,10 @@ target_sources(Aether
         Source/ui/AetherToggle.cpp
         Source/ui/AetherBypassButton.h
         Source/ui/AetherBypassButton.cpp
+        Source/ui/SectionComponent.h
+        Source/ui/SectionComponent.cpp
+        Source/ui/PresetSelector.h
+        Source/ui/PresetSelector.cpp
 )
 
 target_compile_definitions(Aether

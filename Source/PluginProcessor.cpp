@@ -212,9 +212,7 @@ bool AetherProcessor::hasEditor() const { return true; }
 
 juce::AudioProcessorEditor* AetherProcessor::createEditor()
 {
-    // GenericAudioProcessorEditor shows all 21 parameters for testing
-    // before the custom Victorian UI is built in Phase 6.
-    return new juce::GenericAudioProcessorEditor (*this);
+    return new AetherEditor (*this);
 }
 
 void AetherProcessor::getStateInformation (juce::MemoryBlock& destData)
