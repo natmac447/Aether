@@ -129,10 +129,11 @@ Plans:
   2. Diagram reacts in real-time to Room Size (boundary scale), Shape (reflection angles), and Proximity (listener position)
   3. Wavefront rings animate with a subtle breathing cycle (visible slow pulse)
   4. Bypassed stages fade their corresponding visual elements to ghost opacity
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 07-01: TBD
+- [ ] 07-01-PLAN.md -- VisualizationComponent with head profile, wavefronts, shape fingerprints, breathing animation, visual layers, and RMS bridge
+- [ ] 07-02-PLAN.md -- Editor integration (placement, parameter wiring, animation lifecycle), CMake build, human verification
 
 ### Phase 8: Presets, Formats & Validation
 **Goal**: Plugin ships with factory presets, builds in all target formats, passes validation, and reliably saves/restores state across DAW sessions
@@ -162,7 +163,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 3. Early Reflections & Diffuse Tail | 3/3 | Complete    | 2026-02-18 |
 | 4. Air & Distance | 2/2 | Complete    | 2026-02-18 |
 | 5. Excitation & Room Tone | 2/2 | Complete    | 2026-02-18 |
-| 6. User Interface | 0/4 | Planned     | - |
+| 6. User Interface | 4/4 | Complete    | 2026-02-18 |
 | 7. Visualization | 0/0 | Not started | - |
 | 8. Presets, Formats & Validation | 0/0 | Not started | - |
 
