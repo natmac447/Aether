@@ -64,6 +64,18 @@ juce_add_plugin(Aether
 
 juce_generate_juce_header(Aether)
 
+# Embed fonts as binary data
+juce_add_binary_data(AetherBinaryData
+    SOURCES
+        Resources/fonts/CormorantGaramond-Light.ttf
+        Resources/fonts/CormorantGaramond-Regular.ttf
+        Resources/fonts/CormorantGaramond-Italic.ttf
+        Resources/fonts/EBGaramond-Regular.ttf
+        Resources/fonts/EBGaramond-Italic.ttf
+        Resources/fonts/Spectral-Regular.ttf
+        Resources/fonts/Spectral-Italic.ttf
+)
+
 target_sources(Aether
     PRIVATE
         Source/PluginProcessor.cpp
@@ -88,6 +100,9 @@ target_sources(Aether
         Source/dsp/MixSection.h
         Source/dsp/OutputSection.cpp
         Source/dsp/OutputSection.h
+        Source/ui/AetherColours.h
+        Source/ui/AetherLookAndFeel.h
+        Source/ui/AetherLookAndFeel.cpp
 )
 
 target_compile_definitions(Aether
@@ -100,6 +115,7 @@ target_compile_definitions(Aether
 
 target_link_libraries(Aether
     PRIVATE
+        AetherBinaryData
         signalsmith-dsp
         juce::juce_audio_utils
         juce::juce_audio_processors
