@@ -7,14 +7,14 @@
 PresetSelector::PresetSelector (juce::AudioProcessorValueTreeState& apvtsRef)
     : apvts (apvtsRef)
 {
-    // Populate with preset names (em-dash \u2014 used for display)
+    // Populate with preset names
     comboBox.addItem ("-- Default --", 1);
-    comboBox.addItem ("I.  — Tight Booth", 2);
-    comboBox.addItem ("II.  — Live Room", 3);
-    comboBox.addItem ("III.  — Recording Studio", 4);
-    comboBox.addItem ("IV.  — Concert Hall", 5);
-    comboBox.addItem ("V.  — Church Hall", 6);
-    comboBox.addItem ("VI.  — Cathedral", 7);
+    comboBox.addItem ("I.  Tight Booth", 2);
+    comboBox.addItem ("II.  Live Room", 3);
+    comboBox.addItem ("III.  Recording Studio", 4);
+    comboBox.addItem ("IV.  Concert Hall", 5);
+    comboBox.addItem ("V.  Church Hall", 6);
+    comboBox.addItem ("VI.  Cathedral", 7);
 
     comboBox.setSelectedId (1, juce::dontSendNotification);
 
