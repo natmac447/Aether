@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-18)
 Phase: 7 of 8 (Visualization)
 Plan: 1 of 2 in current phase (07-01 complete)
 Status: Executing Phase 7 -- Plan 01 complete, Plan 02 next
-Last activity: 2026-02-19 - Completed quick task 1: Implement 6 factory presets and wire PresetSelector
+Last activity: 2026-02-19 - Completed quick task 2: Fix comb filtering with minimum delay floor and dry decorrelation
 
 Progress: [████████░░] 88%
 
@@ -111,6 +111,9 @@ Recent decisions affecting current work:
 - 07-01: Embedded cubic Bezier head profile path (~20 control points in 0-100 space) -- no SVG parsing needed
 - 07-01: Compare-and-swap RMS bridge retains peak between GUI reads -- prevents missing transients
 - 07-01: Asymmetric RMS smoothing (0.3 attack / 0.05 release) for natural audio-reactive breathing
+- quick-2: 1ms delay floor on reflection taps (sr * 0.001) prevents near-zero-delay copies at small Room Size
+- quick-2: 3-stage allpass decorrelation on dry signal (318/145/94 Hz coprime frequencies) before dry/wet mix reduces comb notches
+- quick-2: R-channel 1.12x allpass frequency offset matches AirSection stereo decorrelation convention
 
 ### Pending Todos
 
@@ -121,14 +124,15 @@ None yet.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 1 | Implement 6 factory presets and wire PresetSelector | 2026-02-19 | 5a0ddac | [1-implement-6-factory-presets-and-wire-pre](./quick/1-implement-6-factory-presets-and-wire-pre/) |
+| 2 | Fix comb filtering: 1ms delay floor + dry allpass decorrelation | 2026-02-19 | 6008809 | [2-fix-comb-filtering-minimum-delay-floor-d](./quick/2-fix-comb-filtering-minimum-delay-floor-d/) |
 
 ### Blockers/Concerns
 
 - ~~Volume drops slightly when Resonance Weight is turned up~~ -- RESOLVED in 05-02: Root cause was crossfade formula replacing dry signal instead of adding resonance energy. Fixed to additive blend (commit e95b5ab). Auto-gain also retuned to -3.5*pow(mix,1.4).
-- Room Size sweep produces comb-filter artifacts at intermediate positions (user-reported during 03-03 DAW verification). Tapped delay line delay time combinations create constructive/destructive interference at certain ratios. Not a blocker -- classified as tuning refinement. Potential mitigations: delay time jitter during sweeps, non-linear room size curves to skip problematic ratios, per-tap detuning at intermediate sizes.
+- ~~Room Size sweep produces comb-filter artifacts at intermediate positions~~ -- ADDRESSED in quick-2: Two-pronged fix: (1) 1ms minimum delay floor on reflection taps prevents near-zero-delay copies at small Room Size (commit 6b01571). (2) 3-stage allpass decorrelation on dry signal reduces phase coherence at dry/wet mix point (commit 6008809).
 
 ## Session Continuity
 
 Last session: 2026-02-19
-Stopped at: Completed quick-1 (Factory Presets + PresetSelector wiring)
-Resume file: .planning/quick/1-implement-6-factory-presets-and-wire-pre/1-SUMMARY.md
+Stopped at: Completed quick-2 (Fix comb filtering: delay floor + dry decorrelation)
+Resume file: .planning/quick/2-fix-comb-filtering-minimum-delay-floor-d/2-SUMMARY.md
