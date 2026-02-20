@@ -1,10 +1,13 @@
 #include "VisualizationComponent.h"
+#include "BinaryData.h"
 
 //==============================================================================
 // Constructor / Destructor
 //==============================================================================
 VisualizationComponent::VisualizationComponent()
 {
+    displayImage = juce::ImageCache::getFromMemory (BinaryData::AetherDisplayArt1_png,
+                                                     BinaryData::AetherDisplayArt1_pngSize);
 }
 
 VisualizationComponent::~VisualizationComponent()
@@ -94,8 +97,25 @@ void VisualizationComponent::updateSmoothedState()
 }
 
 //==============================================================================
-// paint: empty for now -- custom assets will be added later
+// paint
 //==============================================================================
-void VisualizationComponent::paint (juce::Graphics& /*g*/)
+void VisualizationComponent::paint (juce::Graphics& g)
 {
+    if (displayImage.isValid())
+    {
+        auto bounds = getLocalBounds().toFloat();
+        float imgW = static_cast<float> (displayImage.getWidth());
+        float imgH = static_cast<float> (displayImage.getHeight());
+
+        // Scale to fill the component while preserving aspect ratio (cover)
+        float scale = juce::jmax (bounds.getWidth() / imgW, bounds.getHeight() / imgH);
+        float drawW = imgW * scale;
+        float drawH = imgH * scale;
+        float x = (bounds.getWidth()  - drawW) * 0.5f;
+        float y = (bounds.getHeight() - drawH) * 0.5f;
+
+        g.drawImage (displayImage,
+                     x, y, drawW, drawH,
+                     0, 0, displayImage.getWidth(), displayImage.getHeight());
+    }
 }

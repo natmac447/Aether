@@ -74,6 +74,7 @@ juce_add_binary_data(AetherBinaryData
         Resources/fonts/EBGaramond-Italic.ttf
         Resources/fonts/Spectral-Regular.ttf
         Resources/fonts/Spectral-Italic.ttf
+        Resources/AetherDisplayArt1.png
 )
 
 target_sources(Aether

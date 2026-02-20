@@ -66,6 +66,9 @@ private:
     float breathPhase       = 0.0f;
     float currentRmsSmoothed = 0.0f;
 
+    // Placeholder display image
+    juce::Image displayImage;
+
     //==========================================================================
     // Atomic parameter pointers (set once, read every frame)
     std::atomic<float>* pRoomSize   = nullptr;
