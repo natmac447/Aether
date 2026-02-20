@@ -138,6 +138,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-19
-Stopped at: Completed quick-3 (Mix lock button, arrow step buttons, user preset save/load)
-Resume file: .planning/quick/3-mix-lock-dropdown-arrows-user-preset-sav/3-SUMMARY.md
+Last session: 2026-02-20
+Stopped at: Ad-hoc DSP tuning (auto-gain K=15, decorrelation fix, low shelf), display image, GitHub push
+Resume file: .planning/phases/07-visualization/.continue-here.md
