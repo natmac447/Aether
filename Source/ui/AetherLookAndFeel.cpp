@@ -140,33 +140,61 @@ void AetherLookAndFeel::drawRotarySlider (juce::Graphics& g, int x, int y,
     auto bounds = juce::Rectangle<float> (static_cast<float> (x), static_cast<float> (y),
                                            static_cast<float> (width), static_cast<float> (height));
     auto centre = bounds.getCentre();
-    float radius = juce::jmin (bounds.getWidth(), bounds.getHeight()) / 2.0f - 2.0f;
+    float fullRadius = juce::jmin (bounds.getWidth(), bounds.getHeight()) / 2.0f - 2.0f;
 
-    // ---- Drop shadow (subtle, offset 1px down) ----
+    // ---- Indent groove (recessed channel per Blender mockup) ----
+    constexpr float grooveWidth = 3.0f;
+    float radius = fullRadius - grooveWidth;
     {
-        auto shadowColour = juce::Colour (AetherColours::shadow);
-        g.setColour (shadowColour);
+        float grooveMidR = fullRadius - grooveWidth / 2.0f;
+
+        // Groove fill
+        g.setColour (juce::Colour (AetherColours::parchmentDark).withAlpha (0.6f));
+        g.drawEllipse (centre.x - grooveMidR, centre.y - grooveMidR,
+                        grooveMidR * 2.0f, grooveMidR * 2.0f, grooveWidth);
+
+        // Top shadow inside groove (beveled recess)
+        g.setColour (juce::Colour (AetherColours::shadow).withAlpha (0.10f));
+        g.drawEllipse (centre.x - grooveMidR, centre.y - grooveMidR - 0.5f,
+                        grooveMidR * 2.0f, grooveMidR * 2.0f, grooveWidth * 0.5f);
+
+        // Outer edge
+        g.setColour (juce::Colour (AetherColours::inkGhost).withAlpha (0.25f));
+        g.drawEllipse (centre.x - fullRadius, centre.y - fullRadius,
+                        fullRadius * 2.0f, fullRadius * 2.0f, 0.5f);
+    }
+
+    // ---- Drop shadow (subtle, offset down-right) ----
+    {
+        g.setColour (juce::Colour (AetherColours::shadow));
         g.fillEllipse (centre.x - radius + 0.5f, centre.y - radius + 1.0f,
                         radius * 2.0f, radius * 2.0f);
     }
 
-    // ---- Body: radial gradient (Parchment Light highlight at top-left,
-    //      Parchment Dark shadow at bottom-right) ----
+    // ---- Body: radial gradient (dome shading) ----
     {
         juce::ColourGradient bodyGrad (
             juce::Colour (AetherColours::parchmentLight),
-            centre.x - radius * 0.4f, centre.y - radius * 0.4f,
+            centre.x - radius * 0.35f, centre.y - radius * 0.35f,
             juce::Colour (AetherColours::parchmentDark),
-            centre.x + radius * 0.4f, centre.y + radius * 0.4f,
-            true);  // radial
+            centre.x + radius * 0.5f, centre.y + radius * 0.5f,
+            true);
+        bodyGrad.addColour (0.45, juce::Colour (AetherColours::parchment));
         g.setGradientFill (bodyGrad);
         g.fillEllipse (centre.x - radius, centre.y - radius,
                         radius * 2.0f, radius * 2.0f);
     }
 
+    // ---- Concentric score line (machined dial texture) ----
+    {
+        g.setColour (juce::Colour (AetherColours::sepia).withAlpha (0.04f));
+        float r = radius * 0.55f;
+        g.drawEllipse (centre.x - r, centre.y - r, r * 2.0f, r * 2.0f, 0.5f);
+    }
+
     // ---- Inner highlight: subtle white glow at top ----
     {
-        g.setColour (juce::Colours::white.withAlpha (0.3f));
+        g.setColour (juce::Colours::white.withAlpha (0.25f));
         float highlightR = radius - 1.0f;
         g.drawEllipse (centre.x - highlightR, centre.y - highlightR - 0.5f,
                         highlightR * 2.0f, highlightR * 2.0f, 0.5f);
@@ -176,14 +204,13 @@ void AetherLookAndFeel::drawRotarySlider (juce::Graphics& g, int x, int y,
     {
         g.setColour (juce::Colour (AetherColours::inkLight));
         g.drawEllipse (centre.x - radius, centre.y - radius,
-                        radius * 2.0f, radius * 2.0f, 1.0f);
+                        radius * 2.0f, radius * 2.0f, 0.75f);
     }
 
-    // ---- Indicator line: 1.5px wide, from inner to outer radius ----
+    // ---- Indicator line ----
     {
         float currentAngle = startAngle + sliderPos * (endAngle - startAngle);
 
-        // Indicator spans from (radius - 16px) to (radius - 2px) from center
         float indicatorLen = juce::jmin (16.0f, radius * 0.55f);
         float outerR = radius - 2.0f;
         float innerR = outerR - indicatorLen;
@@ -194,7 +221,7 @@ void AetherLookAndFeel::drawRotarySlider (juce::Graphics& g, int x, int y,
         float lineY2 = centre.y - outerR * std::cos (currentAngle);
 
         g.setColour (juce::Colour (AetherColours::ink));
-        g.drawLine (lineX1, lineY1, lineX2, lineY2, 1.0f);
+        g.drawLine (lineX1, lineY1, lineX2, lineY2, 1.5f);
     }
 }
 

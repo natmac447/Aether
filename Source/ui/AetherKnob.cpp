@@ -37,6 +37,10 @@ AetherKnob::AetherKnob (const juce::String& name, int knobSize,
     slider.addListener (this);
     addAndMakeVisible (slider);
 
+    // Repaint on hover for warm glow effect
+    setRepaintsOnMouseActivity (true);
+    slider.addMouseListener (this, false);
+
     // =========================================================================
     // Value display label
     // =========================================================================
@@ -142,21 +146,63 @@ void AetherKnob::paint (juce::Graphics& g)
     auto bounds = getLocalBounds();
     int componentWidth = bounds.getWidth();
 
-    // ---- Draw the knob using LookAndFeel's drawRotarySlider with displayValue ----
-    {
-        // Knob area: centred at top, knobDiameter x knobDiameter
-        int knobX = (componentWidth - knobDiameter) / 2;
-        int knobY = 0;
+    int knobX = (componentWidth - knobDiameter) / 2;
+    int knobY = 0;
+    float cx = knobX + knobDiameter / 2.0f;
+    float cy = knobDiameter / 2.0f;
 
+    // ---- Scale dot markers (10 dots across 270° arc, within component bounds) ----
+    {
+        float knobRadius = knobDiameter / 2.0f - 2.0f;
+        float markR = knobRadius + 6.0f;
         float startAngle = juce::MathConstants<float>::pi * 1.25f;
         float endAngle   = juce::MathConstants<float>::pi * 2.75f;
 
-        // Use displayValue (animated) instead of slider's actual position
+        g.setColour (juce::Colour (AetherColours::inkFaint).withAlpha (0.4f));
+
+        for (int i = 0; i < 10; ++i)
+        {
+            float frac = static_cast<float> (i) / 9.0f;
+            float angle = startAngle + frac * (endAngle - startAngle);
+            float mx = cx + markR * std::sin (angle);
+            float my = cy - markR * std::cos (angle);
+            if (my - 1.0f >= 0.0f)
+                g.fillEllipse (mx - 1.0f, my - 1.0f, 2.0f, 2.0f);
+        }
+    }
+
+    // ---- Draw the knob using LookAndFeel's drawRotarySlider ----
+    {
+        float startAngle = juce::MathConstants<float>::pi * 1.25f;
+        float endAngle   = juce::MathConstants<float>::pi * 2.75f;
+
         getLookAndFeel().drawRotarySlider (g, knobX, knobY,
                                            knobDiameter, knobDiameter,
                                            displayValue,
                                            startAngle, endAngle,
                                            slider);
+    }
+
+    // ---- Hover glow (warm tint on knob face, within body bounds) ----
+    {
+        auto mousePos = getMouseXYRelative();
+        bool mouseIsOver = getLocalBounds().toFloat()
+                               .removeFromTop (static_cast<float> (knobDiameter))
+                               .contains (mousePos.toFloat());
+        if (mouseIsOver && !bypassed)
+        {
+            float glowR = knobDiameter / 2.0f - 6.0f;
+            g.setColour (juce::Colour (AetherColours::accentCopper).withAlpha (0.07f));
+            g.fillEllipse (cx - glowR, cy - glowR, glowR * 2.0f, glowR * 2.0f);
+        }
+    }
+
+    // ---- Accent border overlay (warm tint for Mix knob) ----
+    if (accentBorder)
+    {
+        float r = (knobDiameter - 8.0f) / 2.0f;
+        g.setColour (juce::Colour (AetherColours::accentWarm).withAlpha (0.35f));
+        g.drawEllipse (cx - r, cy - r, r * 2.0f, r * 2.0f, 1.0f);
     }
 
     // ---- Draw the knob name label with letter spacing ----
@@ -177,6 +223,9 @@ void AetherKnob::paint (juce::Graphics& g)
 
     // Bypassed state handled by setAlpha() -- no overlay needed
 }
+
+void AetherKnob::mouseEnter (const juce::MouseEvent& e) { repaint(); juce::Component::mouseEnter (e); }
+void AetherKnob::mouseExit  (const juce::MouseEvent& e) { repaint(); juce::Component::mouseExit (e); }
 
 void AetherKnob::resized()
 {

@@ -57,11 +57,11 @@ private:
     AetherKnob       resWeightKnob { "Body", 56 };
     juce::ComboBox   materialCombo;
 
-    // Stage II: Early Reflections (center panel)
+    // Stage II: Early Reflections (center panel -- larger 64px knobs for hierarchy)
     SectionComponent reflSection { "", "Early Reflections" };
-    AetherKnob       reflSizeKnob { "Room Size", 56 };
-    AetherKnob       reflProxKnob { "Proximity", 56 };
-    AetherKnob       reflWidthKnob { "Width", 56 };
+    AetherKnob       reflSizeKnob { "Room Size", 64 };
+    AetherKnob       reflProxKnob { "Proximity", 64 };
+    AetherKnob       reflWidthKnob { "Width", 64 };
     juce::ComboBox   reflShapeCombo;
 
     // Stage III: Air & Distance (right panel)

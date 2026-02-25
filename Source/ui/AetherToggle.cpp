@@ -65,12 +65,9 @@ void AetherToggle::setBypassed (bool shouldBeBypassed)
 // Component overrides
 //==============================================================================
 
-void AetherToggle::paint (juce::Graphics& g)
+void AetherToggle::paint (juce::Graphics& /*g*/)
 {
-    // Outer border: 1px Ink Ghost rounded rect around the entire toggle row
-    auto bounds = getLocalBounds().toFloat().reduced (0.5f);
-    g.setColour (juce::Colour (AetherColours::inkGhost));
-    g.drawRoundedRectangle (bounds, 2.0f, 1.0f);
+    // No outer border -- individual buttons draw their own separated borders
 }
 
 void AetherToggle::paintOverChildren (juce::Graphics& /*g*/)
@@ -85,12 +82,14 @@ void AetherToggle::resized()
     if (numButtons == 0)
         return;
 
-    int buttonWidth = bounds.getWidth() / numButtons;
+    constexpr int gap = 3;  // px between buttons for visual separation
+    int totalGaps = (numButtons - 1) * gap;
+    int buttonWidth = (bounds.getWidth() - totalGaps) / numButtons;
 
     for (int i = 0; i < numButtons; ++i)
     {
-        int x = i * buttonWidth;
-        int w = (i == numButtons - 1) ? (bounds.getWidth() - x) : buttonWidth;  // Last button takes remainder
+        int x = i * (buttonWidth + gap);
+        int w = (i == numButtons - 1) ? (bounds.getWidth() - x) : buttonWidth;
         buttons[i]->setBounds (x, 0, w, bounds.getHeight());
     }
 }

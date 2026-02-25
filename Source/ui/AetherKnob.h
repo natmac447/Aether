@@ -57,9 +57,15 @@ public:
     bool isBypassed() const noexcept { return bypassed; }
 
     //==========================================================================
+    // Accent border (warm tint for special knobs like Mix)
+    void setAccentBorder (bool accent) { accentBorder = accent; repaint(); }
+
+    //==========================================================================
     // Component overrides
     void paint (juce::Graphics& g) override;
     void resized() override;
+    void mouseEnter (const juce::MouseEvent& event) override;
+    void mouseExit (const juce::MouseEvent& event) override;
 
     //==========================================================================
     // Slider::Listener
@@ -101,6 +107,9 @@ private:
 
     // Bypass state
     bool bypassed = false;
+
+    // Accent border (warm tint for Mix knob)
+    bool accentBorder = false;
 
     // Formatters
     std::function<juce::String (float)>                                    simpleFormatter;

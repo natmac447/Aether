@@ -6,7 +6,7 @@
 #include <array>
 
 // Stage II: Early Reflections
-// Stereo tapped delay line with 16 taps (8 per channel), 7 room geometry
+// Stereo tapped delay line with 16 taps (8 per channel), 30 room geometry
 // shape presets, Room Size/Shape/Proximity/Width controls, per-tap lowpass
 // absorption, and 10ms bypass crossfade.
 
@@ -46,7 +46,7 @@ public:
     const ShapePreset& getShapePreset (int index) const;
 
     static constexpr int kTapsPerChannel = 8;
-    static constexpr int kNumShapes = 7;
+    static constexpr int kNumShapes = 30;
     static const ShapePreset kShapes[kNumShapes];
 
 private:

@@ -14,16 +14,42 @@ struct ShapeTailInfluence
     float tailModalCharacter;
 };
 
-static constexpr int kNumShapes = 7;
+static constexpr int kNumShapes = 30;
 
 static constexpr ShapeTailInfluence kShapeTailInfluence[kNumShapes] = {
-    { 0.3f, 0.2f },    // 0: The Parlour -- regular, even
-    { 0.4f, 0.35f },   // 1: The Gallery -- moderate density
-    { 0.5f, 0.45f },   // 2: The Chamber -- dense, studio-like
-    { 0.7f, 0.6f },    // 3: The Nave -- high density, clustered
-    { 0.55f, 0.5f },   // 4: The Alcove -- irregular, scattered
-    { 0.8f, 0.7f },    // 5: The Crypt -- very dense, dark
-    { 0.35f, 0.15f }   // 6: The Conservatory -- bright, even
+    // Small Rooms (0-9)
+    { 0.30f, 0.20f },   //  0: The Parlour -- regular, even
+    { 0.55f, 0.50f },   //  1: The Alcove -- irregular, scattered
+    { 0.80f, 0.70f },   //  2: The Crypt -- very dense, dark
+    { 0.35f, 0.25f },   //  3: The Vestibule -- hard, clear
+    { 0.85f, 0.80f },   //  4: The Closet -- extremely dense, damped
+    { 0.45f, 0.30f },   //  5: The Study -- moderate, warm
+    { 0.90f, 0.85f },   //  6: The Telephone Box -- maximum density, metallic
+    { 0.60f, 0.55f },   //  7: The Pantry -- complex scattering
+    { 0.50f, 0.60f },   //  8: The Confessional -- moderate, asymmetric
+    { 0.70f, 0.65f },   //  9: The Powder Room -- bright, dense
+    // Medium Rooms (10-19)
+    { 0.50f, 0.45f },   // 10: The Chamber -- dense, studio-like
+    { 0.40f, 0.35f },   // 11: The Gallery -- moderate density
+    { 0.35f, 0.15f },   // 12: The Conservatory -- bright, even
+    { 0.55f, 0.40f },   // 13: The Scriptorium -- stone, rich
+    { 0.30f, 0.20f },   // 14: The Library -- very absorptive
+    { 0.40f, 0.30f },   // 15: The Drawing Room -- refined
+    { 0.50f, 0.45f },   // 16: The Workshop -- hard, industrial
+    { 0.50f, 0.40f },   // 17: The Refectory -- stone+wood
+    { 0.40f, 0.25f },   // 18: The Solarium -- glass, airy
+    { 0.65f, 0.50f },   // 19: The Apothecary -- complex, scattered
+    // Large Rooms (20-29)
+    { 0.70f, 0.60f },   // 20: The Nave -- high density, clustered
+    { 0.45f, 0.30f },   // 21: The Ballroom -- grand, elegant
+    { 0.40f, 0.35f },   // 22: The Atrium -- open, columns
+    { 0.65f, 0.55f },   // 23: The Chapel -- reverberant, sacred
+    { 0.35f, 0.40f },   // 24: The Warehouse -- harsh, scattered
+    { 0.85f, 0.75f },   // 25: The Cistern -- extremely reverberant
+    { 0.60f, 0.65f },   // 26: The Observatory -- dome-focused
+    { 0.55f, 0.45f },   // 27: The Great Hall -- timber+stone
+    { 0.30f, 0.20f },   // 28: The Greenhouse -- bright, even
+    { 0.70f, 0.60f },   // 29: The Mausoleum -- marble, resonant
 };
 
 // =============================================================================

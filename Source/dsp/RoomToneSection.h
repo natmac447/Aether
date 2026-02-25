@@ -47,15 +47,41 @@ struct ShapeAmbientCharacter
     float presenceGainDb;       // dB adjustment to presence peak gain
 };
 
-// 7 shapes matching ReflectionsSection: Parlour, Gallery, Chamber, Nave, Alcove, Crypt, Conservatory
+// 30 shapes matching ReflectionsSection (10 small, 10 medium, 10 large)
 static const ShapeAmbientCharacter kShapeAmbience[] = {
-    {   0.0f,     0.0f,  0.0f },   // Parlour: neutral reference
-    { -30.0f,  -500.0f,  1.0f },   // Gallery: long narrow space, stronger low-mid resonance, darker
-    {  20.0f,   300.0f, -0.5f },   // Chamber: balanced, slightly brighter
-    { -50.0f,  -800.0f,  1.5f },   // Nave: large open space, strong low-mid, quite dark
-    {  40.0f,   500.0f, -1.0f },   // Alcove: small enclosed, brighter, less bass
-    { -40.0f,  -600.0f,  2.0f },   // Crypt: underground, strong low resonance, very dark
-    {  10.0f,   200.0f,  0.5f },   // Conservatory: glass/metal, bright ambience
+    // Small Rooms (0-9)
+    {   0.0f,     0.0f,  0.0f },   //  0: Parlour: neutral reference
+    {  40.0f,   500.0f, -1.0f },   //  1: Alcove: small enclosed, brighter
+    { -40.0f,  -600.0f,  2.0f },   //  2: Crypt: underground, strong low resonance
+    {  10.0f,   200.0f, -0.5f },   //  3: Vestibule: hard walls, slightly bright
+    {  30.0f,  -200.0f, -1.5f },   //  4: Closet: fabric dampens, proximity presence
+    { -20.0f,  -300.0f,  0.5f },   //  5: Study: books absorb, warm, mid-forward
+    {  50.0f,   800.0f, -2.0f },   //  6: Telephone Box: metallic, very bright, thin
+    { -10.0f,  -100.0f,  0.0f },   //  7: Pantry: mixed surfaces, nearly neutral
+    { -25.0f,  -400.0f,  1.0f },   //  8: Confessional: wood absorbs, dark, intimate
+    {  35.0f,   600.0f, -1.0f },   //  9: Powder Room: ceramic tiles, bright
+    // Medium Rooms (10-19)
+    {  20.0f,   300.0f, -0.5f },   // 10: Chamber: balanced, slightly brighter
+    { -30.0f,  -500.0f,  1.0f },   // 11: Gallery: long narrow, stronger low-mid
+    {  10.0f,   200.0f,  0.5f },   // 12: Conservatory: glass/metal, bright ambience
+    { -35.0f,  -400.0f,  1.5f },   // 13: Scriptorium: stone, dark medieval
+    { -45.0f,  -700.0f,  0.5f },   // 14: Library: books absorb, very dark/warm
+    {  -5.0f,   100.0f,  0.0f },   // 15: Drawing Room: balanced, refined
+    {  15.0f,   400.0f, -0.5f },   // 16: Workshop: hard surfaces, slightly bright
+    { -20.0f,  -300.0f,  1.0f },   // 17: Refectory: stone+wood, warm
+    {  25.0f,   300.0f, -0.5f },   // 18: Solarium: glass, bright and airy
+    {   5.0f,     0.0f,  0.5f },   // 19: Apothecary: complex scattering, slight presence
+    // Large Rooms (20-29)
+    { -50.0f,  -800.0f,  1.5f },   // 20: Nave: large open space, strong low-mid
+    { -10.0f,   100.0f,  0.0f },   // 21: Ballroom: balanced, grand
+    {   5.0f,   200.0f, -0.5f },   // 22: Atrium: open, some brightness from stone
+    { -40.0f,  -600.0f,  1.5f },   // 23: Chapel: stone, reverberant, dark
+    {  20.0f,   300.0f, -1.0f },   // 24: Warehouse: harsh, bright, metallic
+    { -60.0f, -1000.0f,  2.5f },   // 25: Cistern: underground, extreme low resonance
+    { -15.0f,  -200.0f,  0.5f },   // 26: Observatory: dome focuses sound, moderate
+    { -25.0f,  -400.0f,  1.0f },   // 27: Great Hall: timber+stone, warm
+    {  30.0f,   500.0f, -1.5f },   // 28: Greenhouse: all glass, very bright
+    { -45.0f,  -700.0f,  2.0f },   // 29: Mausoleum: marble, cold, resonant
 };
 
 // =========================================================================
@@ -78,7 +104,7 @@ public:
 
     void setAmbience (float ambienceNormalized);         // 0.0-1.0
     void setRoomSize (float roomSizeNormalized);         // 0.0-1.0 (from Stage II)
-    void setShape (int shapeIndex);                      // 0-6 (from Stage II)
+    void setShape (int shapeIndex);                      // 0-29 (from Stage II)
     void setGateMode (int gateModeIndex);                // 0/1/2
     void setTransportPlaying (bool isPlaying);           // from AudioPlayHead
 

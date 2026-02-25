@@ -56,10 +56,16 @@ namespace ParchmentElements
 
     /**
      * Draws "I. Cabinet Resonance" style section labels.
-     * Numeral in Cormorant Garamond italic, name in Spectral uppercase with 3px tracking.
-     * Both rendered in Ink Faint colour, with 4px gap between numeral and name.
+     * Numeral in Cormorant Garamond italic (Ink Faint), name in Spectral uppercase (Ink Light)
+     * with 3px tracking. 4px gap between numeral and name.
      */
     void drawSectionLabel (juce::Graphics& g, const juce::String& numeral,
                            const juce::String& name, float x, float y, float width,
                            const juce::Font& numeralFont, const juce::Font& nameFont);
+
+    /**
+     * Draws a subtle recessed well behind a group of controls.
+     * Parchment Dark fill at low alpha with faint inner shadow at top edge.
+     */
+    void drawControlWell (juce::Graphics& g, juce::Rectangle<float> bounds);
 }

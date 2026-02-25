@@ -43,7 +43,7 @@ void RoomToneSection::updateShapingFilters()
     float lpfFreq = 10000.0f - 4000.0f * currentRoomSize;
 
     // Apply Shape offsets from kShapeAmbience lookup table
-    if (currentShapeIndex >= 0 && currentShapeIndex < 7)
+    if (currentShapeIndex >= 0 && currentShapeIndex < 30)
     {
         const auto& shapeChar = kShapeAmbience[currentShapeIndex];
         peakFreq   += shapeChar.presenceFreqOffset;

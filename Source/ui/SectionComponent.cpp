@@ -37,21 +37,26 @@ void SectionComponent::paint (juce::Graphics& g)
     auto* laf = dynamic_cast<AetherLookAndFeel*> (&getLookAndFeel());
 
     juce::Font numeralFont (juce::FontOptions ("Georgia", 12.0f, juce::Font::italic));
-    juce::Font nameFont (juce::FontOptions ("Georgia", 13.0f, juce::Font::plain));
+    juce::Font nameFont (juce::FontOptions ("Georgia", 14.0f, juce::Font::plain));
 
     if (laf != nullptr)
     {
         numeralFont = laf->getDisplayFontItalic (12.0f);
-        nameFont = laf->getSpectralFont (13.0f);
+        nameFont = laf->getSpectralFont (14.0f);
     }
 
     // Center label over full width (bypass button overlaps but titles look better centred)
     float availWidth = static_cast<float> (getWidth());
 
     ParchmentElements::drawSectionLabel (g, sectionNumeral, sectionName,
-                                          0.0f, 14.0f, // x, y (baseline)
+                                          0.0f, 16.0f, // x, y (baseline -- aligned with bypass button center)
                                           availWidth,
                                           numeralFont, nameFont);
+
+    // Subtle underline rule below section label
+    g.setColour (juce::Colour (AetherColours::inkGhost).withAlpha (0.4f));
+    g.drawLine (4.0f, static_cast<float> (kLabelRowHeight) - 2.0f,
+                availWidth - 4.0f, static_cast<float> (kLabelRowHeight) - 2.0f, 0.5f);
 
     // Bypassed state is handled by reducing child component alpha (no overlay)
 }

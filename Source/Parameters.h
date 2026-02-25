@@ -97,10 +97,20 @@ inline juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout
     ));
 
     layout.add (std::make_unique<juce::AudioParameterChoice> (
-        juce::ParameterID { ParamIDs::reflShape, 3 },
+        juce::ParameterID { ParamIDs::reflShape, 4 },
         "II Reflections - Shape",
-        juce::StringArray { "The Parlour", "The Gallery", "The Chamber", "The Nave",
-                            "The Alcove", "The Crypt", "The Conservatory" },
+        juce::StringArray { "The Parlour", "The Alcove", "The Crypt",
+                            "The Vestibule", "The Closet", "The Study",
+                            "The Telephone Box", "The Pantry", "The Confessional",
+                            "The Powder Room",
+                            "The Chamber", "The Gallery", "The Conservatory",
+                            "The Scriptorium", "The Library", "The Drawing Room",
+                            "The Workshop", "The Refectory", "The Solarium",
+                            "The Apothecary",
+                            "The Nave", "The Ballroom", "The Atrium",
+                            "The Chapel", "The Warehouse", "The Cistern",
+                            "The Observatory", "The Great Hall", "The Greenhouse",
+                            "The Mausoleum" },
         0  // default: The Parlour
     ));
 

@@ -84,7 +84,7 @@ AetherEditor::AetherEditor (AetherProcessor& p)
     addAndMakeVisible (levelKnob);
 
     // =========================================================================
-    // 6. ComboBoxes for Material (10 items) and Shape (7 items)
+    // 6. ComboBoxes for Material (10 items) and Shape (30 items)
     // =========================================================================
     materialCombo.addItemList (
         juce::StringArray { "Pine", "Oak", "Walnut", "Mahogany", "Iron",
@@ -96,9 +96,42 @@ AetherEditor::AetherEditor (AetherProcessor& p)
     materialCombo.setJustificationType (juce::Justification::centred);
     addAndMakeVisible (materialCombo);
 
-    reflShapeCombo.addItemList (
-        juce::StringArray { "The Parlour", "The Gallery", "The Chamber", "The Nave",
-                            "The Alcove", "The Crypt", "The Conservatory" }, 1);
+    // Small Rooms
+    reflShapeCombo.addSectionHeading ("Small Rooms");
+    reflShapeCombo.addItem ("The Parlour", 1);
+    reflShapeCombo.addItem ("The Alcove", 2);
+    reflShapeCombo.addItem ("The Crypt", 3);
+    reflShapeCombo.addItem ("The Vestibule", 4);
+    reflShapeCombo.addItem ("The Closet", 5);
+    reflShapeCombo.addItem ("The Study", 6);
+    reflShapeCombo.addItem ("The Telephone Box", 7);
+    reflShapeCombo.addItem ("The Pantry", 8);
+    reflShapeCombo.addItem ("The Confessional", 9);
+    reflShapeCombo.addItem ("The Powder Room", 10);
+    // Medium Rooms
+    reflShapeCombo.addSectionHeading ("Medium Rooms");
+    reflShapeCombo.addItem ("The Chamber", 11);
+    reflShapeCombo.addItem ("The Gallery", 12);
+    reflShapeCombo.addItem ("The Conservatory", 13);
+    reflShapeCombo.addItem ("The Scriptorium", 14);
+    reflShapeCombo.addItem ("The Library", 15);
+    reflShapeCombo.addItem ("The Drawing Room", 16);
+    reflShapeCombo.addItem ("The Workshop", 17);
+    reflShapeCombo.addItem ("The Refectory", 18);
+    reflShapeCombo.addItem ("The Solarium", 19);
+    reflShapeCombo.addItem ("The Apothecary", 20);
+    // Large Rooms
+    reflShapeCombo.addSectionHeading ("Large Rooms");
+    reflShapeCombo.addItem ("The Nave", 21);
+    reflShapeCombo.addItem ("The Ballroom", 22);
+    reflShapeCombo.addItem ("The Atrium", 23);
+    reflShapeCombo.addItem ("The Chapel", 24);
+    reflShapeCombo.addItem ("The Warehouse", 25);
+    reflShapeCombo.addItem ("The Cistern", 26);
+    reflShapeCombo.addItem ("The Observatory", 27);
+    reflShapeCombo.addItem ("The Great Hall", 28);
+    reflShapeCombo.addItem ("The Greenhouse", 29);
+    reflShapeCombo.addItem ("The Mausoleum", 30);
     reflShapeCombo.setColour (juce::ComboBox::textColourId, juce::Colour (AetherColours::inkLight));
     reflShapeCombo.setColour (juce::ComboBox::outlineColourId, juce::Colour (AetherColours::inkGhost));
     reflShapeCombo.setColour (juce::ComboBox::backgroundColourId, juce::Colours::transparentBlack);
@@ -174,6 +207,10 @@ AetherEditor::AetherEditor (AetherProcessor& p)
     // Total: 11 + 2 + 2 + 6 = 21 parameters connected
 
     // =========================================================================
+    // =========================================================================
+    // Mix knob accent border
+    mixKnob.setAccentBorder (true);
+
     // 10. Value formatters for special display params
     // =========================================================================
     // Room Size: "62% (Medium)" format
@@ -331,7 +368,7 @@ void AetherEditor::paint (juce::Graphics& g)
     // 2. Corner brackets
     ParchmentElements::drawCornerBrackets (g, getLocalBounds());
 
-    // 3. Header zone (0-40px)
+    // 4. Header zone (0-40px)
     {
         // "AETHER" title centred over left column
         ParchmentElements::drawLetterSpacedText (
@@ -342,11 +379,23 @@ void AetherEditor::paint (juce::Graphics& g)
             juce::Justification::horizontallyCentred);
     }
 
-    // 4. Header double-rule border
+    // 5. Header double-rule border
     ParchmentElements::drawDoubleRule (g, 40.0f, 0.0f, 900.0f, true);
 
-    // 5. Footer zone (500-530px)
+    // 6. Footer zone (500-530px)
     {
+        // Decorative flourish above footer rule (centered three-dot pattern)
+        {
+            const float flY = 496.0f;
+            g.setColour (juce::Colour (AetherColours::inkGhost).withAlpha (0.5f));
+            g.fillEllipse (448.0f, flY, 1.5f, 1.5f);    // center dot
+            g.fillEllipse (442.0f, flY, 1.0f, 1.0f);    // left dot
+            g.fillEllipse (454.0f, flY, 1.0f, 1.0f);    // right dot
+            // Thin flanking lines
+            g.drawLine (420.0f, flY + 0.5f, 439.0f, flY + 0.5f, 0.3f);
+            g.drawLine (458.0f, flY + 0.5f, 480.0f, flY + 0.5f, 0.3f);
+        }
+
         // Footer double-rule border
         ParchmentElements::drawDoubleRule (g, 500.0f, 0.0f, 900.0f, false);
 
@@ -360,7 +409,7 @@ void AetherEditor::paint (juce::Graphics& g)
         // Cairn maker's mark centred: triangle icon + "CAIRN" side by side
         {
             const auto markColour = juce::Colour (AetherColours::inkFaint);
-            const float baseY = 518.0f;
+            const float baseY = 515.0f;
 
             // Measure "CAIRN" text width for centering the pair
             const float textWidth = 42.0f;
@@ -398,14 +447,15 @@ void AetherEditor::paint (juce::Graphics& g)
                 markColour,
                 juce::Justification::left);
         }
+
     }
 
-    // 6. Column dividers: 1px Ink Ghost vertical lines
+    // 7. Column dividers: 1px Ink Ghost vertical lines
     g.setColour (juce::Colour (AetherColours::inkGhost));
     g.drawLine (220.0f, 43.0f, 220.0f, 497.0f, 1.0f);
     g.drawLine (680.0f, 43.0f, 680.0f, 497.0f, 1.0f);
 
-    // 7. Diamond dividers between left panel sections
+    // 8. Diamond dividers between left panel sections
     {
         float leftX = static_cast<float> (Layout::kSidePadding);
         float rightX = static_cast<float> (Layout::kLeftPanelWidth - Layout::kSidePadding);
@@ -413,7 +463,7 @@ void AetherEditor::paint (juce::Graphics& g)
         ParchmentElements::drawDiamondDivider (g, 330.0f, leftX, rightX);
     }
 
-    // 8. Diamond dividers between right panel sections
+    // 9. Diamond dividers between right panel sections
     {
         float leftX = static_cast<float> (Layout::kRightX + Layout::kSidePadding);
         float rightX = static_cast<float> (Layout::kRightX + Layout::kRightPanelWidth - Layout::kSidePadding);
@@ -421,7 +471,26 @@ void AetherEditor::paint (juce::Graphics& g)
         ParchmentElements::drawDiamondDivider (g, 330.0f, leftX, rightX);
     }
 
-    // 9. (Visualization is now a child component -- no placeholder drawing needed)
+    // 10. Display area frame (recessed groove matching knob indent style)
+    {
+        auto vizRect = juce::Rectangle<float> (284.0f, 76.0f, 332.0f, 248.0f);
+        constexpr float grooveW = 2.5f;
+        constexpr float cornerR = 0.0f;
+
+        // Groove channel fill (centered on viz edge, extends outward)
+        auto grooveCentre = vizRect.expanded (grooveW / 2.0f);
+        g.setColour (juce::Colour (AetherColours::parchmentDark));
+        g.drawRoundedRectangle (grooveCentre, cornerR, grooveW);
+
+        // Top-lit shadow (recessed depth)
+        g.setColour (juce::Colour (AetherColours::shadow).withAlpha (0.12f));
+        g.drawRoundedRectangle (grooveCentre.translated (0.0f, -0.5f), cornerR, grooveW);
+
+        // Outer edge line
+        auto outerEdge = vizRect.expanded (grooveW);
+        g.setColour (juce::Colour (AetherColours::inkLight).withAlpha (0.3f));
+        g.drawRoundedRectangle (outerEdge, cornerR + 0.5f, 0.75f);
+    }
 }
 
 //==============================================================================
@@ -443,6 +512,7 @@ void AetherEditor::resized()
     // =========================================================================
     const int knobH = 89;   // 56px knob + 2+14+1+16 label/value
     const int knobDia = 56;
+    const int knobBoundsW = knobDia + 16;  // Extra width for dot markers
 
     // =========================================================================
     // Left panel: Stages I, IV, V
@@ -454,8 +524,8 @@ void AetherEditor::resized()
         // Stage I: Resonance (y=46, h=148)
         resSection.setBounds (lx, 46, lw, 148);
         auto resCtrl = resSection.getControlArea().translated (lx, 46);
-        int knobX = resCtrl.getX() + (resCtrl.getWidth() - knobDia) / 2;
-        resWeightKnob.setBounds (knobX, resCtrl.getY(), knobDia, knobH);
+        int knobX = resCtrl.getX() + (resCtrl.getWidth() - knobBoundsW) / 2;
+        resWeightKnob.setBounds (knobX, resCtrl.getY(), knobBoundsW, knobH);
         materialCombo.setBounds (resCtrl.getX(), resCtrl.getY() + knobH + 4, resCtrl.getWidth(), 24);
         // Material arrow buttons (inside combo box, offset from right edge)
         materialUpArrow.setBounds (materialCombo.getRight() - 18, materialCombo.getY(), 14, 12);
@@ -464,29 +534,31 @@ void AetherEditor::resized()
         // Stage IV: Excitation (y=210, h=115)
         excitSection.setBounds (lx, 210, lw, 115);
         auto excitCtrl = excitSection.getControlArea().translated (lx, 210);
-        knobX = excitCtrl.getX() + (excitCtrl.getWidth() - knobDia) / 2;
-        excitDriveKnob.setBounds (knobX, excitCtrl.getY(), knobDia, knobH);
+        knobX = excitCtrl.getX() + (excitCtrl.getWidth() - knobBoundsW) / 2;
+        excitDriveKnob.setBounds (knobX, excitCtrl.getY(), knobBoundsW, knobH);
 
         // Stage V: Room Tone (y=340, h=140)
         toneSection.setBounds (lx, 340, lw, 140);
         auto toneCtrl = toneSection.getControlArea().translated (lx, 340);
-        knobX = toneCtrl.getX() + (toneCtrl.getWidth() - knobDia) / 2;
-        toneAmbKnob.setBounds (knobX, toneCtrl.getY(), knobDia, knobH);
+        knobX = toneCtrl.getX() + (toneCtrl.getWidth() - knobBoundsW) / 2;
+        toneAmbKnob.setBounds (knobX, toneCtrl.getY(), knobBoundsW, knobH);
         toneGateToggle.setBounds (toneCtrl.getX(), toneCtrl.getY() + knobH + 4, toneCtrl.getWidth(), 20);
     }
 
     // =========================================================================
-    // Center panel: Stage II
+    // Center panel: Stage II (64px knobs for visual hierarchy)
     // =========================================================================
     {
         const int cx = kCenterX + kCenterPadding;
         const int cw = kCenterWidth - 2 * kCenterPadding;
+        const int largeKnobDia = 64;
+        const int knobHLarge = largeKnobDia + 2 + 14 + 1 + 16;  // 97px
 
         // Section label at top
         reflSection.setBounds (cx, 46, cw, 24);
 
         // Visualization component (replaces placeholder rectangle)
-        vizComponent.setBounds (280, 68, 340, 260);
+        vizComponent.setBounds (284, 76, 332, 248);
 
         // Shape dropdown above knobs (below visualization + caption)
         const int shapeY = 350;
@@ -497,15 +569,15 @@ void AetherEditor::resized()
 
         // Room control knobs centred between dropdown bottom and footer rule
         const int dropdownBottom = shapeY + 24;
-        const int knobRowY = dropdownBottom + (500 - dropdownBottom - knobH) / 2;
+        const int knobRowY = dropdownBottom + (500 - dropdownBottom - knobHLarge) / 2;
         const int knobW = 80;
         const int knobSpacing = 30;
         const int totalKnobsW = 3 * knobW + 2 * knobSpacing;
         const int knobStartX = cx + (cw - totalKnobsW) / 2;
 
-        reflSizeKnob.setBounds (knobStartX, knobRowY, knobW, knobH);
-        reflProxKnob.setBounds (knobStartX + knobW + knobSpacing, knobRowY, knobW, knobH);
-        reflWidthKnob.setBounds (knobStartX + 2 * (knobW + knobSpacing), knobRowY, knobW, knobH);
+        reflSizeKnob.setBounds (knobStartX, knobRowY, knobW, knobHLarge);
+        reflProxKnob.setBounds (knobStartX + knobW + knobSpacing, knobRowY, knobW, knobHLarge);
+        reflWidthKnob.setBounds (knobStartX + 2 * (knobW + knobSpacing), knobRowY, knobW, knobHLarge);
     }
 
     // =========================================================================
@@ -518,8 +590,8 @@ void AetherEditor::resized()
         // Stage III: Air (y=46, h=148)
         airSection.setBounds (rx, 46, rw, 148);
         auto airCtrl = airSection.getControlArea().translated (rx, 46);
-        int knobX = airCtrl.getX() + (airCtrl.getWidth() - knobDia) / 2;
-        airAmountKnob.setBounds (knobX, airCtrl.getY(), knobDia, knobH);
+        int knobX = airCtrl.getX() + (airCtrl.getWidth() - knobBoundsW) / 2;
+        airAmountKnob.setBounds (knobX, airCtrl.getY(), knobBoundsW, knobH);
         airCharToggle.setBounds (airCtrl.getX(), airCtrl.getY() + knobH + 4, airCtrl.getWidth(), 20);
 
         // Stage VI: Diffuse Tail (y=210, h=115)

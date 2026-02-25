@@ -22,17 +22,32 @@ juce::Image generateBackground (int width, int height)
     for (int y = 0; y < height; y += 4)
         g.fillRect (0, y, width, 1);
 
-    // 3. Edge vignette: radial gradient from transparent centre to sepia at corners
-    //    Darkening starts at 60% from centre, reaching ~30px visible inward effect
+    // 3. Paper stipple: sparse random dots for subtle fiber texture
+    {
+        auto stippleColour = juce::Colour (AetherColours::sepia);
+        juce::Random rng (42);  // Fixed seed for deterministic texture
+        for (int i = 0; i < 6000; ++i)
+        {
+            int px = rng.nextInt (width);
+            int py = rng.nextInt (height);
+            float alpha = 0.02f + rng.nextFloat() * 0.04f;
+            g.setColour (stippleColour.withAlpha (alpha));
+            int dotSize = (rng.nextFloat() < 0.15f) ? 2 : 1;
+            g.fillRect (px, py, dotSize, dotSize);
+        }
+    }
+
+    // 4. Edge vignette: radial gradient from transparent centre to sepia at corners
+    //    Darkening starts at 55% from centre, stronger at edges for aged-paper feel
     const float cx = static_cast<float> (width)  / 2.0f;
     const float cy = static_cast<float> (height) / 2.0f;
     const float cornerDist = std::sqrt (cx * cx + cy * cy);
 
     juce::ColourGradient vignette (
         juce::Colours::transparentBlack, cx, cy,
-        juce::Colour (AetherColours::sepia).withAlpha (0.08f), cx + cornerDist, cy,
+        juce::Colour (AetherColours::sepia).withAlpha (0.12f), cx + cornerDist, cy,
         true);  // radial
-    vignette.addColour (0.6, juce::Colours::transparentBlack);
+    vignette.addColour (0.55, juce::Colours::transparentBlack);
 
     g.setGradientFill (vignette);
     g.fillRect (0, 0, width, height);
@@ -161,7 +176,8 @@ void drawSectionLabel (juce::Graphics& g, const juce::String& numeral,
                        const juce::String& name, float x, float y, float width,
                        const juce::Font& numeralFont, const juce::Font& nameFont)
 {
-    const auto labelColour = juce::Colour (AetherColours::inkFaint);
+    const auto numeralColour = juce::Colour (AetherColours::inkFaint);
+    const auto nameColour = juce::Colour (AetherColours::inkLight);
     const float tracking = 3.0f;
     const juce::String upperName = name.toUpperCase();
 
@@ -192,23 +208,38 @@ void drawSectionLabel (juce::Graphics& g, const juce::String& numeral,
     // Center within available width
     const float startX = x + (width - totalWidth) / 2.0f;
 
-    // Draw numeral
+    // Draw numeral (decorative, fainter)
     if (numeral.isNotEmpty())
     {
         juce::GlyphArrangement ng;
         ng.addLineOfText (numeralFont, numeral, 0.0f, 0.0f);
         ng.moveRangeOfGlyphs (0, -1, startX, y);
-        g.setColour (labelColour);
+        g.setColour (numeralColour);
         ng.draw (g);
     }
 
-    // Draw tracked name
+    // Draw tracked name (functional, stronger contrast)
     if (upperName.isNotEmpty())
     {
         const float nameX = startX + numeralWidth + gap;
         drawLetterSpacedText (g, upperName, nameX, y, nameWidth + 10.0f, tracking,
-                              nameFont, labelColour, juce::Justification::left);
+                              nameFont, nameColour, juce::Justification::left);
     }
+}
+
+//==============================================================================
+// Control well: subtle recessed panel behind control groups
+//==============================================================================
+void drawControlWell (juce::Graphics& g, juce::Rectangle<float> bounds)
+{
+    // Soft fill
+    g.setColour (juce::Colour (AetherColours::parchmentDark).withAlpha (0.15f));
+    g.fillRoundedRectangle (bounds, 4.0f);
+
+    // Faint inner shadow along top edge
+    g.setColour (juce::Colour (AetherColours::shadow).withAlpha (0.06f));
+    g.drawLine (bounds.getX() + 4.0f, bounds.getY() + 0.5f,
+                bounds.getRight() - 4.0f, bounds.getY() + 0.5f, 0.5f);
 }
 
 } // namespace ParchmentElements
