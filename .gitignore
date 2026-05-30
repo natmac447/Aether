@@ -10,3 +10,7 @@ build/
 # OS files
 .DS_Store
 Thumbs.db
+# Reference image dumps, Forge output, redundant source archives
+References/
+.forge/
+*.zip
