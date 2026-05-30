@@ -93,6 +93,17 @@ void AetherKnob::attachToParameter (juce::AudioProcessorValueTreeState& apvts,
         // Cache the parameter range for click-to-type
         if (auto* rangedParam = dynamic_cast<juce::RangedAudioParameter*> (param))
             paramRange = rangedParam->getNormalisableRange();
+
+        // Accessibility: give the inner slider a stable title + name derived
+        // from the parameter so external tooling (e.g. the Forge test harness)
+        // can address this knob by name through the macOS AX tree. The plugin
+        // editor is hosted as an NSView, so selector resolution falls through
+        // to NSAccessibility, which reads accessibilityTitle (setTitle). We
+        // also mirror it onto the component name (setName) for in-process walks.
+        // Labels/accessibility only -- no effect on param IDs, layout, or DSP.
+        const juce::String paramName = param->getName (256);
+        slider.setTitle (paramName);
+        slider.setName (paramName);
     }
 
     // Update the value label font from the LookAndFeel if available
